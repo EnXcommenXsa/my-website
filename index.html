@@ -1,4 +1,8 @@
-<!DOCTYPE html>اs://www.googletagmanager.com/gtag/js?id=G-MQY6P7XSR5"></script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MQY6P7XSR5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -125,10 +129,10 @@
         .floating-split-btn {
             position: sticky;
             top: 15px;
-            float: right; /* للعربية */
+            float: right;
             margin-top: 10px;
             margin-right: 15px;
-            margin-bottom: -40px; /* لكي لا يدفع النص للأسفل */
+            margin-bottom: -40px; 
             background-color: rgba(231, 76, 60, 0.9);
             color: white;
             border: none;
@@ -142,7 +146,7 @@
         }
         .floating-split-btn:hover { background-color: #c0392b; }
         body.en .floating-split-btn {
-            float: left; /* للإنجليزية */
+            float: left;
             margin-right: 0;
             margin-left: 15px;
         }
@@ -384,24 +388,32 @@
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
         <h2 class="only-en">Mixed Text Direction Fix</h2>
         
-        <p class="description only-ar">يحاكي هذا الصندوق بيئة التطبيقات الأجنبية (يبدأ من اليسار). اكتب نصك هنا لتلاحظ كيف تتخربط الكلمات وتنعكس الأقواس عند دمج العربية مع الإنجليزية أو الرموز، ثم اضغط على زر الإصلاح.</p>
-        <p class="description only-en">This box simulates foreign apps (starts from the left). Type your text to see how words and brackets get messed up when mixing Arabic with English or symbols, then click Fix.</p>
+        <p class="description only-ar">يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية (مثل Amino).</p>
+        <p class="description only-en">Fixes word scrambling and inverted brackets when mixing Arabic with English or symbols in foreign apps like Amino.</p>
         
-        <!-- dir="ltr" يجبر الصندوق على البدء من اليسار لمحاكاة المشكلة الحقيقية -->
-        <textarea id="simulator-input" class="auto-stats" dir="ltr" data-target="simulator-stats" data-ph-ar="اكتب أو الصق النص هنا..." data-ph-en="Type or paste text here..." placeholder="اكتب أو الصق النص هنا..."></textarea>
+        <p class="description only-ar" style="font-size: 0.85em; color: #666; margin-top: -5px;">ضع النص هنا واضغط إصلاح.</p>
+        <p class="description only-en" style="font-size: 0.85em; color: #666; margin-top: -5px;">Paste your text here and click Fix.</p>
+        
+        <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: right;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
-        <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح النص</button>
-        <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text</button>
+        <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح النص 🪄</button>
+        <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text 🪄</button>
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
-            <p id="fix-explanation" class="description only-ar" style="font-weight: bold; color: #2c3e50; margin-top: 0;">✅ تم الإصلاح: تمت إضافة "علامة توجيه مخفية" أول كل سطر (قبل أكواد مثل [C]) وبعد الكلمات الإنجليزية لإجبار التطبيق على قراءتها من اليمين لليسار بشكل صحيح.</p>
-            <p id="fix-explanation-en" class="description only-en" style="font-weight: bold; color: #2c3e50; margin-top: 0;">✅ Fixed: A hidden direction mark was added at the start of each line (before tags like [C]) and after English words to force proper Right-to-Left reading.</p>
+            <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; color: #2c3e50; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
+                <strong>ما الذي حدث؟</strong> تم تغليف النص بـ "أكواد توجيه مخفية" (RLE) تجبر التطبيق على قراءة السطر ككتلة واحدة من اليمين لليسار، مما يمنع الكلمات الإنجليزية والمسافات من كسر ترتيب الجملة. (يتم استثناء أكواد مثل [C] ووضعها في الخارج لكي تعمل بشكل صحيح).
+            </p>
+            <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; color: #2c3e50; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
+                <strong>What happened?</strong> The text was wrapped in hidden "direction codes" (RLE) that force the app to read the line as a single right-to-left block. (Tags like [C] are safely kept outside).
+            </p>
             
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
+                <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">الانتقال لقص النص 👇</button>
+                <button class="transfer-btn only-en" onclick="moveToSplit('simulator-output')">Move to Split 👇</button>
             </div>
         </div>
     </div>
@@ -603,7 +615,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه ---
+    // --- دالة إصلاح الاتجاه (باستخدام التغليف RLE) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -611,18 +623,31 @@
         let text = inputEl.value;
         const isAr = document.body.classList.contains('ar');
         
-        if (!text.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+        if (!text.trim()) {
+            outputContainer.style.display = 'none';
+            return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+        }
         
         const lines = text.split('\n');
         const fixedLines = lines.map(line => {
             if (line.trim() === '') return '';
             
-            // إضافة علامة التوجيه (RLM) بداية السطر ثم بعد الرموز/الإنجليزية
-            let newLine = '\u200F' + line;
-            const regex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
-            newLine = newLine.replace(regex, '$1\u200F');
+            // 1. تنظيف السطر من أي أكواد توجيه مخفية سابقة لعدم تكرارها
+            let cleanLine = line.replace(/[\u202B\u202C\u200F\u200E]/g, '');
             
-            return newLine;
+            // 2. فحص ما إذا كان السطر يبدأ بأكواد تطبيق مثل [C] أو [B]
+            // لنقوم بعزلها ووضع التغليف بعدها كي لا ينكسر كود التطبيق
+            let prefix = '';
+            let content = cleanLine;
+            const tagMatch = cleanLine.match(/^(\[[a-zA-Z]+\]\s*)+/);
+            
+            if (tagMatch) {
+                prefix = tagMatch[0];
+                content = cleanLine.substring(prefix.length);
+            }
+            
+            // 3. تغليف المحتوى بالـ Right-to-Left Embedding (RLE) وإغلاقه بالـ PDF
+            return prefix + '\u202B' + content + '\u202C';
         });
         
         outputEl.value = fixedLines.join('\n');
