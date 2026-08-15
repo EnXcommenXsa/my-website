@@ -386,17 +386,22 @@
     <!-- قسم إصلاح الاتجاه (المحدث) -->
     <div class="tool-section" id="simulator-section">
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
-        <h2 class="only-en">Mixed Text Direction Fixer</h2>
+        <h2 class="only-en">Mixed Text Direction Fix</h2>
         
-        <p class="description only-ar">يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند دمج اللغة العربية مع الإنجليزية أو الرموز في التطبيقات التي لا تدعم العربية بشكل كامل. (يتم الإصلاح تلقائياً أثناء الكتابة)</p>
-        <p class="description only-en">Fixes word jumbling and inverted brackets when mixing Arabic with English or symbols in apps lacking proper RTL support. (Auto-fixes as you type)</p>
+        <p class="description only-ar">يحاكي هذا الصندوق بيئة التطبيقات الأجنبية (يبدأ من اليسار). اكتب نصك هنا لتلاحظ كيف تتخربط الكلمات وتنعكس الأقواس عند دمج العربية مع الإنجليزية أو الرموز، ثم اضغط على زر الإصلاح.</p>
+        <p class="description only-en">This box simulates foreign apps (starts from the left). Type your text to see how words and brackets get messed up when mixing Arabic with English or symbols, then click Fix.</p>
         
-        <textarea id="simulator-input" class="auto-stats" dir="auto" data-target="simulator-stats" data-ph-ar="اكتب أو الصق النص هنا..." data-ph-en="Type or paste text here..." placeholder="اكتب أو الصق النص هنا..." oninput="fixDirection()"></textarea>
+        <!-- dir="ltr" يجبر الصندوق على البدء من اليسار لمحاكاة المشكلة الحقيقية -->
+        <textarea id="simulator-input" class="auto-stats" dir="ltr" data-target="simulator-stats" data-ph-ar="اكتب أو الصق النص هنا..." data-ph-en="Type or paste text here..." placeholder="اكتب أو الصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
+        <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح النص 🪄</button>
+        <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text 🪄</button>
+
         <div class="output-box" id="simulator-output-container" style="display: none;">
-            <h3 class="only-ar" style="margin-top:0; font-size: 0.9em;">النص المُصلح (جاهز للنسخ):</h3>
-            <h3 class="only-en" style="margin-top:0; font-size: 0.9em;">Fixed Text (Ready to copy):</h3>
+            <p id="fix-explanation" class="description only-ar" style="font-weight: bold; color: #2c3e50; margin-top: 0;">✅ تم الإصلاح: تمت إضافة "علامة توجيه مخفية" أول كل سطر (قبل أكواد مثل [C]) وبعد الكلمات الإنجليزية لإجبار التطبيق على قراءتها من اليمين لليسار بشكل صحيح.</p>
+            <p id="fix-explanation-en" class="description only-en" style="font-weight: bold; color: #2c3e50; margin-top: 0;">✅ Fixed: A hidden direction mark was added at the start of each line (before tags like [C]) and after English words to force proper Right-to-Left reading.</p>
+            
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
@@ -602,24 +607,34 @@
         setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (المحدثة لتعمل في الوقت الحقيقي) ---
+    // --- دالة إصلاح الاتجاه ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
         const outputEl = document.getElementById('simulator-output');
         let text = inputEl.value;
+        const isAr = document.body.classList.contains('ar');
         
-        if (!text.trim()) {
-            outputContainer.style.display = 'none';
-            return;
-        }
+        if (!text.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
         
-        // تقوم بإضافة علامة التوجيه من اليمين لليسار (RLM) بعد كل كلمة إنجليزية أو رمز لضبط المحاذاة
-        const regex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
-        const fixedText = text.replace(regex, '$1\u200F');
+        const lines = text.split('\n');
+        const fixedLines = lines.map(line => {
+            if (line.trim() === '') return '';
+            
+            // إضافة علامة التوجيه (RLM) بداية السطر ثم بعد الرموز/الإنجليزية
+            let newLine = '\u200F' + line;
+            const regex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
+            newLine = newLine.replace(regex, '$1\u200F');
+            
+            return newLine;
+        });
         
-        outputEl.value = fixedText;
+        outputEl.value = fixedLines.join('\n');
         outputContainer.style.display = 'block';
+        
+        outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        outputEl.style.backgroundColor = '#e8f5e9';
+        setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
     }
 
     // --- الانتقال للقص ---
