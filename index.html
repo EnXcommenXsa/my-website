@@ -38,6 +38,7 @@
         }
         body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
         body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
+        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
         body.karbo-mode .signature { color: #b0bec5; }
         
@@ -52,7 +53,7 @@
         #center-section { order: 3; }
         #split-section { order: 4; }
         #simulator-section { order: 5; } /* إصلاح الاتجاه */
-        #secondary-tools { order: 6; } /* الأدوات الإضافية */
+        #secondary-tools { order: 6; } /* الأدوات الإضافية (دائماً قبل الأخير) */
         .seo-section { order: 7; }
         
         /* الترتيب في وضع كاربو */
@@ -62,14 +63,16 @@
         body.karbo-mode #secondary-tools { order: 6; }
         
         /* --- ترتيب الشريط الجانبي (Sidebar Order) --- */
+        /* تم إصلاح الترتيب ليتطابق مع الوضع العادي تماماً */
         .sidebar { display: flex; flex-direction: column; }
         #nav-karbo { order: 1; }
-        #nav-fix { order: 2; }
-        #nav-center { order: 3; }
-        #nav-split { order: 4; }
+        #nav-center { order: 2; }
+        #nav-split { order: 3; }
+        #nav-fix { order: 4; }
         #nav-extra { order: 5; }
         #nav-lang { order: 6; }
         
+        /* الترتيب في وضع كاربو */
         body.karbo-mode #nav-karbo { order: 1; }
         body.karbo-mode #nav-fix { order: 2; }
         body.karbo-mode #nav-center { order: 3; }
@@ -152,16 +155,16 @@
         }
         .lang-btn { background-color: #eef2f5 !important; color: #333 !important; }
         
-        /* إصلاح قائمة الهواتف للسماح بالتمرير الأفقي في جميع الأوضاع واللغات */
+        /* إصلاح قائمة الهواتف للسماح بالتمرير الأفقي */
         @media (max-width: 1000px) {
-            .sidebar, body.en .sidebar {
-                top: auto; bottom: 0; right: 0; left: 0; width: 100%; box-sizing: border-box;
+            .sidebar {
+                top: auto; bottom: 0; right: 0; left: 0;
                 transform: none; flex-direction: row; justify-content: flex-start;
                 border-radius: 15px 15px 0 0; padding: 10px 15px; overflow-x: auto;
                 box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
                 -webkit-overflow-scrolling: touch;
             }
-            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; margin-left: 5px; margin-right: 5px; }
+            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; }
         }
 
         /* --- الأقسام --- */
@@ -198,6 +201,37 @@
         .rich-editor:focus { border-color: var(--primary-color); }
         .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
+        
+        /* --- تخصيص زر القص العائم داخل المربع --- */
+        .split-editor-wrapper {
+            position: relative;
+            background: #fff;
+            border-radius: 6px;
+        }
+        .floating-split-btn {
+            position: sticky;
+            top: 15px;
+            float: right; /* للعربية */
+            margin-top: 10px;
+            margin-right: 15px;
+            margin-bottom: -40px; /* لكي لا يدفع النص للأسفل */
+            background-color: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        .floating-split-btn:hover { background-color: #c0392b; }
+        body.en .floating-split-btn {
+            float: left; /* للإنجليزية */
+            margin-right: 0;
+            margin-left: 15px;
+        }
 
         /* --- تخصيص أداة الرموز المتقدمة --- */
         .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
@@ -274,10 +308,6 @@
         <span class="only-ar">وضع كاربو</span>
         <span class="only-en">Karbo Mode</span>
     </a>
-    <a href="#simulator-section" id="nav-fix">
-        <span class="only-ar">إصلاح الاتجاه</span>
-        <span class="only-en">Fix Direction</span>
-    </a>
     <a href="#center-section" id="nav-center">
         <span class="only-ar">توسيط [C]</span>
         <span class="only-en">Center [C]</span>
@@ -285,6 +315,10 @@
     <a href="#split-section" id="nav-split">
         <span class="only-ar">تقسيم وقص</span>
         <span class="only-en">Split & Cut</span>
+    </a>
+    <a href="#simulator-section" id="nav-fix">
+        <span class="only-ar">إصلاح الاتجاه</span>
+        <span class="only-en">Fix Direction</span>
     </a>
     <a href="#secondary-tools" id="nav-extra">
         <span class="only-ar">أدوات إضافية</span>
@@ -324,8 +358,9 @@
         <textarea id="center-input" class="auto-stats" data-target="center-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="center-stats">الأحرف: 0 | الكلمات: 0</div>
         
-        <button class="only-ar" onclick="processText('center-input', 'center-output-container', 'center-output', '[C] ')">إضافة التوسيط</button>
-        <button class="only-en" onclick="processText('center-input', 'center-output-container', 'center-output', '[C] ')">Add Centering</button>
+        <!-- تم حل مشكلة المسافة هنا ليصبح [C] بدون مسافة لتفادي خطأ تطبيق Amino -->
+        <button class="only-ar" onclick="processText('center-input', 'center-output-container', 'center-output', '[C]')">إضافة التوسيط</button>
+        <button class="only-en" onclick="processText('center-input', 'center-output-container', 'center-output', '[C]')">Add Centering</button>
         
         <div class="output-box" id="center-output-container" style="display: none;">
             <textarea id="center-output" readonly></textarea>
@@ -339,7 +374,6 @@
         </div>
     </div>
 
-    <!-- قسم القص المرتجع بالكامل لشكله القديم حسب طلبك -->
     <div class="tool-section" id="split-section">
         <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
         <h2 class="only-en">Article Splitter ✂️</h2>
@@ -450,7 +484,8 @@
         <p class="description only-ar" style="font-size: 0.85em; color: #666; margin-top: -5px;">ضع النص هنا واضغط إصلاح.</p>
         <p class="description only-en" style="font-size: 0.85em; color: #666; margin-top: -5px;">Paste your text here and click Fix.</p>
         
-        <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: right;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
+        <!-- تم تعديل محاذاة النص لليسار فقط لهذا المربع وقبل الإصلاح كما طلبت -->
+        <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: left;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
         <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح النص</button>
@@ -615,7 +650,7 @@
         updateStats('split-input', 'split-stats');
     });
 
-    // --- الدالة الشاملة والتأثير البصري ---
+    // --- الدالة الشاملة والتأثير البصري (تم تعديل الوميض ليتناسب مع وضع كاربو) ---
     function processText(inputId, outputContainerId, outputId, prefix, suffix = '') {
         const input = document.getElementById(inputId).value;
         const isAr = document.body.classList.contains('ar');
@@ -634,8 +669,10 @@
         container.style.display = 'block';
         
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        outputEl.style.backgroundColor = '#e8f5e9'; 
-        setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
+        
+        const isKarbo = document.body.classList.contains('karbo-mode');
+        outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9'; 
+        setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
     // --- الميزة الجديدة: دالة إضافة الرمز المخصص (مع الإغلاق الذكي) ---
@@ -681,11 +718,13 @@
         container.style.display = 'block';
         
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        outputEl.style.backgroundColor = '#e8f5e9';
-        setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
+        
+        const isKarbo = document.body.classList.contains('karbo-mode');
+        outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9';
+        setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه ---
+    // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -720,8 +759,10 @@
         outputContainer.style.display = 'block';
         
         outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        outputEl.style.backgroundColor = '#e8f5e9';
-        setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
+        
+        const isKarbo = document.body.classList.contains('karbo-mode');
+        outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9';
+        setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
     // --- الانتقال للقص (أو التوسيط في مود كاربو) ---
