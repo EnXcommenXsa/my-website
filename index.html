@@ -1,235 +1,709 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MQY6P7XSR5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MQY6P7XSR5');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="أداة CutMouse لتجزئة النصوص الطويلة، وتنسيق المانجا، وإضافة أكواد المنتديات تلقائياً. الخيار الأفضل لصناع المحتوى وتجهيز الثريدات.">
-    <title>CutMouse - أداة تنسيق وتقسيم النصوص الاحترافية</title>
-    
+    <title>أداة تنسيق وتقسيم النصوص الذكية - CutMouse</title>
     <style>
-        /* التنسيقات العامة للموقع */
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --box-bg: #ffffff;
+            --border-color: #ccc;
+        }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background-color: var(--bg-color);
             color: #333;
+            line-height: 1.6;
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
+            padding-bottom: 80px; 
         }
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-        }
-        h1.logo {
-            text-align: center;
-            color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 180px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-            resize: vertical;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        textarea:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        /* تصميم الأزرار والأدوات */
-        .controls-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        .btn-legacy {
-            background-color: #8e44ad;
-        }
-        .btn-legacy:hover {
-            background-color: #732d91;
-        }
-        .btn-copy {
-            background-color: #27ae60;
-            width: 100%;
-            margin-top: 5px;
-        }
-        .btn-copy:hover {
-            background-color: #219653;
-        }
-        /* صندوق الميزة الجديدة */
-        .advanced-tools {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .advanced-tools input, .advanced-tools select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-            flex-grow: 1;
-        }
-        /* قسم السيو (SEO) */
-        .seo-section {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px dashed #cbd5e1;
-        }
-        .seo-section h2 {
-            font-size: 22px;
-            color: #2c3e50;
-        }
-        .seo-section h3 {
-            font-size: 18px;
-            color: #34495e;
-            margin-top: 20px;
-        }
-        .seo-section ul {
-            padding-right: 20px;
-        }
-        .seo-section li {
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1 class="logo">أداة CutMouse ✂️</h1>
         
-        <p><strong>1. أدخل النص هنا:</strong></p>
-        <textarea id="inputText" placeholder="ألصق النص الطويل، المقال، أو الترجمة هنا..."></textarea>
+        /* --- نظام اللغات --- */
+        body.en .only-ar { display: none !important; }
+        body.ar .only-en { display: none !important; }
 
-        <!-- الأزرار القديمة الأساسية -->
-        <div class="controls-row">
-            <button class="btn btn-legacy" onclick="addLegacyC()">إضافة [C] لجميع الأسطر</button>
-        </div>
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        /* --- التنقل الجانبي --- */
+        .sidebar {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 20px;
+            background: var(--box-bg);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        body.en .sidebar { right: auto; left: 20px; }
+        
+        .sidebar a {
+            text-decoration: none;
+            color: var(--primary-color);
+            background: var(--bg-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .sidebar a:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .lang-btn { background-color: #eef2f5 !important; color: #333 !important; }
+        
+        @media (max-width: 1000px) {
+            .sidebar {
+                top: auto; bottom: 0; right: 0; left: 0;
+                transform: none; flex-direction: row; justify-content: space-around;
+                border-radius: 15px 15px 0 0; padding: 10px; overflow-x: auto;
+                box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            }
+            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; }
+        }
 
-        <!-- الميزة الجديدة المتقدمة -->
-        <p><strong>2. تخصيص متقدم (اختياري):</strong></p>
-        <div class="advanced-tools">
-            <input type="text" id="customSymbol" placeholder="اكتب الرمز (مثال: - أو [B] أو &quot; )">
-            <select id="symbolPosition">
-                <option value="before">قبل النص فقط ⬅️</option>
-                <option value="after">بعد النص فقط ➡️</option>
-                <option value="both">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
-            </select>
-            <button class="btn" onclick="addCustomSymbol()">إضافة الرمز المخصص</button>
-        </div>
+        /* --- الأقسام --- */
+        .header { text-align: center; margin-bottom: 30px; }
+        .signature { text-align: center; font-size: 1.2em; margin-bottom: 15px; color: #666; }
+        
+        .tool-section {
+            background: var(--box-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            scroll-margin-top: 20px;
+        }
+        .secondary-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .secondary-tool { background: var(--box-bg); padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); scroll-margin-top: 20px; }
+        
+        /* جعل الأداة المتقدمة تأخذ العرض بالكامل */
+        #custom-symbol-section { grid-column: 1 / -1; }
 
-        <p><strong>3. النتيجة الجاهزة:</strong></p>
-        <textarea id="outputText" placeholder="ستظهر النتيجة المنسقة هنا..." readonly></textarea>
-        <button class="btn btn-copy" onclick="copyResult()">📋 نسخ النتيجة بالكامل</button>
+        @media (max-width: 600px) { .secondary-tools-grid { grid-template-columns: 1fr; } }
+        
+        h2 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; display: inline-block; }
+        h3 { margin-top: 0; color: #555; font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+        .description { font-size: 0.95em; color: #666; margin-bottom: 15px; }
+        
+        textarea, .rich-editor {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
+            font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
+            transition: background-color 0.4s ease;
+        }
+        textarea { min-height: 120px; resize: vertical; }
+        .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
+        .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
+        .rich-editor:focus { border-color: var(--primary-color); }
+        .stats-counter { font-size: 0.85em; color: #888; text-align: left; margin-bottom: 15px; font-weight: bold; }
+        body.en .stats-counter { text-align: right; }
+        
+        /* --- تخصيص أداة الرموز المتقدمة --- */
+        .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
+        .custom-controls input, .custom-controls select { 
+            padding: 10px; border: 1px solid var(--border-color); 
+            border-radius: 6px; font-size: 0.95em; flex: 1; min-width: 150px; font-family: inherit;
+        }
+        .custom-controls input:focus, .custom-controls select:focus {
+            border-color: var(--primary-color); outline: none;
+        }
 
-        <!-- ========================================== -->
-        <!-- قسم المحتوى التعريفي (SEO) لمحركات البحث -->
-        <!-- ========================================== -->
-        <div class="seo-section">
-            <h2>🚀 ما هي أداة CutMouse وكيف تضاعف سرعة إنتاجيتك؟</h2>
-            <p>إذا كنت صانع محتوى، كاتب ثريدات، أو مدوناً، فأنت تعلم كم هو مزعج تقسيم النصوص الطويلة يدوياً وتنسيقها لتناسب المنصات المختلفة. أداة <strong>CutMouse</strong> هي مساعدك الرقمي الأسرع لتجزئة النصوص (Text Chunking) وأتمتة التنسيق بضغطة زر واحدة، دون الحاجة للتنقل اللانهائي بين النوتة ومنصات النشر.</p>
-            
-            <h3>🎯 من المستفيد من الأداة؟ (الاستخدامات الشائعة)</h3>
-            <ul>
-                <li><strong>صناع فيديوهات التيك توك والريلز:</strong> هل تبحث عن برنامج يقص الكلام لأسطر؟ أداتنا تفصل جملك الطويلة لأسطر منفصلة جاهزة للصق في برامج المونتاج مثل CapCut أو Premiere لإنشاء نصوص الترجمة (Subtitles) في ثوانٍ.</li>
-                <li><strong>كُتّاب منصة X (تويتر سابقاً):</strong> أفضل أداة لتقطيع المقال إلى تغريدات وتجهيز ثريد متناسق وجاهز للنشر.</li>
-                <li><strong>المدونون (WordPress, Notion):</strong> قسّم مقالك إلى "كتل نصية" جاهزة لتوزيع الصور بينها بسهولة داخل محررات الكتل الحديثة.</li>
-                <li><strong>مترجمو المانجا والمنتديات:</strong> أتمتة أكواد التنسيق (BBCode). أضف أكواد التوسيط أو التغميق مثل <code>[C]</code> أو <code>[B]</code> لجميع الأسطر دفعة واحدة باحترافية تامة.</li>
-            </ul>
+        /* --- فاصل القص --- */
+        .split-line {
+            display: flex; align-items: center; justify-content: center; height: 2px;
+            background: #e74c3c; margin: 25px 0; position: relative; user-select: none; clear: both;
+        }
+        .split-label-container {
+            background: #e74c3c; color: white; padding: 4px 12px; border-radius: 20px;
+            font-size: 13px; position: absolute; font-weight: bold; display: flex; align-items: center;
+            gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .delete-btn {
+            cursor: pointer; background: rgba(255,255,255,0.25); border-radius: 50%;
+            width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 10px; transition: background 0.2s;
+        }
+        .delete-btn:hover { background: rgba(255,255,255,0.6); color: #c0392b; }
+
+        /* --- الأزرار --- */
+        button {
+            background-color: var(--primary-color); color: white; border: none; padding: 10px 18px;
+            font-size: 0.95em; border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease;
+            margin-bottom: 10px; margin-left: 5px;
+        }
+        body.en button { margin-left: 0; margin-right: 5px; }
+        button:hover { background-color: #004494; }
+        button.split-action-btn { background-color: #e74c3c; }
+        button.split-action-btn:hover { background-color: #c0392b; }
+        button.copy-btn { background-color: #28a745; }
+        button.copy-btn:hover { background-color: #218838; }
+        button.transfer-btn { background-color: #6c757d; font-size: 0.85em; padding: 8px 12px; }
+        button.transfer-btn:hover { background-color: #5a6268; }
+        
+        .output-box {
+            position: relative; margin-top: 15px; background: #f9f9f9;
+            padding: 15px; border: 1px dashed var(--border-color); border-radius: 6px;
+        }
+        .button-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+        /* --- قسم السيو --- */
+        .seo-section { background: transparent; padding: 20px; font-size: 0.85em; color: #888; border-top: 1px solid #ddd; margin-top: 40px; }
+        .seo-section h3 { color: #777; border: none; font-size: 1.1em; }
+        .seo-section ul { padding-right: 20px; }
+        body.en .seo-section ul { padding-right: 0; padding-left: 20px; }
+        .seo-section li { margin-bottom: 10px; }
+        .footer-links { text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd; }
+        .footer-links a { color: #666; text-decoration: none; margin: 0 10px; font-size: 0.9em; cursor: pointer; }
+        .footer-links a:hover { text-decoration: underline; }
+
+        /* --- النوافذ المنبثقة --- */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 10px; line-height: 1.8; }
+        .close-modal { color: #aaa; float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
+        body.en .close-modal { float: right; }
+        .close-modal:hover { color: #000; }
+    </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940288702127930"
+     crossorigin="anonymous"></script>
+</head>
+<body class="ar">
+
+<nav class="sidebar">
+    <a href="#center-section">
+        <span class="only-ar">توسيط [C]</span>
+        <span class="only-en">Center [C]</span>
+    </a>
+    <a href="#split-section">
+        <span class="only-ar">تقسيم وقص ✂️</span>
+        <span class="only-en">Split & Cut ✂️</span>
+    </a>
+    <a href="#secondary-tools">
+        <span class="only-ar">أدوات إضافية</span>
+        <span class="only-en">Extra Tools</span>
+    </a>
+    <a onclick="toggleLanguage(event)" class="lang-btn">
+        <span class="only-ar">🌐 English</span>
+        <span class="only-en">🌐 عربي</span>
+    </a>
+</nav>
+
+<div class="container">
+    <div class="header">
+        <h1 class="only-ar">أداة تنسيق وتقسيم النصوص الذكية</h1>
+        <h1 class="only-en">Smart Text Formatting & Splitting Tool</h1>
+        
+        <div class="signature">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</div>
+        
+        <p class="only-ar">قم بتجهيز نصوصك وتنسيقها بسرعة وسهولة لتبدو مثالية.</p>
+        <p class="only-en">Prepare and format your texts quickly and easily to look perfect.</p>
+    </div>
+
+    <div class="tool-section" id="center-section">
+        <h2 class="only-ar">أداة التوسيط [C]</h2>
+        <h2 class="only-en">Centering Tool [C]</h2>
+        
+        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف (يتم تجاهل الأسطر الفارغة).</p>
+        <p class="description only-en">Adds [C] tag at the beginning of each line to center the text (empty lines are ignored).</p>
+        
+        <textarea id="center-input" class="auto-stats" data-target="center-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
+        <div class="stats-counter" id="center-stats">الأحرف: 0 | الكلمات: 0</div>
+        
+        <button class="only-ar" onclick="processText('center-input', 'center-output-container', 'center-output', '[C] ')">إضافة التوسيط</button>
+        <button class="only-en" onclick="processText('center-input', 'center-output-container', 'center-output', '[C] ')">Add Centering</button>
+        
+        <div class="output-box" id="center-output-container" style="display: none;">
+            <textarea id="center-output" readonly></textarea>
+            <div class="button-group">
+                <button class="copy-btn only-ar" onclick="copyText('center-output', this)">نسخ النتيجة</button>
+                <button class="copy-btn only-en" onclick="copyText('center-output', this)">Copy Result</button>
+                
+                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص 👇</button>
+                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split 👇</button>
+            </div>
         </div>
     </div>
 
-    <!-- السكريبت البرمجي (JavaScript) -->
-    <script>
-        // دالة تنظيف النص وجلب الأسطر غير الفارغة
-        function getLines() {
-            const text = document.getElementById('inputText').value;
-            // فصل النص بناء على سطر جديد، وإزالة الأسطر الفارغة تماماً
-            return text.split('\n').filter(line => line.trim() !== '');
-        }
+    <div class="tool-section" id="split-section">
+        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
+        <h2 class="only-en">Article Splitter ✂️</h2>
+        
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
+        
+        <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+        <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-        // 1. الدالة القديمة لزر [C]
-        function addLegacyC() {
-            const lines = getLines();
-            if (lines.length === 0) return alert("الرجاء إدخال نص أولاً!");
+        <button class="split-action-btn only-ar" onclick="insertSplitLine()">إدراج فاصل قص ✂️</button>
+        <button class="split-action-btn only-en" onclick="insertSplitLine()">Insert Split Line ✂️</button>
+        
+        <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
+        <button class="only-en" onclick="splitText()">Split Text Now</button>
+
+        <div id="split-results"></div>
+    </div>
+
+    <div class="secondary-tools-grid" id="secondary-tools">
+        <div class="secondary-tool" id="bold-section">
+            <h3 class="only-ar">تغميق النص **</h3>
+            <h3 class="only-en">Bold Text **</h3>
             
-            const result = lines.map(line => '[C]' + line.trim()).join('\n');
-            document.getElementById('outputText').value = result;
-        }
+            <textarea id="bold-input" class="auto-stats" data-target="bold-stats" data-ph-ar="ألصق النص..." data-ph-en="Paste text..." placeholder="ألصق النص..."></textarea>
+            <div class="stats-counter" id="bold-stats">الأحرف: 0 | الكلمات: 0</div>
+            
+            <button class="only-ar" onclick="processText('bold-input', 'bold-output-container', 'bold-output', '**', '**')">تغميق</button>
+            <button class="only-en" onclick="processText('bold-input', 'bold-output-container', 'bold-output', '**', '**')">Bold</button>
+            
+            <div class="output-box" id="bold-output-container" style="display: none;">
+                <textarea id="bold-output" readonly></textarea>
+                <div class="button-group">
+                    <button class="copy-btn only-ar" onclick="copyText('bold-output', this)">نسخ</button>
+                    <button class="copy-btn only-en" onclick="copyText('bold-output', this)">Copy</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split 👇</button>
+                </div>
+            </div>
+        </div>
 
-        // 2. الدالة الجديدة للمرمز المخصص والإغلاق الذكي
-        function addCustomSymbol() {
-            const symbol = document.getElementById('customSymbol').value.trim();
-            const position = document.getElementById('symbolPosition').value;
-            const lines = getLines();
+        <div class="secondary-tool" id="italic-section">
+            <h3 class="only-ar">إمالة النص __</h3>
+            <h3 class="only-en">Italic Text __</h3>
+            
+            <textarea id="italic-input" class="auto-stats" data-target="italic-stats" data-ph-ar="ألصق النص..." data-ph-en="Paste text..." placeholder="ألصق النص..."></textarea>
+            <div class="stats-counter" id="italic-stats">الأحرف: 0 | الكلمات: 0</div>
+            
+            <button class="only-ar" onclick="processText('italic-input', 'italic-output-container', 'italic-output', '__', '__')">إمالة</button>
+            <button class="only-en" onclick="processText('italic-input', 'italic-output-container', 'italic-output', '__', '__')">Italic</button>
+            
+            <div class="output-box" id="italic-output-container" style="display: none;">
+                <textarea id="italic-output" readonly></textarea>
+                <div class="button-group">
+                    <button class="copy-btn only-ar" onclick="copyText('italic-output', this)">نسخ</button>
+                    <button class="copy-btn only-en" onclick="copyText('italic-output', this)">Copy</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split 👇</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الميزة الجديدة: أداة التخصيص المتقدم للرموز -->
+        <div class="secondary-tool" id="custom-symbol-section">
+            <h3 class="only-ar">تخصيص متقدم (رموز مخصصة)</h3>
+            <h3 class="only-en">Advanced Custom Symbols</h3>
+            
+            <p class="description only-ar">أضف أي رمز أو كود قبل أو بعد النص (يدعم الإغلاق الذكي لأكواد المنتديات).</p>
+            <p class="description only-en">Add any symbol/code before or after text (supports smart BBCode closing).</p>
 
-            if (lines.length === 0) return alert("الرجاء إدخال نص أولاً!");
-            if (!symbol) return alert("الرجاء كتابة الرمز المطلوب إضافته في المربع!");
+            <textarea id="custom-input" class="auto-stats" data-target="custom-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
+            <div class="stats-counter" id="custom-stats">الأحرف: 0 | الكلمات: 0</div>
+            
+            <div class="custom-controls">
+                <input type="text" id="customSymbol" placeholder="الرمز (مثال: - أو [B])" data-ph-ar="الرمز (مثال: - أو [B])" data-ph-en="Symbol (e.g. - or [B])">
+                <select id="symbolPosition">
+                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
+                    <option value="before" class="only-en">Before text only ⬅️</option>
+                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
+                    <option value="after" class="only-en">After text only ➡️</option>
+                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
+                </select>
+            </div>
+            
+            <button class="only-ar" onclick="applyCustomSymbol()">إضافة الرمز المخصص</button>
+            <button class="only-en" onclick="applyCustomSymbol()">Add Custom Symbol</button>
+            
+            <div class="output-box" id="custom-output-container" style="display: none;">
+                <textarea id="custom-output" readonly></textarea>
+                <div class="button-group">
+                    <button class="copy-btn only-ar" onclick="copyText('custom-output', this)">نسخ</button>
+                    <button class="copy-btn only-en" onclick="copyText('custom-output', this)">Copy</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split 👇</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            // الذكاء البرمجي: اكتشاف أكواد المنتديات (مثل [B] لتحويلها إلى [/B])
-            let closingSymbol = symbol;
-            const bbcodeMatch = symbol.match(/^\[(.*?)\]$/); 
-            if (bbcodeMatch) {
-                closingSymbol = `[/${bbcodeMatch[1]}]`; // إنشاء وسم الإغلاق
+    <div class="seo-section">
+        <h3 class="only-ar">🚀 ما هي أداة CutMouse وكيف تضاعف سرعة إنتاجيتك؟</h3>
+        <h3 class="only-en">🚀 What is CutMouse & How It Boosts Productivity?</h3>
+        
+        <p class="only-ar">إذا كنت صانع محتوى، كاتب ثريدات، أو مدوناً، فأنت تعلم كم هو مزعج تقسيم النصوص الطويلة يدوياً وتنسيقها لتناسب المنصات المختلفة. أداة <strong>CutMouse</strong> هي مساعدك الرقمي الأسرع لتجزئة النصوص (Text Chunking) وأتمتة التنسيق بضغطة زر واحدة، دون الحاجة للتنقل اللانهائي بين النوتة ومنصات النشر.</p>
+        <p class="only-en">If you are a content creator, thread writer, or blogger, you know how annoying it is to manually split and format long texts. <strong>CutMouse</strong> is your fastest digital assistant for text chunking and automating formatting with one click.</p>
+        
+        <h3 class="only-ar">🎯 من المستفيد من الأداة؟ (الاستخدامات الشائعة)</h3>
+        <h3 class="only-en">🎯 Who Benefits from This Tool? (Common Uses)</h3>
+        
+        <ul class="only-ar">
+            <li><strong>صناع فيديوهات التيك توك والريلز:</strong> هل تبحث عن برنامج يقص الكلام لأسطر؟ أداتنا تفصل جملك الطويلة لأسطر منفصلة جاهزة للصق في برامج المونتاج مثل CapCut لإنشاء نصوص الترجمة (Subtitles) في ثوانٍ.</li>
+            <li><strong>كُتّاب منصة X (تويتر سابقاً):</strong> أفضل أداة لتقطيع المقال إلى تغريدات وتجهيز ثريد متناسق وجاهز للنشر.</li>
+            <li><strong>المدونون (WordPress, Notion):</strong> قسّم مقالك إلى "كتل نصية" جاهزة لتوزيع الصور بينها بسهولة داخل محررات الكتل الحديثة.</li>
+            <li><strong>مترجمو المانجا والمنتديات:</strong> أتمتة أكواد التنسيق (BBCode). أضف أكواد التوسيط أو التغميق لجميع الأسطر دفعة واحدة باحترافية تامة بفضل التخصيص والإغلاق الذكي.</li>
+        </ul>
+        <ul class="only-en">
+            <li><strong>TikTok & Reels Creators:</strong> Split long sentences into separate lines ready for pasting into editing software like CapCut for subtitles.</li>
+            <li><strong>X (Twitter) Writers:</strong> The best tool to cut an article into tweets and prepare a thread.</li>
+            <li><strong>Bloggers (WordPress, Notion):</strong> Split your article into text blocks ready for image distribution.</li>
+            <li><strong>Manga & Forum Translators:</strong> Automate BBCode formatting. Add centering or bold tags to all lines at once with smart closing features.</li>
+        </ul>
+
+        <div class="footer-links">
+            <a onclick="openModal('privacyModal')">
+                <span class="only-ar">سياسة الخصوصية</span><span class="only-en">Privacy Policy</span>
+            </a> | 
+            <a onclick="openModal('termsModal')">
+                <span class="only-ar">شروط الاستخدام</span><span class="only-en">Terms of Use</span>
+            </a> | 
+            <a onclick="openModal('contactModal')">
+                <span class="only-ar">اتصل بنا</span><span class="only-en">Contact Us</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="privacyModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('privacyModal')">&times;</span>
+        <h2 class="only-ar">سياسة الخصوصية</h2><h2 class="only-en">Privacy Policy</h2>
+        <p class="only-ar">موقعنا عبارة عن أداة تعمل بالكامل داخل متصفحك. نحن لا نقوم بحفظ، أو تخزين، أو رفع أي نصوص تقوم بإدخالها إلى خوادمنا. قد نستخدم أطرافاً ثالثة مثل شبكات الإعلانات (مثل Google AdSense) التي قد تستخدم ملفات تعريف الارتباط لعرض إعلانات مخصصة.</p>
+        <p class="only-en">Our site operates entirely within your browser. We do not save, store, or upload any texts you input to our servers. We may use third-party ad networks (like Google AdSense) that may use cookies to show personalized ads.</p>
+    </div>
+</div>
+
+<div id="termsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('termsModal')">&times;</span>
+        <h2 class="only-ar">شروط الاستخدام</h2><h2 class="only-en">Terms of Use</h2>
+        <p class="only-ar">باستخدامك لهذه الأداة، فإنك توافق على استخدامها للأغراض المشروعة فقط. يتم تقديم الأداة "كما هي"، ونحن غير مسؤولين عن أي فقدان للبيانات نتيجة الاستخدام.</p>
+        <p class="only-en">By using this tool, you agree to use it for lawful purposes only. The tool is provided "as is", and we are not liable for any data loss resulting from its use.</p>
+    </div>
+</div>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('contactModal')">&times;</span>
+        <h2 class="only-ar">اتصل بنا</h2><h2 class="only-en">Contact Us</h2>
+        <p class="only-ar">إذا كان لديك أي استفسارات، يمكنك التواصل معنا عبر البريد الإلكتروني التالي:</p>
+        <p class="only-en">If you have any questions, you can contact us via the following email:</p>
+        <p><strong>commanxala@gmail.com</strong></p>
+    </div>
+</div>
+
+<script>
+    // --- نظام اللغات ---
+    function toggleLanguage(event) {
+        if(event) event.preventDefault();
+        const body = document.body;
+        const isAr = body.classList.contains('ar');
+        
+        body.classList.remove(isAr ? 'ar' : 'en');
+        body.classList.add(isAr ? 'en' : 'ar');
+        
+        document.documentElement.lang = isAr ? 'en' : 'ar';
+        document.documentElement.dir = isAr ? 'ltr' : 'rtl';
+        
+        // تحديث الترجمة للـ Textareas وكذلك خانات الإدخال العادية (Inputs)
+        document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+            if(el.hasAttribute('data-ph-ar')) {
+                el.placeholder = el.getAttribute(isAr ? 'data-ph-en' : 'data-ph-ar');
             }
+        });
+        document.querySelectorAll('.rich-editor').forEach(el => {
+            if(el.hasAttribute('data-ph-ar')) {
+                el.setAttribute('data-placeholder', el.getAttribute(isAr ? 'data-ph-en' : 'data-ph-ar'));
+            }
+        });
+        
+        document.querySelectorAll('.auto-stats').forEach(el => {
+            updateStats(el.id, el.getAttribute('data-target'));
+        });
+    }
 
-            // تطبيق الرموز على كل سطر
-            const result = lines.map(line => {
-                let newLine = line.trim();
-                
-                if (position === 'before' || position === 'both') {
-                    newLine = symbol + newLine;
-                }
-                
-                if (position === 'after' || position === 'both') {
-                    newLine = newLine + closingSymbol;
-                }
-                
-                return newLine;
-            }).join('\n');
+    // --- النوافذ المنبثقة ---
+    function openModal(id) { document.getElementById(id).style.display = 'block'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; }
+    }
 
-            document.getElementById('outputText').value = result;
+    // --- العدادات ---
+    function updateStats(elementId, statsId) {
+        const el = document.getElementById(elementId);
+        const text = (el.tagName === 'DIV') ? el.innerText : el.value;
+        const cleanText = text.trim();
+        const chars = text.length;
+        const words = cleanText === '' ? 0 : cleanText.split(/\s+/).length;
+        
+        const isAr = document.body.classList.contains('ar');
+        const cLabel = isAr ? 'الأحرف' : 'Characters';
+        const wLabel = isAr ? 'الكلمات' : 'Words';
+        
+        document.getElementById(statsId).innerText = `${cLabel}: ${chars} | ${wLabel}: ${words}`;
+    }
+
+    document.querySelectorAll('.auto-stats').forEach(el => {
+        el.addEventListener('input', function() { updateStats(this.id, this.getAttribute('data-target')); });
+    });
+
+    document.getElementById('split-input').addEventListener('paste', function(e) {
+        e.preventDefault();
+        const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+        document.execCommand('insertText', false, text);
+        updateStats('split-input', 'split-stats');
+    });
+
+    // --- الدالة الشاملة والتأثير البصري ---
+    function processText(inputId, outputContainerId, outputId, prefix, suffix = '') {
+        const input = document.getElementById(inputId).value;
+        const isAr = document.body.classList.contains('ar');
+        if (!input.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+        
+        const lines = input.split('\n');
+        const processedText = lines.map(line => {
+            if (line.trim() === '') return ''; 
+            return prefix + line + suffix;
+        }).join('\n');
+        
+        const outputEl = document.getElementById(outputId);
+        outputEl.value = processedText;
+        
+        const container = document.getElementById(outputContainerId);
+        container.style.display = 'block';
+        
+        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        outputEl.style.backgroundColor = '#e8f5e9'; 
+        setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
+    }
+
+    // --- الميزة الجديدة: دالة إضافة الرمز المخصص (مع الإغلاق الذكي) ---
+    function applyCustomSymbol() {
+        const inputId = 'custom-input';
+        const outputContainerId = 'custom-output-container';
+        const outputId = 'custom-output';
+        
+        const input = document.getElementById(inputId).value;
+        const isAr = document.body.classList.contains('ar');
+        
+        if (!input.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+        
+        const symbol = document.getElementById('customSymbol').value.trim();
+        if (!symbol) return alert(isAr ? 'الرجاء كتابة الرمز المطلوب إضافته!' : 'Please enter the custom symbol!');
+        
+        const position = document.getElementById('symbolPosition').value;
+        const lines = input.split('\n');
+        
+        // الذكاء البرمجي لاكتشاف أكواد المنتديات (مثل [B] لتحويلها إلى [/B])
+        let closingSymbol = symbol;
+        const bbcodeMatch = symbol.match(/^\[(.*?)\]$/); 
+        if (bbcodeMatch) {
+            closingSymbol = `[/${bbcodeMatch[1]}]`; 
         }
 
-        // 3. دالة النسخ السريع
-        function copyResult() {
-            const output = document.getElementById('outputText');
-            if (!output.value) return alert("لا يوجد شيء لنسخه!");
+        const processedText = lines.map(line => {
+            let newLine = line.trim();
+            if (newLine === '') return ''; 
             
-            output.select();
-            document.execCommand('copy');
-            alert("تم نسخ النص بنجاح! 📋");
+            if (position === 'before' || position === 'both') {
+                newLine = symbol + newLine;
+            }
+            if (position === 'after' || position === 'both') {
+                newLine = newLine + closingSymbol;
+            }
+            return newLine;
+        }).join('\n');
+        
+        const outputEl = document.getElementById(outputId);
+        outputEl.value = processedText;
+        
+        const container = document.getElementById(outputContainerId);
+        container.style.display = 'block';
+        
+        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        outputEl.style.backgroundColor = '#e8f5e9';
+        setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
+    }
+
+    // --- الانتقال للقص ---
+    function moveToSplit(sourceOutputId) {
+        const textToMove = document.getElementById(sourceOutputId).value;
+        const splitEditor = document.getElementById('split-input');
+        
+        splitEditor.innerText = textToMove; 
+        updateStats('split-input', 'split-stats');
+        document.getElementById('split-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // --- فاصل القص ---
+    function insertSplitLine() {
+        const editor = document.getElementById('split-input');
+        editor.focus();
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        let range = selection.getRangeAt(0);
+        
+        if (!editor.contains(range.commonAncestorContainer)) {
+            range.selectNodeContents(editor);
+            range.collapse(false); 
         }
-    </script>
+        if (range.startContainer.nodeType === Node.TEXT_NODE) {
+            range.setStartAfter(range.startContainer);
+            range.collapse(true);
+        }
+
+        const splitDiv = document.createElement('div');
+        splitDiv.className = 'split-line';
+        splitDiv.contentEditable = "false"; 
+
+        const labelContainer = document.createElement('div');
+        labelContainer.className = 'split-label-container';
+        
+        const isAr = document.body.classList.contains('ar');
+        const labelText = document.createElement('span');
+        labelText.innerText = isAr ? '✂️ فاصل قص' : '✂️ Split Line';
+
+        const deleteBtn = document.createElement('span');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerText = '✕';
+        deleteBtn.title = isAr ? 'حذف الفاصل' : 'Delete marker';
+        
+        const br1 = document.createElement('br');
+        const br2 = document.createElement('br');
+
+        deleteBtn.onclick = function() { 
+            if(br1.parentNode) br1.parentNode.removeChild(br1);
+            if(br2.parentNode) br2.parentNode.removeChild(br2);
+            splitDiv.remove(); 
+        };
+
+        labelContainer.appendChild(labelText);
+        labelContainer.appendChild(deleteBtn);
+        splitDiv.appendChild(labelContainer);
+
+        range.deleteContents();
+        range.insertNode(br2);
+        range.insertNode(splitDiv);
+        range.insertNode(br1);
+
+        range.setStartAfter(br2);
+        range.setEndAfter(br2);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        updateStats('split-input', 'split-stats');
+    }
+
+    // --- تقسيم النص وإصلاح مشكلة الأسطر ---
+    function splitText() {
+        const editor = document.getElementById('split-input');
+        const resultsContainer = document.getElementById('split-results');
+        const isAr = document.body.classList.contains('ar');
+        resultsContainer.innerHTML = ''; 
+
+        if (!editor.innerText.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+
+        const clone = editor.cloneNode(true);
+        document.body.appendChild(clone);
+        clone.style.position = 'absolute';
+        clone.style.left = '-9999px';
+        clone.style.whiteSpace = 'pre-wrap';
+
+        const splitLines = clone.querySelectorAll('.split-line');
+        splitLines.forEach(line => {
+            const marker = document.createTextNode('\n[---SPLIT---]\n');
+            line.parentNode.replaceChild(marker, line);
+        });
+
+        const rawText = clone.innerText;
+        document.body.removeChild(clone); 
+
+        const parts = rawText.split('[---SPLIT---]');
+
+        parts.forEach((part, index) => {
+            const cleanPart = part.trim();
+            if (cleanPart) {
+                const box = document.createElement('div');
+                box.className = 'output-box';
+                
+                const textArea = document.createElement('textarea');
+                textArea.id = `split-part-${index}`;
+                textArea.value = cleanPart;
+                textArea.readOnly = true;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerText = isAr ? `نسخ الفقرة ${index + 1}` : `Copy Part ${index + 1}`;
+                copyBtn.onclick = function() { copyText(textArea.id, this); };
+
+                box.appendChild(textArea);
+                box.appendChild(copyBtn);
+                resultsContainer.appendChild(box);
+            }
+        });
+        
+        resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // --- النسخ ---
+    function copyText(elementId, btnElement) {
+        const textArea = document.getElementById(elementId);
+        const textToCopy = textArea.value;
+        const isAr = document.body.classList.contains('ar');
+
+        const onSuccess = () => {
+            const originalText = btnElement.innerText;
+            btnElement.innerText = isAr ? '✓ تم النسخ!' : '✓ Copied!';
+            btnElement.style.backgroundColor = '#1e7e34';
+            setTimeout(() => {
+                btnElement.innerText = originalText;
+                btnElement.style.backgroundColor = '#28a745';
+            }, 2000);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(onSuccess).catch(() => {
+                fallbackCopyText(textArea, onSuccess);
+            });
+        } else {
+            fallbackCopyText(textArea, onSuccess);
+        }
+    }
+
+    function fallbackCopyText(textArea, successCallback) {
+        textArea.focus();
+        textArea.select();
+        textArea.setSelectionRange(0, 99999); 
+        try {
+            document.execCommand('copy');
+            successCallback();
+        } catch (err) {
+            const isAr = document.body.classList.contains('ar');
+            alert(isAr ? 'يرجى النسخ يدوياً' : 'Please copy manually');
+        }
+        window.getSelection().removeAllRanges();
+    }
+</script>
+
 </body>
 </html>
