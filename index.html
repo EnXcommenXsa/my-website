@@ -33,34 +33,51 @@
         body.karbo-mode h1, body.karbo-mode h2, body.karbo-mode h3 { color: #a1b2ff; }
         body.karbo-mode .description { color: #b0bec5; }
         body.karbo-mode .stats-counter { color: #90a4ae; }
-        body.karbo-mode textarea, body.karbo-mode .rich-editor, body.karbo-mode input, body.karbo-mode select { 
+        body.karbo-mode textarea, body.karbo-mode input, body.karbo-mode select { 
             background-color: #0b112c; color: #ffffff; 
         }
         body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
         body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
-        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; }
+        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
         body.karbo-mode .signature { color: #b0bec5; }
         
-        /* ترتيب العناصر في الوضعين */
+        /* --- ترتيب العناصر في الصفحة (CSS Order) --- */
         .container { display: flex; flex-direction: column; }
         .header { order: 1; }
         
         #karbo-welcome { order: 2; display: none; }
         body.karbo-mode #karbo-welcome { display: block; }
         
+        /* الترتيب في الوضع العادي */
         #center-section { order: 3; }
         #split-section { order: 4; }
-        #secondary-tools { order: 5; }
-        #simulator-section { order: 6; }
+        #simulator-section { order: 5; } /* إصلاح الاتجاه */
+        #secondary-tools { order: 6; } /* الأدوات الإضافية (دائماً قبل الأخير) */
         .seo-section { order: 7; }
         
-        /* ترتيب أقسام وضع كاربو */
+        /* الترتيب في وضع كاربو */
         body.karbo-mode #simulator-section { order: 3; }
         body.karbo-mode #center-section { order: 4; }
         body.karbo-mode #split-section { order: 5; }
         body.karbo-mode #secondary-tools { order: 6; }
         
+        /* --- ترتيب الشريط الجانبي (Sidebar Order) --- */
+        .sidebar { display: flex; flex-direction: column; }
+        #nav-karbo { order: 1; }
+        #nav-center { order: 2; }
+        #nav-split { order: 3; }
+        #nav-fix { order: 4; }
+        #nav-extra { order: 5; }
+        #nav-lang { order: 6; }
+        
+        body.karbo-mode #nav-karbo { order: 1; }
+        body.karbo-mode #nav-fix { order: 2; }
+        body.karbo-mode #nav-center { order: 3; }
+        body.karbo-mode #nav-split { order: 4; }
+        body.karbo-mode #nav-extra { order: 5; }
+        body.karbo-mode #nav-lang { order: 6; }
+
         .karbo-btn { 
             background-color: #141c42 !important; 
             color: #a1b2ff !important; 
@@ -111,8 +128,6 @@
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
             gap: 10px;
             z-index: 1000;
         }
@@ -173,48 +188,49 @@
         h3 { margin-top: 0; color: #555; font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
         .description { font-size: 0.95em; margin-bottom: 15px; }
         
-        textarea, .rich-editor {
+        textarea {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
             transition: background-color 0.4s ease;
+            min-height: 120px; resize: vertical;
         }
-        textarea { min-height: 120px; resize: vertical; }
-        .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
-        .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
-        .rich-editor:focus { border-color: var(--primary-color); }
-        .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
-        body.en .stats-counter { text-align: right; }
         
-        /* --- تخصيص زر القص العائم داخل المربع --- */
+        /* --- تخصيص مربع القص المتقدم (المربع والزر الجديد) --- */
         .split-editor-wrapper {
             position: relative;
-            background: #fff;
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
+            padding-bottom: 45px; /* مساحة للزر السفلي */
+            margin-bottom: 5px;
         }
-        .floating-split-btn {
-            position: sticky;
-            top: 15px;
-            float: right; /* للعربية */
-            margin-top: 10px;
-            margin-right: 15px;
-            margin-bottom: -40px; /* لكي لا يدفع النص للأسفل */
-            background-color: rgba(231, 76, 60, 0.9);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-            z-index: 10;
+        .rich-editor {
+            width: 100%; padding: 12px; 
+            font-family: inherit; font-size: 1em; box-sizing: border-box;
+            min-height: 150px; background: transparent; overflow-y: auto; white-space: pre-wrap; outline: none;
+            border: none; /* إزالة الإطار لأن الغلاف يحمله */
         }
-        .floating-split-btn:hover { background-color: #c0392b; }
-        body.en .floating-split-btn {
-            float: left; /* للإنجليزية */
-            margin-right: 0;
-            margin-left: 15px;
+        .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
+        
+        /* الزر الجديد الذي يشبه الفاصلة */
+        .add-cut-styled-btn {
+            position: absolute;
+            bottom: 15px; left: 0; right: 0;
+            width: 85%; margin: 0 auto; height: 2px;
+            background: #e74c3c;
+            display: flex; align-items: center; justify-content: center;
+            border: none; cursor: pointer; padding: 0; z-index: 10;
         }
+        .add-cut-styled-btn span {
+            background: #e74c3c; color: white; padding: 6px 20px;
+            border-radius: 20px; font-size: 14px; font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: background 0.3s;
+        }
+        .add-cut-styled-btn:hover { background: #c0392b; }
+        .add-cut-styled-btn:hover span { background: #c0392b; }
+
+        .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
+        body.en .stats-counter { text-align: right; }
 
         /* --- تخصيص أداة الرموز المتقدمة --- */
         .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
@@ -226,7 +242,7 @@
             border-color: var(--primary-color); outline: none;
         }
 
-        /* --- فاصل القص --- */
+        /* --- فاصل القص الداخلي --- */
         .split-line {
             display: flex; align-items: center; justify-content: center; height: 2px;
             background: #e74c3c; margin: 25px 0; position: relative; user-select: none; clear: both;
@@ -286,29 +302,28 @@
 </head>
 <body class="ar">
 
-<!-- إعادة ترتيب قائمة الأزرار بناء على طلبك ليكون ترتيبها ثابتاً -->
 <nav class="sidebar">
-    <a onclick="toggleKarboMode(event)" class="karbo-btn">
+    <a onclick="toggleKarboMode(event)" class="karbo-btn" id="nav-karbo">
         <span class="only-ar">وضع كاربو</span>
         <span class="only-en">Karbo Mode</span>
     </a>
-    <a href="#simulator-section">
-        <span class="only-ar">إصلاح الاتجاه</span>
-        <span class="only-en">Fix Direction</span>
-    </a>
-    <a href="#center-section">
+    <a href="#center-section" id="nav-center">
         <span class="only-ar">توسيط [C]</span>
         <span class="only-en">Center [C]</span>
     </a>
-    <a href="#split-section">
+    <a href="#split-section" id="nav-split">
         <span class="only-ar">تقسيم وقص</span>
         <span class="only-en">Split & Cut</span>
     </a>
-    <a href="#secondary-tools">
+    <a href="#simulator-section" id="nav-fix">
+        <span class="only-ar">إصلاح الاتجاه</span>
+        <span class="only-en">Fix Direction</span>
+    </a>
+    <a href="#secondary-tools" id="nav-extra">
         <span class="only-ar">أدوات إضافية</span>
         <span class="only-en">Extra Tools</span>
     </a>
-    <a onclick="toggleLanguage(event)" class="lang-btn">
+    <a onclick="toggleLanguage(event)" class="lang-btn" id="nav-lang">
         <span class="only-ar">🌐 English</span>
         <span class="only-en">🌐 عربي</span>
     </a>
@@ -325,7 +340,6 @@
         <p class="only-en">Prepare and format your texts quickly and easily to look perfect.</p>
     </div>
     
-    <!-- قسم الترحيب بوضع كاربو -->
     <div id="karbo-welcome" class="karbo-welcome-box">
         <h2 class="only-ar" style="border: none; margin-bottom: 5px;">مرحباً بمستخدمي تطبيق KarboAi</h2>
         <h2 class="only-en" style="border: none; margin-bottom: 5px;">Welcome KarboAi Users</h2>
@@ -337,7 +351,7 @@
         <h2 class="only-ar">أداة التوسيط [C]</h2>
         <h2 class="only-en">Centering Tool [C]</h2>
         
-        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف.</p>
+        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف (يتم تجاهل الأسطر الفارغة).</p>
         <p class="description only-en">Adds [C] tag at the beginning of each line to center the text (empty lines are ignored).</p>
         
         <textarea id="center-input" class="auto-stats" data-target="center-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
@@ -362,19 +376,20 @@
         <h2 class="only-ar">أداة تقسيم المقالة</h2>
         <h2 class="only-en">Article Splitter</h2>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر العائم داخل المربع لإدراج فاصل.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the floating button inside the box to insert a marker.</p>
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the button to insert a marker.</p>
         
         <div class="split-editor-wrapper">
-            <!-- الزر العائم الذكي يتحرك مع الشاشة داخل المربع -->
-            <button class="floating-split-btn only-ar" onclick="insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">إضافة قص ⤶</button>
-            <button class="floating-split-btn only-en" onclick="insertSplitLine()" title="Insert marker at cursor">⤷ Add Cut</button>
-            
             <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+            
+            <!-- الزر الجديد الشبيه بالفاصلة (ممتد وموجود بالأسفل) -->
+            <button class="add-cut-styled-btn" onclick="insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">
+                <span class="only-ar">إضافة قص</span>
+                <span class="only-en">Add Cut</span>
+            </button>
         </div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-        <!-- زر التقسيم الأساسي ثابت بالأسفل -->
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
         <button class="only-en" onclick="splitText()">Split Text Now</button>
 
@@ -435,14 +450,14 @@
             <div class="stats-counter" id="custom-stats">الأحرف: 0 | الكلمات: 0</div>
             
             <div class="custom-controls">
-                <input type="text" id="customSymbol" placeholder="مثال: ضع (&) والنص سيصبح (&مرحبا&)" data-ph-ar="مثال: ضع (&) والنص سيصبح (&مرحبا&)" data-ph-en="Symbol (e.g. - or [B])">
+                <input type="text" id="customSymbol" placeholder="الرمز (مثال: - أو [B])" data-ph-ar="الرمز (مثال: - أو [B])" data-ph-en="Symbol (e.g. - or [B])">
                 <select id="symbolPosition">
-                    <option value="before" class="only-ar">قبل النص فقط</option>
-                    <option value="before" class="only-en">Before text only</option>
-                    <option value="after" class="only-ar">بعد النص فقط</option>
-                    <option value="after" class="only-en">After text only</option>
-                    <option value="both" class="only-ar">قبل وبعد النص (إغلاق ذكي)</option>
-                    <option value="both" class="only-en">Before & After (Smart close)</option>
+                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
+                    <option value="before" class="only-en">Before text only ⬅️</option>
+                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
+                    <option value="after" class="only-en">After text only ➡️</option>
+                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
                 </select>
             </div>
             
@@ -461,12 +476,12 @@
         </div>
     </div>
 
-    <!-- قسم إصلاح الاتجاه (مع العودة للبرمجة السابقة والأقوى - RLE) -->
+    <!-- قسم إصلاح الاتجاه -->
     <div class="tool-section" id="simulator-section">
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
         <h2 class="only-en">Mixed Text Direction Fix</h2>
         
-        <p class="description only-ar">يحل مشكلة تلخبط الكلمات عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية .(مثل تطبيق كاربو)</p>
+        <p class="description only-ar">يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية (مثل Amino).</p>
         <p class="description only-en">Fixes word scrambling and inverted brackets when mixing Arabic with English or symbols in foreign apps like Amino.</p>
         
         <p class="description only-ar" style="font-size: 0.85em; color: #666; margin-top: -5px;">ضع النص هنا واضغط إصلاح.</p>
@@ -480,20 +495,16 @@
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
             <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>ما الذي حدث؟</strong>  تم تغليف النص بأكواد  تجبر التطبيق على قراءته ككتلة واحدة من اليمين لليسار<br>
-                <span style="color: #e74c3c;">ملاحظة هامة:</span> استخدم هذه الأداة كخطوة أخيرة وانسخ النتيجة للتطبيق مباشرة (تطبيقات مثل تليجرام تقوم بمسح هذه الأكواد المخفية).
+                <strong>ما الذي حدث؟</strong> تمت إضافة "حرف توجيه عربي غير مرئي" مباشرة بعد كود التوسيط (إن وُجد) وبعد كل كلمة إنجليزية أو رمز. هذا سيجبر أي تطبيق على الحفاظ على الترتيب العربي، وسيبقى الإصلاح فعالاً حتى لو قمت بنسخ النص وإرساله عبر تليجرام أو واتساب قبل التطبيق!
             </p>
             <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>What happened?</strong> The text is wrapped in hidden direction codes forcing the app to read it right-to-left. (Centering codes are safely isolated).<br>
-                <span style="color: #e74c3c;">Important:</span> Use this tool as the final step and paste directly into the app (apps like Telegram strip these hidden codes).
+                <strong>What happened?</strong> An invisible Arabic direction character was added right after the centering code (if any) and after every English word. This forces apps to maintain the RTL layout, and the fix will survive even if pasted through Telegram or WhatsApp!
             </p>
             
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
-                
-                <!-- أزرار النقل التكيفية -->
                 <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">
                     <span class="default-txt">الانتقال لقص النص 👇</span>
                     <span class="karbo-txt">الانتقال لتوسيط النص 👇</span>
@@ -709,7 +720,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (باستخدام التغليف RLE و PDF للعمل داخل التطبيقات) ---
+    // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -726,10 +737,8 @@
         const fixedLines = lines.map(line => {
             if (line.trim() === '') return '';
             
-            // 1. تنظيف السطر من أي أكواد توجيه مخفية سابقة لعدم تكرارها
             let cleanLine = line.replace(/[\u202B\u202C\u200F\u200E]/g, '');
             
-            // 2. فصل كود المنتدى مثل [C] أو [B] في بداية السطر
             let prefix = '';
             let content = cleanLine;
             const tagMatch = cleanLine.match(/^(\[[a-zA-Z]+\]\s*)+/);
@@ -739,8 +748,10 @@
                 content = cleanLine.substring(prefix.length);
             }
             
-            // 3. تغليف المحتوى بالـ Right-to-Left Embedding (RLE) وإغلاقه بالـ PDF
-            return prefix + '\u202B' + content + '\u202C';
+            const ltrRegex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
+            let fixedContent = '\u200F' + content.replace(ltrRegex, '$1\u200F');
+            
+            return prefix + fixedContent;
         });
         
         outputEl.value = fixedLines.join('\n');
