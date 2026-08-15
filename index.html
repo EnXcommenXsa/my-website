@@ -235,8 +235,8 @@
         <span class="only-en">Extra Tools</span>
     </a>
     <a href="#simulator-section">
-        <span class="only-ar">محاكي التطبيقات</span>
-        <span class="only-en">App Simulator</span>
+        <span class="only-ar">إصلاح الاتجاه</span>
+        <span class="only-en">Fix Direction</span>
     </a>
     <a onclick="toggleLanguage(event)" class="lang-btn">
         <span class="only-ar">🌐 English</span>
@@ -383,30 +383,25 @@
         </div>
     </div>
 
-    <!-- قسم المحاكي وزر الإصلاح السحري (جديد) -->
+    <!-- قسم إصلاح الاتجاه (المحدث) -->
     <div class="tool-section" id="simulator-section">
-        <h2 class="only-ar">محاكي التطبيقات الأجنبية وإصلاح الاتجاه</h2>
-        <h2 class="only-en">Foreign Apps Simulator & Direction Fix</h2>
+        <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
+        <h2 class="only-en">Mixed Text Direction Fixer</h2>
         
-        <p class="description only-ar">تعاني بعض التطبيقات والمنصات الأجنبية من مشكلة في عرض النصوص العربية بشكل صحيح عند دمجها مع كلمات إنجليزية أو رموز، حيث يتغير ترتيب الكلمات وتنعكس الأقواس لأن التطبيق مصمم للقراءة من اليسار إلى اليمين. هذا الصندوق يحاكي تلك المشكلة بالضبط لتتمكن من فحص النص قبل نشره.</p>
-        <p class="description only-en">Some foreign applications struggle to display Arabic text correctly when mixed with English words or symbols, causing word order and brackets to flip because the app is designed for Left-to-Right reading. This box simulates that exact environment so you can test your text before publishing.</p>
+        <p class="description only-ar">يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند دمج اللغة العربية مع الإنجليزية أو الرموز في التطبيقات التي لا تدعم العربية بشكل كامل. (يتم الإصلاح تلقائياً أثناء الكتابة)</p>
+        <p class="description only-en">Fixes word jumbling and inverted brackets when mixing Arabic with English or symbols in apps lacking proper RTL support. (Auto-fixes as you type)</p>
         
-        <p class="description only-ar" style="color: #e74c3c; font-size: 0.85em;">مثال للتجربة: اكتب كلمة (مرحبا) ثم ضع رمز القوس أو أي كلمة إنجليزية، وستلاحظ كيف يختل الترتيب داخل الصندوق.</p>
-        <p class="description only-en" style="color: #e74c3c; font-size: 0.85em;">Example: Type an Arabic word then add a bracket or English word, and watch how the order breaks inside the box.</p>
-
-        <!-- الصندوق مصمم برمجياً ليحاكي التطبيقات الأجنبية (dir="ltr") مع بقاء المحاذاة لليمين -->
-        <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: right;" data-target="simulator-stats" data-ph-ar="ألصق أو اكتب النص هنا لتجربته..." data-ph-en="Paste or type text here to test..." placeholder="ألصق أو اكتب النص هنا لتجربته..."></textarea>
+        <textarea id="simulator-input" class="auto-stats" dir="auto" data-target="simulator-stats" data-ph-ar="اكتب أو الصق النص هنا..." data-ph-en="Type or paste text here..." placeholder="اكتب أو الصق النص هنا..." oninput="fixDirection()"></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
-        <p class="description only-ar" style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">يقوم زر الإصلاح بإدراج علامة توجيه مخفية خلف الكلمات والرموز الأجنبية، مما يجبر التطبيق على قراءتها بالاتجاه الصحيح من اليمين إلى اليسار دون أي تشوه في شكل النص النهائي.</p>
-        <p class="description only-en" style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">The fix button inserts a hidden direction mark behind foreign words and symbols, forcing the app to read them correctly from Right-to-Left without distorting the final text.</p>
-        
-        <div class="button-group">
-            <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح توافقية النص</button>
-            <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text Compatibility</button>
-            
-            <button class="copy-btn only-ar" onclick="copyText('simulator-input', this)">نسخ النتيجة</button>
-            <button class="copy-btn only-en" onclick="copyText('simulator-input', this)">Copy Result</button>
+        <div class="output-box" id="simulator-output-container" style="display: none;">
+            <h3 class="only-ar" style="margin-top:0; font-size: 0.9em;">النص المُصلح (جاهز للنسخ):</h3>
+            <h3 class="only-en" style="margin-top:0; font-size: 0.9em;">Fixed Text (Ready to copy):</h3>
+            <textarea id="simulator-output" readonly dir="rtl"></textarea>
+            <div class="button-group">
+                <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
+                <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
+            </div>
         </div>
     </div>
 
@@ -607,24 +602,24 @@
         setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
     }
 
-    // --- دالة الإصلاح السحري (اتجاه النص للمحاكي) ---
+    // --- دالة إصلاح الاتجاه (المحدثة لتعمل في الوقت الحقيقي) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
+        const outputContainer = document.getElementById('simulator-output-container');
+        const outputEl = document.getElementById('simulator-output');
         let text = inputEl.value;
-        const isAr = document.body.classList.contains('ar');
         
-        if (!text.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+        if (!text.trim()) {
+            outputContainer.style.display = 'none';
+            return;
+        }
         
         // تقوم بإضافة علامة التوجيه من اليمين لليسار (RLM) بعد كل كلمة إنجليزية أو رمز لضبط المحاذاة
         const regex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
         const fixedText = text.replace(regex, '$1\u200F');
         
-        inputEl.value = fixedText;
-        
-        inputEl.style.backgroundColor = '#e8f5e9';
-        setTimeout(() => { inputEl.style.backgroundColor = '#fff'; }, 700);
-        
-        updateStats('simulator-input', 'simulator-stats');
+        outputEl.value = fixedText;
+        outputContainer.style.display = 'block';
     }
 
     // --- الانتقال للقص ---
