@@ -337,7 +337,7 @@
         <h2 class="only-ar">أداة التوسيط [C]</h2>
         <h2 class="only-en">Centering Tool [C]</h2>
         
-        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف (يتم تجاهل الأسطر الفارغة).</p>
+        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف.</p>
         <p class="description only-en">Adds [C] tag at the beginning of each line to center the text (empty lines are ignored).</p>
         
         <textarea id="center-input" class="auto-stats" data-target="center-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
@@ -435,14 +435,14 @@
             <div class="stats-counter" id="custom-stats">الأحرف: 0 | الكلمات: 0</div>
             
             <div class="custom-controls">
-                <input type="text" id="customSymbol" placeholder="الرمز (مثال: - أو [B])" data-ph-ar="الرمز (مثال: - أو [B])" data-ph-en="Symbol (e.g. - or [B])">
+                <input type="text" id="customSymbol" placeholder="مثال: ضع (&) والنص سيصبح (&مرحبا&)" data-ph-ar="مثال: ضع (&) والنص سيصبح (&مرحبا&)" data-ph-en="Symbol (e.g. - or [B])">
                 <select id="symbolPosition">
-                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
-                    <option value="before" class="only-en">Before text only ⬅️</option>
-                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
-                    <option value="after" class="only-en">After text only ➡️</option>
-                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
-                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
+                    <option value="before" class="only-ar">قبل النص فقط</option>
+                    <option value="before" class="only-en">Before text only</option>
+                    <option value="after" class="only-ar">بعد النص فقط</option>
+                    <option value="after" class="only-en">After text only</option>
+                    <option value="both" class="only-ar">قبل وبعد النص (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After (Smart close)</option>
                 </select>
             </div>
             
@@ -466,7 +466,7 @@
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
         <h2 class="only-en">Mixed Text Direction Fix</h2>
         
-        <p class="description only-ar">يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية (مثل Amino).</p>
+        <p class="description only-ar">يحل مشكلة تلخبط الكلمات عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية .(مثل تطبيق كاربو)</p>
         <p class="description only-en">Fixes word scrambling and inverted brackets when mixing Arabic with English or symbols in foreign apps like Amino.</p>
         
         <p class="description only-ar" style="font-size: 0.85em; color: #666; margin-top: -5px;">ضع النص هنا واضغط إصلاح.</p>
@@ -480,7 +480,7 @@
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
             <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>ما الذي حدث؟</strong> تم تغليف النص بأكواد توجيه مخفية تجبر التطبيق على قراءته ككتلة واحدة من اليمين لليسار. (تم عزل كود التوسيط في الخارج لكي يعمل بشكل صحيح).<br>
+                <strong>ما الذي حدث؟</strong>  تم تغليف النص بأكواد  تجبر التطبيق على قراءته ككتلة واحدة من اليمين لليسار<br>
                 <span style="color: #e74c3c;">ملاحظة هامة:</span> استخدم هذه الأداة كخطوة أخيرة وانسخ النتيجة للتطبيق مباشرة (تطبيقات مثل تليجرام تقوم بمسح هذه الأكواد المخفية).
             </p>
             <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
