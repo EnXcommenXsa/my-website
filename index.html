@@ -100,7 +100,6 @@
         .secondary-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .secondary-tool { background: var(--box-bg); padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); scroll-margin-top: 20px; }
         
-        /* جعل الأداة المتقدمة تأخذ العرض بالكامل */
         #custom-symbol-section { grid-column: 1 / -1; }
 
         @media (max-width: 600px) { .secondary-tools-grid { grid-template-columns: 1fr; } }
@@ -121,6 +120,37 @@
         .stats-counter { font-size: 0.85em; color: #888; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
         
+        /* --- تخصيص زر القص العائم داخل المربع --- */
+        .split-editor-wrapper {
+            position: relative;
+            background: #fff;
+            border-radius: 6px;
+        }
+        .floating-split-btn {
+            position: sticky;
+            top: 15px;
+            float: right; /* للعربية */
+            margin-top: 10px;
+            margin-right: 15px;
+            margin-bottom: -40px; /* لكي لا يدفع النص للأسفل */
+            background-color: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        .floating-split-btn:hover { background-color: #c0392b; }
+        body.en .floating-split-btn {
+            float: left; /* للإنجليزية */
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
         /* --- تخصيص أداة الرموز المتقدمة --- */
         .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
         .custom-controls input, .custom-controls select { 
@@ -204,6 +234,10 @@
         <span class="only-ar">أدوات إضافية</span>
         <span class="only-en">Extra Tools</span>
     </a>
+    <a href="#simulator-section">
+        <span class="only-ar">محاكي التطبيقات</span>
+        <span class="only-en">App Simulator</span>
+    </a>
     <a onclick="toggleLanguage(event)" class="lang-btn">
         <span class="only-ar">🌐 English</span>
         <span class="only-en">🌐 عربي</span>
@@ -250,15 +284,19 @@
         <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
         <h2 class="only-en">Article Splitter ✂️</h2>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر العائم داخل المربع لإدراج فاصل.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the floating button inside the box to insert a marker.</p>
         
-        <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+        <div class="split-editor-wrapper">
+            <!-- الزر العائم الذكي يتحرك مع الشاشة داخل المربع -->
+            <button class="floating-split-btn only-ar" onclick="insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">إضافة قص ⤶</button>
+            <button class="floating-split-btn only-en" onclick="insertSplitLine()" title="Insert marker at cursor">⤷ Add Cut</button>
+            
+            <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+        </div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-        <button class="split-action-btn only-ar" onclick="insertSplitLine()">إدراج فاصل قص ✂️</button>
-        <button class="split-action-btn only-en" onclick="insertSplitLine()">Insert Split Line ✂️</button>
-        
+        <!-- زر التقسيم الأساسي ثابت بالأسفل -->
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
         <button class="only-en" onclick="splitText()">Split Text Now</button>
 
@@ -308,7 +346,6 @@
             </div>
         </div>
         
-        <!-- الميزة الجديدة: أداة التخصيص المتقدم للرموز -->
         <div class="secondary-tool" id="custom-symbol-section">
             <h3 class="only-ar">تخصيص متقدم (رموز مخصصة)</h3>
             <h3 class="only-en">Advanced Custom Symbols</h3>
@@ -346,15 +383,42 @@
         </div>
     </div>
 
+    <!-- قسم المحاكي وزر الإصلاح السحري (جديد) -->
+    <div class="tool-section" id="simulator-section">
+        <h2 class="only-ar">محاكي التطبيقات الأجنبية وإصلاح الاتجاه</h2>
+        <h2 class="only-en">Foreign Apps Simulator & Direction Fix</h2>
+        
+        <p class="description only-ar">تعاني بعض التطبيقات والمنصات الأجنبية من مشكلة في عرض النصوص العربية بشكل صحيح عند دمجها مع كلمات إنجليزية أو رموز، حيث يتغير ترتيب الكلمات وتنعكس الأقواس لأن التطبيق مصمم للقراءة من اليسار إلى اليمين. هذا الصندوق يحاكي تلك المشكلة بالضبط لتتمكن من فحص النص قبل نشره.</p>
+        <p class="description only-en">Some foreign applications struggle to display Arabic text correctly when mixed with English words or symbols, causing word order and brackets to flip because the app is designed for Left-to-Right reading. This box simulates that exact environment so you can test your text before publishing.</p>
+        
+        <p class="description only-ar" style="color: #e74c3c; font-size: 0.85em;">مثال للتجربة: اكتب كلمة (مرحبا) ثم ضع رمز القوس أو أي كلمة إنجليزية، وستلاحظ كيف يختل الترتيب داخل الصندوق.</p>
+        <p class="description only-en" style="color: #e74c3c; font-size: 0.85em;">Example: Type an Arabic word then add a bracket or English word, and watch how the order breaks inside the box.</p>
+
+        <!-- الصندوق مصمم برمجياً ليحاكي التطبيقات الأجنبية (dir="ltr") مع بقاء المحاذاة لليمين -->
+        <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: right;" data-target="simulator-stats" data-ph-ar="ألصق أو اكتب النص هنا لتجربته..." data-ph-en="Paste or type text here to test..." placeholder="ألصق أو اكتب النص هنا لتجربته..."></textarea>
+        <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
+        
+        <p class="description only-ar" style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">يقوم زر الإصلاح بإدراج علامة توجيه مخفية خلف الكلمات والرموز الأجنبية، مما يجبر التطبيق على قراءتها بالاتجاه الصحيح من اليمين إلى اليسار دون أي تشوه في شكل النص النهائي.</p>
+        <p class="description only-en" style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">The fix button inserts a hidden direction mark behind foreign words and symbols, forcing the app to read them correctly from Right-to-Left without distorting the final text.</p>
+        
+        <div class="button-group">
+            <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح توافقية النص</button>
+            <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text Compatibility</button>
+            
+            <button class="copy-btn only-ar" onclick="copyText('simulator-input', this)">نسخ النتيجة</button>
+            <button class="copy-btn only-en" onclick="copyText('simulator-input', this)">Copy Result</button>
+        </div>
+    </div>
+
     <div class="seo-section">
-        <h3 class="only-ar">🚀 ما هي أداة CutMouse وكيف تضاعف سرعة إنتاجيتك؟</h3>
-        <h3 class="only-en">🚀 What is CutMouse & How It Boosts Productivity?</h3>
+        <h3 class="only-ar">ما هي أداة CutMouse وكيف تضاعف سرعة إنتاجيتك؟</h3>
+        <h3 class="only-en">What is CutMouse & How It Boosts Productivity?</h3>
         
         <p class="only-ar">إذا كنت صانع محتوى، كاتب ثريدات، أو مدوناً، فأنت تعلم كم هو مزعج تقسيم النصوص الطويلة يدوياً وتنسيقها لتناسب المنصات المختلفة. أداة <strong>CutMouse</strong> هي مساعدك الرقمي الأسرع لتجزئة النصوص (Text Chunking) وأتمتة التنسيق بضغطة زر واحدة، دون الحاجة للتنقل اللانهائي بين النوتة ومنصات النشر.</p>
         <p class="only-en">If you are a content creator, thread writer, or blogger, you know how annoying it is to manually split and format long texts. <strong>CutMouse</strong> is your fastest digital assistant for text chunking and automating formatting with one click.</p>
         
-        <h3 class="only-ar">🎯 من المستفيد من الأداة؟ (الاستخدامات الشائعة)</h3>
-        <h3 class="only-en">🎯 Who Benefits from This Tool? (Common Uses)</h3>
+        <h3 class="only-ar">من المستفيد من الأداة؟ (الاستخدامات الشائعة)</h3>
+        <h3 class="only-en">Who Benefits from This Tool? (Common Uses)</h3>
         
         <ul class="only-ar">
             <li><strong>صناع فيديوهات التيك توك والريلز:</strong> هل تبحث عن برنامج يقص الكلام لأسطر؟ أداتنا تفصل جملك الطويلة لأسطر منفصلة جاهزة للصق في برامج المونتاج مثل CapCut لإنشاء نصوص الترجمة (Subtitles) في ثوانٍ.</li>
@@ -424,7 +488,6 @@
         document.documentElement.lang = isAr ? 'en' : 'ar';
         document.documentElement.dir = isAr ? 'ltr' : 'rtl';
         
-        // تحديث الترجمة للـ Textareas وكذلك خانات الإدخال العادية (Inputs)
         document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
             if(el.hasAttribute('data-ph-ar')) {
                 el.placeholder = el.getAttribute(isAr ? 'data-ph-en' : 'data-ph-ar');
@@ -514,7 +577,6 @@
         const position = document.getElementById('symbolPosition').value;
         const lines = input.split('\n');
         
-        // الذكاء البرمجي لاكتشاف أكواد المنتديات (مثل [B] لتحويلها إلى [/B])
         let closingSymbol = symbol;
         const bbcodeMatch = symbol.match(/^\[(.*?)\]$/); 
         if (bbcodeMatch) {
@@ -543,6 +605,26 @@
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         outputEl.style.backgroundColor = '#e8f5e9';
         setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
+    }
+
+    // --- دالة الإصلاح السحري (اتجاه النص للمحاكي) ---
+    function fixDirection() {
+        const inputEl = document.getElementById('simulator-input');
+        let text = inputEl.value;
+        const isAr = document.body.classList.contains('ar');
+        
+        if (!text.trim()) return alert(isAr ? 'الرجاء إدخال نص أولاً' : 'Please enter text first');
+        
+        // تقوم بإضافة علامة التوجيه من اليمين لليسار (RLM) بعد كل كلمة إنجليزية أو رمز لضبط المحاذاة
+        const regex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
+        const fixedText = text.replace(regex, '$1\u200F');
+        
+        inputEl.value = fixedText;
+        
+        inputEl.style.backgroundColor = '#e8f5e9';
+        setTimeout(() => { inputEl.style.backgroundColor = '#fff'; }, 700);
+        
+        updateStats('simulator-input', 'simulator-stats');
     }
 
     // --- الانتقال للقص ---
