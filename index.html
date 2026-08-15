@@ -38,7 +38,6 @@
         }
         body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
         body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
-        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
         body.karbo-mode .signature { color: #b0bec5; }
         
@@ -53,7 +52,7 @@
         #center-section { order: 3; }
         #split-section { order: 4; }
         #simulator-section { order: 5; } /* إصلاح الاتجاه */
-        #secondary-tools { order: 6; } /* الأدوات الإضافية (دائماً قبل الأخير) */
+        #secondary-tools { order: 6; } /* الأدوات الإضافية */
         .seo-section { order: 7; }
         
         /* الترتيب في وضع كاربو */
@@ -188,58 +187,15 @@
         h3 { margin-top: 0; color: #555; font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
         .description { font-size: 0.95em; margin-bottom: 15px; }
         
-        textarea {
+        textarea, .rich-editor {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
             transition: background-color 0.4s ease;
-            min-height: 120px; resize: vertical;
         }
-        
-        /* --- تخصيص مربع القص المتقدم (المربع والزر الجديد) --- */
-        .split-editor-wrapper {
-            position: relative;
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding-bottom: 40px;
-            margin-bottom: 5px;
-        }
-        .rich-editor {
-            width: 100%; padding: 12px; 
-            font-family: inherit; font-size: 1em; box-sizing: border-box;
-            min-height: 150px; background: transparent; overflow-y: auto; white-space: pre-wrap; outline: none;
-            border: none;
-        }
+        textarea { min-height: 120px; resize: vertical; }
+        .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
         .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
-        
-        /* الزر الجديد الذي يشبه الفاصلة (إضافة قص) */
-        .add-cut-container {
-            position: sticky;
-            bottom: 15px;
-            width: 90%;
-            margin: 0 auto;
-            height: 2px;
-            background-color: #e74c3c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-        .add-cut-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-            transition: background 0.3s;
-            margin: 0 !important;
-        }
-        .add-cut-btn:hover { background-color: #c0392b; }
-
+        .rich-editor:focus { border-color: var(--primary-color); }
         .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
 
@@ -253,7 +209,7 @@
             border-color: var(--primary-color); outline: none;
         }
 
-        /* --- فاصل القص الداخلي --- */
+        /* --- فاصل القص --- */
         .split-line {
             display: flex; align-items: center; justify-content: center; height: 2px;
             background: #e74c3c; margin: 25px 0; position: relative; user-select: none; clear: both;
@@ -377,32 +333,26 @@
                 <button class="copy-btn only-ar" onclick="copyText('center-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('center-output', this)">Copy Result</button>
                 
-                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص</button>
-                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split</button>
+                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص 👇</button>
+                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split 👇</button>
             </div>
         </div>
     </div>
 
+    <!-- قسم القص المرتجع بالكامل لشكله القديم حسب طلبك -->
     <div class="tool-section" id="split-section">
-        <h2 class="only-ar">أداة تقسيم المقالة</h2>
-        <h2 class="only-en">Article Splitter</h2>
+        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
+        <h2 class="only-en">Article Splitter ✂️</h2>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the button to insert a marker.</p>
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
         
-        <div class="split-editor-wrapper">
-            <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
-            
-            <div class="add-cut-container">
-                <!-- استخدام onmousedown يمنع ضياع التركيز من مربع النص -->
-                <button class="add-cut-btn" onmousedown="event.preventDefault(); insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">
-                    <span class="only-ar">إضافة قص</span>
-                    <span class="only-en">Add Cut</span>
-                </button>
-            </div>
-        </div>
+        <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
+        <button class="split-action-btn only-ar" onclick="insertSplitLine()">إدراج فاصل قص ✂️</button>
+        <button class="split-action-btn only-en" onclick="insertSplitLine()">Insert Split Line ✂️</button>
+        
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
         <button class="only-en" onclick="splitText()">Split Text Now</button>
 
@@ -425,8 +375,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('bold-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('bold-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split 👇</button>
                 </div>
             </div>
         </div>
@@ -446,8 +396,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('italic-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('italic-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split 👇</button>
                 </div>
             </div>
         </div>
@@ -465,12 +415,12 @@
             <div class="custom-controls">
                 <input type="text" id="customSymbol" placeholder="الرمز (مثال: - أو [B])" data-ph-ar="الرمز (مثال: - أو [B])" data-ph-en="Symbol (e.g. - or [B])">
                 <select id="symbolPosition">
-                    <option value="before" class="only-ar">قبل النص فقط</option>
-                    <option value="before" class="only-en">Before text only</option>
-                    <option value="after" class="only-ar">بعد النص فقط</option>
-                    <option value="after" class="only-en">After text only</option>
-                    <option value="both" class="only-ar">قبل وبعد النص (إغلاق ذكي)</option>
-                    <option value="both" class="only-en">Before & After (Smart close)</option>
+                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
+                    <option value="before" class="only-en">Before text only ⬅️</option>
+                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
+                    <option value="after" class="only-en">After text only ➡️</option>
+                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
                 </select>
             </div>
             
@@ -482,8 +432,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('custom-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('custom-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split 👇</button>
                 </div>
             </div>
         </div>
@@ -520,14 +470,13 @@
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
-                
                 <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">
-                    <span class="default-txt">الانتقال لقص النص</span>
-                    <span class="karbo-txt">الانتقال لتوسيط النص</span>
+                    <span class="default-txt">الانتقال لقص النص 👇</span>
+                    <span class="karbo-txt">الانتقال لتوسيط النص 👇</span>
                 </button>
                 <button class="transfer-btn only-en" onclick="moveToSplit('simulator-output')">
-                    <span class="default-txt">Move to Split</span>
-                    <span class="karbo-txt">Move to Center</span>
+                    <span class="default-txt">Move to Split 👇</span>
+                    <span class="karbo-txt">Move to Center 👇</span>
                 </button>
             </div>
         </div>
@@ -736,7 +685,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
+    // --- دالة إصلاح الاتجاه ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
