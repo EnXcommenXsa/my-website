@@ -21,11 +21,72 @@
             --box-bg: #ffffff;
             --border-color: #ccc;
         }
+        
+        /* --- وضع كاربو المخصص --- */
+        body.karbo-mode {
+            --primary-color: #637be6; 
+            --bg-color: #0b112c;      
+            --box-bg: #141c42;        
+            --border-color: #2b397a;  
+            color: #ffffff;
+        }
+        body.karbo-mode h1, body.karbo-mode h2, body.karbo-mode h3 { color: #a1b2ff; }
+        body.karbo-mode .description { color: #b0bec5; }
+        body.karbo-mode .stats-counter { color: #90a4ae; }
+        body.karbo-mode textarea, body.karbo-mode .rich-editor, body.karbo-mode input, body.karbo-mode select { 
+            background-color: #0b112c; color: #ffffff; 
+        }
+        body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
+        body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
+        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; }
+        body.karbo-mode .header { color: #ffffff; }
+        body.karbo-mode .signature { color: #b0bec5; }
+        
+        /* ترتيب العناصر في الوضعين */
+        .container { display: flex; flex-direction: column; }
+        .header { order: 1; }
+        
+        #karbo-welcome { order: 2; display: none; }
+        body.karbo-mode #karbo-welcome { display: block; }
+        
+        #center-section { order: 3; }
+        #split-section { order: 4; }
+        #secondary-tools { order: 5; }
+        #simulator-section { order: 6; }
+        .seo-section { order: 7; }
+        
+        /* ترتيب وضع كاربو */
+        body.karbo-mode #simulator-section { order: 3; }
+        body.karbo-mode #center-section { order: 4; }
+        body.karbo-mode #split-section { order: 5; }
+        body.karbo-mode #secondary-tools { order: 6; }
+        
+        .karbo-btn { 
+            background-color: #141c42 !important; 
+            color: #a1b2ff !important; 
+            border: 1px solid #a1b2ff !important; 
+        }
+        .karbo-btn:hover {
+            background-color: #637be6 !important;
+            color: #ffffff !important;
+        }
+        .karbo-welcome-box { 
+            background: var(--box-bg); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 2px solid var(--primary-color); 
+            margin-bottom: 25px; 
+            text-align: center; 
+        }
+        
+        body.karbo-mode .default-txt { display: none; }
+        body.karbo-mode .karbo-txt { display: inline; }
+
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
-            color: #333;
+            color: var(--color, #333);
             line-height: 1.6;
             margin: 0;
             padding: 20px;
@@ -106,7 +167,7 @@
         
         h2 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; display: inline-block; }
         h3 { margin-top: 0; color: #555; font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
-        .description { font-size: 0.95em; color: #666; margin-bottom: 15px; }
+        .description { font-size: 0.95em; margin-bottom: 15px; }
         
         textarea, .rich-editor {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
@@ -117,7 +178,7 @@
         .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
         .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
         .rich-editor:focus { border-color: var(--primary-color); }
-        .stats-counter { font-size: 0.85em; color: #888; text-align: left; margin-bottom: 15px; font-weight: bold; }
+        .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
         
         /* --- تخصيص زر القص العائم داخل المربع --- */
@@ -129,10 +190,10 @@
         .floating-split-btn {
             position: sticky;
             top: 15px;
-            float: right;
+            float: right; /* للعربية */
             margin-top: 10px;
             margin-right: 15px;
-            margin-bottom: -40px; 
+            margin-bottom: -40px; /* لكي لا يدفع النص للأسفل */
             background-color: rgba(231, 76, 60, 0.9);
             color: white;
             border: none;
@@ -146,7 +207,7 @@
         }
         .floating-split-btn:hover { background-color: #c0392b; }
         body.en .floating-split-btn {
-            float: left;
+            float: left; /* للإنجليزية */
             margin-right: 0;
             margin-left: 15px;
         }
@@ -238,6 +299,10 @@
         <span class="only-ar">إصلاح الاتجاه</span>
         <span class="only-en">Fix Direction</span>
     </a>
+    <a onclick="toggleKarboMode(event)" class="karbo-btn">
+        <span class="only-ar">وضع كاربو</span>
+        <span class="only-en">Karbo Mode</span>
+    </a>
     <a onclick="toggleLanguage(event)" class="lang-btn">
         <span class="only-ar">🌐 English</span>
         <span class="only-en">🌐 عربي</span>
@@ -253,6 +318,14 @@
         
         <p class="only-ar">قم بتجهيز نصوصك وتنسيقها بسرعة وسهولة لتبدو مثالية.</p>
         <p class="only-en">Prepare and format your texts quickly and easily to look perfect.</p>
+    </div>
+    
+    <!-- قسم الترحيب بوضع كاربو -->
+    <div id="karbo-welcome" class="karbo-welcome-box">
+        <h2 class="only-ar" style="border: none; margin-bottom: 5px;">مرحباً بمستخدمي تطبيق KarboAi</h2>
+        <h2 class="only-en" style="border: none; margin-bottom: 5px;">Welcome KarboAi Users</h2>
+        <p class="only-ar" style="margin-top: 0; font-size: 0.95em;">تم تفعيل وضع كاربو. تم ترتيب الأدوات بالشكل الأمثل لمسار عملك: أولاً إصلاح اتجاه النص، ثانياً توسيط النص، وأخيراً قصه لتتمكن من نقله إلى محرر التطبيق بكل سلاسة.</p>
+        <p class="only-en" style="margin-top: 0; font-size: 0.95em;">Karbo mode activated. Tools are optimally ordered for your workflow: first fix text direction, then center, and finally split for seamless transfer to the app editor.</p>
     </div>
 
     <div class="tool-section" id="center-section">
@@ -401,10 +474,10 @@
         <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text 🪄</button>
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
-            <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; color: #2c3e50; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
+            <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
                 <strong>ما الذي حدث؟</strong> تمت إضافة "حرف توجيه عربي غير مرئي" مباشرة بعد كود التوسيط (إن وُجد) وبعد كل كلمة إنجليزية أو رمز. هذا سيجبر أي تطبيق على الحفاظ على الترتيب العربي، وسيبقى الإصلاح فعالاً حتى لو قمت بنسخ النص وإرساله عبر تليجرام أو واتساب قبل التطبيق!
             </p>
-            <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; color: #2c3e50; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
+            <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
                 <strong>What happened?</strong> An invisible Arabic direction character was added right after the centering code (if any) and after every English word. This forces apps to maintain the RTL layout, and the fix will survive even if pasted through Telegram or WhatsApp!
             </p>
             
@@ -412,8 +485,14 @@
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
-                <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">الانتقال لقص النص 👇</button>
-                <button class="transfer-btn only-en" onclick="moveToSplit('simulator-output')">Move to Split 👇</button>
+                <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">
+                    <span class="default-txt">الانتقال لقص النص 👇</span>
+                    <span class="karbo-txt" style="display:none;">الانتقال لتوسيط النص</span>
+                </button>
+                <button class="transfer-btn only-en" onclick="moveToSplit('simulator-output')">
+                    <span class="default-txt">Move to Split 👇</span>
+                    <span class="karbo-txt" style="display:none;">Move to Center</span>
+                </button>
             </div>
         </div>
     </div>
@@ -484,6 +563,12 @@
 </div>
 
 <script>
+    // --- وضع كاربو ---
+    function toggleKarboMode(event) {
+        if(event) event.preventDefault();
+        document.body.classList.toggle('karbo-mode');
+    }
+
     // --- نظام اللغات ---
     function toggleLanguage(event) {
         if(event) event.preventDefault();
@@ -565,7 +650,7 @@
         
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         outputEl.style.backgroundColor = '#e8f5e9'; 
-        setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
+        setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
     }
 
     // --- الميزة الجديدة: دالة إضافة الرمز المخصص (مع الإغلاق الذكي) ---
@@ -612,7 +697,7 @@
         
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         outputEl.style.backgroundColor = '#e8f5e9';
-        setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
+        setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
     }
 
     // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
@@ -632,10 +717,8 @@
         const fixedLines = lines.map(line => {
             if (line.trim() === '') return '';
             
-            // 1. تنظيف السطر من علامات التوجيه السابقة حتى لا تتراكم عند إعادة المعالجة
             let cleanLine = line.replace(/[\u202B\u202C\u200F\u200E]/g, '');
             
-            // 2. فصل كود المنتدى مثل [C] أو [B] في بداية السطر
             let prefix = '';
             let content = cleanLine;
             const tagMatch = cleanLine.match(/^(\[[a-zA-Z]+\]\s*)+/);
@@ -645,9 +728,6 @@
                 content = cleanLine.substring(prefix.length);
             }
             
-            // 3. وضع علامة RLM (\u200F) مباشرة بعد الكود لبدء السطر كعربي، 
-            // ثم وضع العلامة بعد أي كلمة أجنبية أو رمز. 
-            // علامة \u200F صامدة ولا يتم حذفها بواسطة التليجرام.
             const ltrRegex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
             let fixedContent = '\u200F' + content.replace(ltrRegex, '$1\u200F');
             
@@ -659,17 +739,25 @@
         
         outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         outputEl.style.backgroundColor = '#e8f5e9';
-        setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
+        setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
     }
 
-    // --- الانتقال للقص ---
+    // --- الانتقال للقص (أو التوسيط في مود كاربو) ---
     function moveToSplit(sourceOutputId) {
         const textToMove = document.getElementById(sourceOutputId).value;
-        const splitEditor = document.getElementById('split-input');
+        const isKarbo = document.body.classList.contains('karbo-mode');
         
-        splitEditor.innerText = textToMove; 
-        updateStats('split-input', 'split-stats');
-        document.getElementById('split-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (sourceOutputId === 'simulator-output' && isKarbo) {
+            const centerEditor = document.getElementById('center-input');
+            centerEditor.value = textToMove;
+            updateStats('center-input', 'center-stats');
+            document.getElementById('center-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            const splitEditor = document.getElementById('split-input');
+            splitEditor.innerText = textToMove; 
+            updateStats('split-input', 'split-stats');
+            document.getElementById('split-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 
     // --- فاصل القص ---
