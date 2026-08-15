@@ -55,7 +55,7 @@
         #simulator-section { order: 6; }
         .seo-section { order: 7; }
         
-        /* ترتيب وضع كاربو */
+        /* ترتيب أقسام وضع كاربو */
         body.karbo-mode #simulator-section { order: 3; }
         body.karbo-mode #center-section { order: 4; }
         body.karbo-mode #split-section { order: 5; }
@@ -79,6 +79,8 @@
             text-align: center; 
         }
         
+        /* إصلاح نصوص أزرار الانتقال */
+        .karbo-txt { display: none; }
         body.karbo-mode .default-txt { display: none; }
         body.karbo-mode .karbo-txt { display: inline; }
 
@@ -136,14 +138,16 @@
         }
         .lang-btn { background-color: #eef2f5 !important; color: #333 !important; }
         
+        /* إصلاح قائمة الهواتف للسماح بالتمرير الأفقي */
         @media (max-width: 1000px) {
             .sidebar {
                 top: auto; bottom: 0; right: 0; left: 0;
-                transform: none; flex-direction: row; justify-content: space-around;
-                border-radius: 15px 15px 0 0; padding: 10px; overflow-x: auto;
+                transform: none; flex-direction: row; justify-content: flex-start;
+                border-radius: 15px 15px 0 0; padding: 10px 15px; overflow-x: auto;
                 box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+                -webkit-overflow-scrolling: touch;
             }
-            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; }
+            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; }
         }
 
         /* --- الأقسام --- */
@@ -282,26 +286,27 @@
 </head>
 <body class="ar">
 
+<!-- إعادة ترتيب قائمة الأزرار بناء على طلبك ليكون ترتيبها ثابتاً -->
 <nav class="sidebar">
-    <a href="#center-section">
-        <span class="only-ar">توسيط [C]</span>
-        <span class="only-en">Center [C]</span>
-    </a>
-    <a href="#split-section">
-        <span class="only-ar">تقسيم وقص ✂️</span>
-        <span class="only-en">Split & Cut ✂️</span>
-    </a>
-    <a href="#secondary-tools">
-        <span class="only-ar">أدوات إضافية</span>
-        <span class="only-en">Extra Tools</span>
+    <a onclick="toggleKarboMode(event)" class="karbo-btn">
+        <span class="only-ar">وضع كاربو</span>
+        <span class="only-en">Karbo Mode</span>
     </a>
     <a href="#simulator-section">
         <span class="only-ar">إصلاح الاتجاه</span>
         <span class="only-en">Fix Direction</span>
     </a>
-    <a onclick="toggleKarboMode(event)" class="karbo-btn">
-        <span class="only-ar">وضع كاربو</span>
-        <span class="only-en">Karbo Mode</span>
+    <a href="#center-section">
+        <span class="only-ar">توسيط [C]</span>
+        <span class="only-en">Center [C]</span>
+    </a>
+    <a href="#split-section">
+        <span class="only-ar">تقسيم وقص</span>
+        <span class="only-en">Split & Cut</span>
+    </a>
+    <a href="#secondary-tools">
+        <span class="only-ar">أدوات إضافية</span>
+        <span class="only-en">Extra Tools</span>
     </a>
     <a onclick="toggleLanguage(event)" class="lang-btn">
         <span class="only-ar">🌐 English</span>
@@ -354,8 +359,8 @@
     </div>
 
     <div class="tool-section" id="split-section">
-        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
-        <h2 class="only-en">Article Splitter ✂️</h2>
+        <h2 class="only-ar">أداة تقسيم المقالة</h2>
+        <h2 class="only-en">Article Splitter</h2>
         
         <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر العائم داخل المربع لإدراج فاصل.</p>
         <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the floating button inside the box to insert a marker.</p>
@@ -456,7 +461,7 @@
         </div>
     </div>
 
-    <!-- قسم إصلاح الاتجاه (المحدث للتعامل مع التليجرام و [C]) -->
+    <!-- قسم إصلاح الاتجاه (مع العودة للبرمجة السابقة والأقوى - RLE) -->
     <div class="tool-section" id="simulator-section">
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
         <h2 class="only-en">Mixed Text Direction Fix</h2>
@@ -470,28 +475,32 @@
         <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: right;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
-        <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح النص 🪄</button>
-        <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text 🪄</button>
+        <button class="only-ar" style="background-color: #8e44ad;" onclick="fixDirection()">إصلاح النص</button>
+        <button class="only-en" style="background-color: #8e44ad;" onclick="fixDirection()">Fix Text</button>
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
             <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>ما الذي حدث؟</strong> تمت إضافة "حرف توجيه عربي غير مرئي" مباشرة بعد كود التوسيط (إن وُجد) وبعد كل كلمة إنجليزية أو رمز. هذا سيجبر أي تطبيق على الحفاظ على الترتيب العربي، وسيبقى الإصلاح فعالاً حتى لو قمت بنسخ النص وإرساله عبر تليجرام أو واتساب قبل التطبيق!
+                <strong>ما الذي حدث؟</strong> تم تغليف النص بأكواد توجيه مخفية تجبر التطبيق على قراءته ككتلة واحدة من اليمين لليسار. (تم عزل كود التوسيط في الخارج لكي يعمل بشكل صحيح).<br>
+                <span style="color: #e74c3c;">ملاحظة هامة:</span> استخدم هذه الأداة كخطوة أخيرة وانسخ النتيجة للتطبيق مباشرة (تطبيقات مثل تليجرام تقوم بمسح هذه الأكواد المخفية).
             </p>
             <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>What happened?</strong> An invisible Arabic direction character was added right after the centering code (if any) and after every English word. This forces apps to maintain the RTL layout, and the fix will survive even if pasted through Telegram or WhatsApp!
+                <strong>What happened?</strong> The text is wrapped in hidden direction codes forcing the app to read it right-to-left. (Centering codes are safely isolated).<br>
+                <span style="color: #e74c3c;">Important:</span> Use this tool as the final step and paste directly into the app (apps like Telegram strip these hidden codes).
             </p>
             
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
+                
+                <!-- أزرار النقل التكيفية -->
                 <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">
                     <span class="default-txt">الانتقال لقص النص 👇</span>
-                    <span class="karbo-txt" style="display:none;">الانتقال لتوسيط النص</span>
+                    <span class="karbo-txt">الانتقال لتوسيط النص 👇</span>
                 </button>
                 <button class="transfer-btn only-en" onclick="moveToSplit('simulator-output')">
                     <span class="default-txt">Move to Split 👇</span>
-                    <span class="karbo-txt" style="display:none;">Move to Center</span>
+                    <span class="karbo-txt">Move to Center 👇</span>
                 </button>
             </div>
         </div>
@@ -700,7 +709,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = document.body.classList.contains('karbo-mode') ? '#0d1433' : '#fff'; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
+    // --- دالة إصلاح الاتجاه (باستخدام التغليف RLE و PDF للعمل داخل التطبيقات) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -717,8 +726,10 @@
         const fixedLines = lines.map(line => {
             if (line.trim() === '') return '';
             
+            // 1. تنظيف السطر من أي أكواد توجيه مخفية سابقة لعدم تكرارها
             let cleanLine = line.replace(/[\u202B\u202C\u200F\u200E]/g, '');
             
+            // 2. فصل كود المنتدى مثل [C] أو [B] في بداية السطر
             let prefix = '';
             let content = cleanLine;
             const tagMatch = cleanLine.match(/^(\[[a-zA-Z]+\]\s*)+/);
@@ -728,10 +739,8 @@
                 content = cleanLine.substring(prefix.length);
             }
             
-            const ltrRegex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
-            let fixedContent = '\u200F' + content.replace(ltrRegex, '$1\u200F');
-            
-            return prefix + fixedContent;
+            // 3. تغليف المحتوى بالـ Right-to-Left Embedding (RLE) وإغلاقه بالـ PDF
+            return prefix + '\u202B' + content + '\u202C';
         });
         
         outputEl.value = fixedLines.join('\n');
