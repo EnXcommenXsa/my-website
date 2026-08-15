@@ -65,9 +65,9 @@
         /* --- ترتيب الشريط الجانبي (Sidebar Order) --- */
         .sidebar { display: flex; flex-direction: column; }
         #nav-karbo { order: 1; }
-        #nav-center { order: 2; }
-        #nav-split { order: 3; }
-        #nav-fix { order: 4; }
+        #nav-fix { order: 2; }
+        #nav-center { order: 3; }
+        #nav-split { order: 4; }
         #nav-extra { order: 5; }
         #nav-lang { order: 6; }
         
@@ -153,16 +153,16 @@
         }
         .lang-btn { background-color: #eef2f5 !important; color: #333 !important; }
         
-        /* إصلاح قائمة الهواتف للسماح بالتمرير الأفقي */
+        /* إصلاح قائمة الهواتف للسماح بالتمرير الأفقي في جميع الأوضاع واللغات */
         @media (max-width: 1000px) {
-            .sidebar {
-                top: auto; bottom: 0; right: 0; left: 0;
+            .sidebar, body.en .sidebar {
+                top: auto; bottom: 0; right: 0; left: 0; width: 100%; box-sizing: border-box;
                 transform: none; flex-direction: row; justify-content: flex-start;
                 border-radius: 15px 15px 0 0; padding: 10px 15px; overflow-x: auto;
                 box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
                 -webkit-overflow-scrolling: touch;
             }
-            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; }
+            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; margin-left: 5px; margin-right: 5px; }
         }
 
         /* --- الأقسام --- */
@@ -201,33 +201,44 @@
             background: var(--box-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding-bottom: 45px; /* مساحة للزر السفلي */
+            padding-bottom: 40px;
             margin-bottom: 5px;
         }
         .rich-editor {
             width: 100%; padding: 12px; 
             font-family: inherit; font-size: 1em; box-sizing: border-box;
             min-height: 150px; background: transparent; overflow-y: auto; white-space: pre-wrap; outline: none;
-            border: none; /* إزالة الإطار لأن الغلاف يحمله */
+            border: none;
         }
         .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
         
-        /* الزر الجديد الذي يشبه الفاصلة */
-        .add-cut-styled-btn {
-            position: absolute;
-            bottom: 15px; left: 0; right: 0;
-            width: 85%; margin: 0 auto; height: 2px;
-            background: #e74c3c;
-            display: flex; align-items: center; justify-content: center;
-            border: none; cursor: pointer; padding: 0; z-index: 10;
+        /* الزر الجديد الذي يشبه الفاصلة (إضافة قص) */
+        .add-cut-container {
+            position: sticky;
+            bottom: 15px;
+            width: 90%;
+            margin: 0 auto;
+            height: 2px;
+            background-color: #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
         }
-        .add-cut-styled-btn span {
-            background: #e74c3c; color: white; padding: 6px 20px;
-            border-radius: 20px; font-size: 14px; font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: background 0.3s;
+        .add-cut-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            transition: background 0.3s;
+            margin: 0 !important;
         }
-        .add-cut-styled-btn:hover { background: #c0392b; }
-        .add-cut-styled-btn:hover span { background: #c0392b; }
+        .add-cut-btn:hover { background-color: #c0392b; }
 
         .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
@@ -307,6 +318,10 @@
         <span class="only-ar">وضع كاربو</span>
         <span class="only-en">Karbo Mode</span>
     </a>
+    <a href="#simulator-section" id="nav-fix">
+        <span class="only-ar">إصلاح الاتجاه</span>
+        <span class="only-en">Fix Direction</span>
+    </a>
     <a href="#center-section" id="nav-center">
         <span class="only-ar">توسيط [C]</span>
         <span class="only-en">Center [C]</span>
@@ -314,10 +329,6 @@
     <a href="#split-section" id="nav-split">
         <span class="only-ar">تقسيم وقص</span>
         <span class="only-en">Split & Cut</span>
-    </a>
-    <a href="#simulator-section" id="nav-fix">
-        <span class="only-ar">إصلاح الاتجاه</span>
-        <span class="only-en">Fix Direction</span>
     </a>
     <a href="#secondary-tools" id="nav-extra">
         <span class="only-ar">أدوات إضافية</span>
@@ -366,8 +377,8 @@
                 <button class="copy-btn only-ar" onclick="copyText('center-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('center-output', this)">Copy Result</button>
                 
-                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص 👇</button>
-                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split 👇</button>
+                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص</button>
+                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split</button>
             </div>
         </div>
     </div>
@@ -382,11 +393,13 @@
         <div class="split-editor-wrapper">
             <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
             
-            <!-- الزر الجديد الشبيه بالفاصلة (ممتد وموجود بالأسفل) -->
-            <button class="add-cut-styled-btn" onclick="insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">
-                <span class="only-ar">إضافة قص</span>
-                <span class="only-en">Add Cut</span>
-            </button>
+            <div class="add-cut-container">
+                <!-- استخدام onmousedown يمنع ضياع التركيز من مربع النص -->
+                <button class="add-cut-btn" onmousedown="event.preventDefault(); insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">
+                    <span class="only-ar">إضافة قص</span>
+                    <span class="only-en">Add Cut</span>
+                </button>
+            </div>
         </div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
@@ -412,8 +425,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('bold-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('bold-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص 👇</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split 👇</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split</button>
                 </div>
             </div>
         </div>
@@ -433,8 +446,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('italic-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('italic-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص 👇</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split 👇</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split</button>
                 </div>
             </div>
         </div>
@@ -452,12 +465,12 @@
             <div class="custom-controls">
                 <input type="text" id="customSymbol" placeholder="الرمز (مثال: - أو [B])" data-ph-ar="الرمز (مثال: - أو [B])" data-ph-en="Symbol (e.g. - or [B])">
                 <select id="symbolPosition">
-                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
-                    <option value="before" class="only-en">Before text only ⬅️</option>
-                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
-                    <option value="after" class="only-en">After text only ➡️</option>
-                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
-                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
+                    <option value="before" class="only-ar">قبل النص فقط</option>
+                    <option value="before" class="only-en">Before text only</option>
+                    <option value="after" class="only-ar">بعد النص فقط</option>
+                    <option value="after" class="only-en">After text only</option>
+                    <option value="both" class="only-ar">قبل وبعد النص (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After (Smart close)</option>
                 </select>
             </div>
             
@@ -469,8 +482,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('custom-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('custom-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص 👇</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split 👇</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split</button>
                 </div>
             </div>
         </div>
@@ -495,23 +508,26 @@
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
             <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>ما الذي حدث؟</strong> تمت إضافة "حرف توجيه عربي غير مرئي" مباشرة بعد كود التوسيط (إن وُجد) وبعد كل كلمة إنجليزية أو رمز. هذا سيجبر أي تطبيق على الحفاظ على الترتيب العربي، وسيبقى الإصلاح فعالاً حتى لو قمت بنسخ النص وإرساله عبر تليجرام أو واتساب قبل التطبيق!
+                <strong>ما الذي حدث؟</strong> تم تغليف النص بأكواد توجيه مخفية تجبر التطبيق على قراءته ككتلة واحدة من اليمين لليسار. (تم عزل كود التوسيط في الخارج لكي يعمل بشكل صحيح).<br>
+                <span style="color: #e74c3c;">ملاحظة هامة:</span> استخدم هذه الأداة كخطوة أخيرة وانسخ النتيجة للتطبيق مباشرة (تطبيقات مثل تليجرام تقوم بمسح هذه الأكواد المخفية).
             </p>
             <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>What happened?</strong> An invisible Arabic direction character was added right after the centering code (if any) and after every English word. This forces apps to maintain the RTL layout, and the fix will survive even if pasted through Telegram or WhatsApp!
+                <strong>What happened?</strong> The text is wrapped in hidden direction codes forcing the app to read it right-to-left. (Centering codes are safely isolated).<br>
+                <span style="color: #e74c3c;">Important:</span> Use this tool as the final step and paste directly into the app (apps like Telegram strip these hidden codes).
             </p>
             
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
             <div class="button-group">
                 <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
+                
                 <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">
-                    <span class="default-txt">الانتقال لقص النص 👇</span>
-                    <span class="karbo-txt">الانتقال لتوسيط النص 👇</span>
+                    <span class="default-txt">الانتقال لقص النص</span>
+                    <span class="karbo-txt">الانتقال لتوسيط النص</span>
                 </button>
                 <button class="transfer-btn only-en" onclick="moveToSplit('simulator-output')">
-                    <span class="default-txt">Move to Split 👇</span>
-                    <span class="karbo-txt">Move to Center 👇</span>
+                    <span class="default-txt">Move to Split</span>
+                    <span class="karbo-txt">Move to Center</span>
                 </button>
             </div>
         </div>
@@ -748,10 +764,7 @@
                 content = cleanLine.substring(prefix.length);
             }
             
-            const ltrRegex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
-            let fixedContent = '\u200F' + content.replace(ltrRegex, '$1\u200F');
-            
-            return prefix + fixedContent;
+            return prefix + '\u202B' + content + '\u202C';
         });
         
         outputEl.value = fixedLines.join('\n');
