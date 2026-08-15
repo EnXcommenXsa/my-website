@@ -383,7 +383,7 @@
         </div>
     </div>
 
-    <!-- قسم إصلاح الاتجاه (المحدث) -->
+    <!-- قسم إصلاح الاتجاه (المحدث للتعامل مع التليجرام و [C]) -->
     <div class="tool-section" id="simulator-section">
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
         <h2 class="only-en">Mixed Text Direction Fix</h2>
@@ -402,10 +402,10 @@
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
             <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; color: #2c3e50; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>ما الذي حدث؟</strong> تم تغليف النص بـ "أكواد توجيه مخفية" (RLE) تجبر التطبيق على قراءة السطر ككتلة واحدة من اليمين لليسار، مما يمنع الكلمات الإنجليزية والمسافات من كسر ترتيب الجملة. (يتم استثناء أكواد مثل [C] ووضعها في الخارج لكي تعمل بشكل صحيح).
+                <strong>ما الذي حدث؟</strong> تمت إضافة "حرف توجيه عربي غير مرئي" مباشرة بعد كود التوسيط (إن وُجد) وبعد كل كلمة إنجليزية أو رمز. هذا سيجبر أي تطبيق على الحفاظ على الترتيب العربي، وسيبقى الإصلاح فعالاً حتى لو قمت بنسخ النص وإرساله عبر تليجرام أو واتساب قبل التطبيق!
             </p>
             <p id="fix-explanation-en" class="description only-en" style="font-size: 0.9em; color: #2c3e50; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
-                <strong>What happened?</strong> The text was wrapped in hidden "direction codes" (RLE) that force the app to read the line as a single right-to-left block. (Tags like [C] are safely kept outside).
+                <strong>What happened?</strong> An invisible Arabic direction character was added right after the centering code (if any) and after every English word. This forces apps to maintain the RTL layout, and the fix will survive even if pasted through Telegram or WhatsApp!
             </p>
             
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
@@ -615,7 +615,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = '#fff'; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (باستخدام التغليف RLE) ---
+    // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -632,11 +632,10 @@
         const fixedLines = lines.map(line => {
             if (line.trim() === '') return '';
             
-            // 1. تنظيف السطر من أي أكواد توجيه مخفية سابقة لعدم تكرارها
+            // 1. تنظيف السطر من علامات التوجيه السابقة حتى لا تتراكم عند إعادة المعالجة
             let cleanLine = line.replace(/[\u202B\u202C\u200F\u200E]/g, '');
             
-            // 2. فحص ما إذا كان السطر يبدأ بأكواد تطبيق مثل [C] أو [B]
-            // لنقوم بعزلها ووضع التغليف بعدها كي لا ينكسر كود التطبيق
+            // 2. فصل كود المنتدى مثل [C] أو [B] في بداية السطر
             let prefix = '';
             let content = cleanLine;
             const tagMatch = cleanLine.match(/^(\[[a-zA-Z]+\]\s*)+/);
@@ -646,8 +645,13 @@
                 content = cleanLine.substring(prefix.length);
             }
             
-            // 3. تغليف المحتوى بالـ Right-to-Left Embedding (RLE) وإغلاقه بالـ PDF
-            return prefix + '\u202B' + content + '\u202C';
+            // 3. وضع علامة RLM (\u200F) مباشرة بعد الكود لبدء السطر كعربي، 
+            // ثم وضع العلامة بعد أي كلمة أجنبية أو رمز. 
+            // علامة \u200F صامدة ولا يتم حذفها بواسطة التليجرام.
+            const ltrRegex = /([a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+)/g;
+            let fixedContent = '\u200F' + content.replace(ltrRegex, '$1\u200F');
+            
+            return prefix + fixedContent;
         });
         
         outputEl.value = fixedLines.join('\n');
