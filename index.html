@@ -70,10 +70,11 @@
             border: 1px solid var(--border-color); outline: none;
         }
         /* إصلاح المربع الأبيض في كاربو مود */
-        body.karbo-mode .rich-editor { background-color: #0b112c !important; color: #ffffff !important; border: 1px solid var(--border-color); outline: none; }
+        body.karbo-mode .rich-editor { background-color: transparent !important; color: #ffffff !important; border: 1px solid var(--border-color); outline: none; }
         body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
         
         body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
+        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
         body.karbo-mode .signature { color: #b0bec5; }
         
@@ -326,6 +327,10 @@
         body.en .close-modal { float: right; }
         .close-modal:hover { color: #000; }
     </style>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940288702127930" crossorigin="anonymous"></script>
+
 </head>
 <body class="ar">
 
@@ -399,19 +404,18 @@
         </div>
     </div>
 
-    <!-- تم إرجاع قسم القص لشكله الكلاسيكي -->
     <div class="tool-section" id="split-section">
-        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
-        <h2 class="only-en">Article Splitter ✂️</h2>
+        <h2 class="only-ar">أداة تقسيم المقالة</h2>
+        <h2 class="only-en">Article Splitter</h2>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the button to insert a marker.</p>
         
         <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-        <button class="split-action-btn only-ar" onmousedown="event.preventDefault(); insertSplitLine()">إدراج فاصل قص ✂️</button>
-        <button class="split-action-btn only-en" onmousedown="event.preventDefault(); insertSplitLine()">Insert Split Line ✂️</button>
+        <button class="split-action-btn only-ar" onmousedown="event.preventDefault();" onclick="insertSplitLine()">إدراج فاصل قص ✂️</button>
+        <button class="split-action-btn only-en" onmousedown="event.preventDefault();" onclick="insertSplitLine()">Insert Split Line ✂️</button>
         
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
         <button class="only-en" onclick="splitText()">Split Text Now</button>
@@ -514,7 +518,6 @@
         <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: left;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
-        <!-- إزالة اللون البنفسجي المخصص ليأخذ لون أزرار الموقع الطبيعي -->
         <button class="only-ar" onclick="fixDirection()">إصلاح النص</button>
         <button class="only-en" onclick="fixDirection()">Fix Text</button>
 
