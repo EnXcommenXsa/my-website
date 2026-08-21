@@ -405,11 +405,11 @@
     </div>
 
     <div class="tool-section" id="split-section">
-        <h2 class="only-ar">أداة تقسيم المقالة</h2>
-        <h2 class="only-en">Article Splitter</h2>
+        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
+        <h2 class="only-en">Article Splitter ✂️</h2>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the button to insert a marker.</p>
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
         
         <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
@@ -439,8 +439,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('bold-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('bold-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split 👇</button>
                 </div>
             </div>
         </div>
@@ -460,7 +460,7 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('italic-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('italic-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص 👇</button>
                     <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split</button>
                 </div>
             </div>
@@ -479,12 +479,12 @@
             <div class="custom-controls">
                 <input type="text" id="customSymbol" placeholder="الرمز (جرب وضع * أو -)" data-ph-ar="الرمز (جرب وضع * أو -)" data-ph-en="Symbol (Try * or -)">
                 <select id="symbolPosition">
-                    <option value="before" class="only-ar">قبل النص فقط</option>
-                    <option value="before" class="only-en">Before text only</option>
-                    <option value="after" class="only-ar">بعد النص فقط</option>
-                    <option value="after" class="only-en">After text only</option>
-                    <option value="both" class="only-ar">قبل وبعد النص (إغلاق ذكي)</option>
-                    <option value="both" class="only-en">Before & After (Smart close)</option>
+                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
+                    <option value="before" class="only-en">Before text only ⬅️</option>
+                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
+                    <option value="after" class="only-en">After text only ➡️</option>
+                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
                 </select>
             </div>
             
@@ -496,8 +496,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('custom-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('custom-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص 👇</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split 👇</button>
                 </div>
             </div>
         </div>
