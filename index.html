@@ -70,11 +70,10 @@
             border: 1px solid var(--border-color); outline: none;
         }
         /* إصلاح المربع الأبيض في كاربو مود */
-        body.karbo-mode .rich-editor { background-color: transparent !important; color: #ffffff !important; }
+        body.karbo-mode .rich-editor { background-color: #0b112c !important; color: #ffffff !important; border: 1px solid var(--border-color); outline: none; }
         body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
         
         body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
-        body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
         body.karbo-mode .signature { color: #b0bec5; }
         
@@ -250,46 +249,15 @@
             border-color: var(--primary-color);
         }
 
-        textarea {
+        textarea, .rich-editor {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
             transition: background-color 0.4s ease;
-            min-height: 120px; resize: vertical;
         }
-        
-        /* --- تخصيص مربع القص المتقدم --- */
-        .split-editor-wrapper {
-            position: relative;
-            background: var(--box-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding-bottom: 45px;
-            margin-bottom: 5px;
-        }
-        .rich-editor {
-            width: 100%; padding: 12px; 
-            font-family: inherit; font-size: 1em; box-sizing: border-box;
-            min-height: 150px; background: transparent; overflow-y: auto; white-space: pre-wrap; outline: none;
-            border: none;
-        }
+        textarea { min-height: 120px; resize: vertical; }
+        .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
         .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
         
-        .add-cut-styled-btn {
-            position: absolute;
-            bottom: 15px; left: 0; right: 0;
-            width: 85%; margin: 0 auto; height: 2px;
-            background: #e74c3c;
-            display: flex; align-items: center; justify-content: center;
-            border: none; cursor: pointer; padding: 0; z-index: 10;
-        }
-        .add-cut-styled-btn span {
-            background: #e74c3c; color: white; padding: 6px 20px;
-            border-radius: 20px; font-size: 14px; font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: background 0.3s;
-        }
-        .add-cut-styled-btn:hover { background: #c0392b; }
-        .add-cut-styled-btn:hover span { background: #c0392b; }
-
         .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
 
@@ -430,28 +398,21 @@
             </div>
         </div>
     </div>
-<div class="tool-section" id="split-section">
+
+    <!-- تم إرجاع قسم القص لشكله الكلاسيكي -->
+    <div class="tool-section" id="split-section">
         <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
         <h2 class="only-en">Article Splitter ✂️</h2>
         
         <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
         <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
         
-        <!-- المربع الكلاسيكي بدون الغلاف المزعج -->
         <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-        <!-- الأزرار الكلاسيكية مع الحفاظ على إصلاح المؤشر -->
         <button class="split-action-btn only-ar" onmousedown="event.preventDefault(); insertSplitLine()">إدراج فاصل قص ✂️</button>
         <button class="split-action-btn only-en" onmousedown="event.preventDefault(); insertSplitLine()">Insert Split Line ✂️</button>
         
-        <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
-        <button class="only-en" onclick="splitText()">Split Text Now</button>
-
-        <div id="split-results"></div>
-    </div>
-        <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
-
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
         <button class="only-en" onclick="splitText()">Split Text Now</button>
 
@@ -553,8 +514,9 @@
         <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: left;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
-<button class="only-ar" onclick="fixDirection()">إصلاح النص</button>
-<button class="only-en" onclick="fixDirection()">Fix Text</button>
+        <!-- إزالة اللون البنفسجي المخصص ليأخذ لون أزرار الموقع الطبيعي -->
+        <button class="only-ar" onclick="fixDirection()">إصلاح النص</button>
+        <button class="only-en" onclick="fixDirection()">Fix Text</button>
 
         <div class="output-box" id="simulator-output-container" style="display: none;">
             <p id="fix-explanation" class="description only-ar" style="font-size: 0.9em; margin-top: 0; padding-bottom: 10px; border-bottom: 1px dashed #ccc;">
@@ -730,7 +692,10 @@
         const lines = input.split('\n');
         const processedText = lines.map(line => {
             if (line.trim() === '') return ''; 
-            return prefix + line + suffix;
+            
+            // إضافة مسافة تلقائية بين رمز التوسيط وكود الإصلاح المخفي لحل مشكلة التطبيقات
+            let insertSpace = (line.startsWith('\u202B') || line.startsWith('\u200F')) && prefix.endsWith(']') ? ' ' : '';
+            return prefix + insertSpace + line + suffix;
         }).join('\n');
         
         const outputEl = document.getElementById(outputId);
@@ -742,7 +707,7 @@
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         const isKarbo = document.body.classList.contains('karbo-mode');
-        outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9'; 
+        outputEl.style.backgroundColor = isKarbo ? '#1a2352' : '#e8f5e9'; 
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
@@ -791,7 +756,7 @@
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         const isKarbo = document.body.classList.contains('karbo-mode');
-        outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9';
+        outputEl.style.backgroundColor = isKarbo ? '#1a2352' : '#e8f5e9';
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
@@ -832,7 +797,7 @@
         outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         const isKarbo = document.body.classList.contains('karbo-mode');
-        outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9';
+        outputEl.style.backgroundColor = isKarbo ? '#1a2352' : '#e8f5e9';
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
@@ -847,7 +812,7 @@
             updateStats('center-input', 'center-stats');
             document.getElementById('center-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
             
-            centerEditor.style.backgroundColor = '#2b397a';
+            centerEditor.style.backgroundColor = '#1a2352';
             setTimeout(() => { centerEditor.style.backgroundColor = ''; }, 700);
         } else {
             const splitEditor = document.getElementById('split-input');
