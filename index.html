@@ -14,6 +14,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="أداة CutMouse لتجزئة النصوص الطويلة، وتنسيق المانجا، وإضافة أكواد المنتديات تلقائياً. الخيار الأفضل لصناع المحتوى وتجهيز الثريدات.">
     <title>أداة تنسيق وتقسيم النصوص الذكية - CutMouse</title>
+
+    <!-- Favicon & Canonical -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="https://cutmouse.online/">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cutmouse.online/">
+    <meta property="og:title" content="أداة CutMouse لتنسيق وتقسيم النصوص الذكية">
+    <meta property="og:description" content="قسّم النصوص الطويلة، ونسق المانجا، واصلح اتجاه الخطوط العربية والإنجليزية بضغطة زر.">
+    <meta property="og:image" content="https://cutmouse.online/og-image.png">
+
+    <!-- Schema.org WebApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "CutMouse",
+      "url": "https://cutmouse.online/",
+      "description": "أداة مجانية لتجزئة النصوص الطويلة وتنسيقها واصلاح اتجاه الخطوط للمحتوى العربي.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <style>
         :root {
             --primary-color: #0056b3;
@@ -22,7 +52,7 @@
             --border-color: #ccc;
         }
         
-        /* --- وضع كاربو المخصص --- */
+        /* --- كاربو مود المخصص --- */
         body.karbo-mode {
             --primary-color: #637be6; 
             --bg-color: #0b112c;      
@@ -41,6 +71,18 @@
         body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
         body.karbo-mode .signature { color: #b0bec5; }
+        
+        /* إصلاح النوافذ المنبثقة في كاربو مود */
+        body.karbo-mode .modal-content {
+            background-color: var(--box-bg);
+            color: #ffffff;
+            border-color: var(--border-color);
+        }
+        body.karbo-mode .modal-content h2, 
+        body.karbo-mode .modal-content p, 
+        body.karbo-mode .modal-content strong { color: #ffffff; }
+        body.karbo-mode .close-modal { color: #a1b2ff; }
+        body.karbo-mode .close-modal:hover { color: #ffffff; }
         
         /* --- ترتيب العناصر في الصفحة (CSS Order) --- */
         .container { display: flex; flex-direction: column; }
@@ -63,7 +105,6 @@
         body.karbo-mode #secondary-tools { order: 6; }
         
         /* --- ترتيب الشريط الجانبي (Sidebar Order) --- */
-        /* تم إصلاح الترتيب ليتطابق مع الوضع العادي تماماً */
         .sidebar { display: flex; flex-direction: column; }
         #nav-karbo { order: 1; }
         #nav-center { order: 2; }
@@ -190,6 +231,16 @@
         h3 { margin-top: 0; color: #555; font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
         .description { font-size: 0.95em; margin-bottom: 15px; }
         
+        /* إزالة وميض المتصفح الافتراضي المزعج عند تحديد المربع */
+        textarea:focus, input:focus, select:focus, .rich-editor:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.2);
+        }
+        body.karbo-mode textarea:focus, body.karbo-mode input:focus, body.karbo-mode select:focus, body.karbo-mode .rich-editor:focus {
+            box-shadow: 0 0 5px rgba(99, 123, 230, 0.4);
+        }
+
         textarea, .rich-editor {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
@@ -198,51 +249,9 @@
         textarea { min-height: 120px; resize: vertical; }
         .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
         .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
-        .rich-editor:focus { border-color: var(--primary-color); }
         .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
         
-        /* --- تخصيص زر القص العائم داخل المربع --- */
-        .split-editor-wrapper {
-            position: relative;
-            background: #fff;
-            border-radius: 6px;
-        }
-        .floating-split-btn {
-            position: sticky;
-            top: 15px;
-            float: right; /* للعربية */
-            margin-top: 10px;
-            margin-right: 15px;
-            margin-bottom: -40px; /* لكي لا يدفع النص للأسفل */
-            background-color: rgba(231, 76, 60, 0.9);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-            z-index: 10;
-        }
-        .floating-split-btn:hover { background-color: #c0392b; }
-        body.en .floating-split-btn {
-            float: left; /* للإنجليزية */
-            margin-right: 0;
-            margin-left: 15px;
-        }
-
-        /* --- تخصيص أداة الرموز المتقدمة --- */
-        .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
-        .custom-controls input, .custom-controls select { 
-            padding: 10px; border: 1px solid var(--border-color); 
-            border-radius: 6px; font-size: 0.95em; flex: 1; min-width: 150px; font-family: inherit;
-        }
-        .custom-controls input:focus, .custom-controls select:focus {
-            border-color: var(--primary-color); outline: none;
-        }
-
         /* --- فاصل القص --- */
         .split-line {
             display: flex; align-items: center; justify-content: center; height: 2px;
@@ -298,14 +307,12 @@
         body.en .close-modal { float: right; }
         .close-modal:hover { color: #000; }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5940288702127930"
-     crossorigin="anonymous"></script>
 </head>
 <body class="ar">
 
 <nav class="sidebar">
     <a onclick="toggleKarboMode(event)" class="karbo-btn" id="nav-karbo">
-        <span class="only-ar">وضع كاربو</span>
+        <span class="only-ar">كاربو مود</span>
         <span class="only-en">Karbo Mode</span>
     </a>
     <a href="#center-section" id="nav-center">
@@ -313,8 +320,8 @@
         <span class="only-en">Center [C]</span>
     </a>
     <a href="#split-section" id="nav-split">
-        <span class="only-ar">تقسيم وقص</span>
-        <span class="only-en">Split & Cut</span>
+        <span class="only-ar">تقسيم وقص ✂️</span>
+        <span class="only-en">Split & Cut ✂️</span>
     </a>
     <a href="#simulator-section" id="nav-fix">
         <span class="only-ar">إصلاح الاتجاه</span>
@@ -344,7 +351,7 @@
     <div id="karbo-welcome" class="karbo-welcome-box">
         <h2 class="only-ar" style="border: none; margin-bottom: 5px;">مرحباً بمستخدمي تطبيق KarboAi</h2>
         <h2 class="only-en" style="border: none; margin-bottom: 5px;">Welcome KarboAi Users</h2>
-        <p class="only-ar" style="margin-top: 0; font-size: 0.95em;">تم تفعيل وضع كاربو. تم ترتيب الأدوات بالشكل الأمثل لمسار عملك: أولاً إصلاح اتجاه النص، ثانياً توسيط النص، وأخيراً قصه لتتمكن من نقله إلى محرر التطبيق بكل سلاسة.</p>
+        <p class="only-ar" style="margin-top: 0; font-size: 0.95em;">تم تفعيل كاربو مود. تم ترتيب الأدوات بالشكل الأمثل لمسار عملك: أولاً إصلاح اتجاه النص، ثانياً توسيط النص، وأخيراً قصه لتتمكن من نقله إلى محرر التطبيق بكل سلاسة.</p>
         <p class="only-en" style="margin-top: 0; font-size: 0.95em;">Karbo mode activated. Tools are optimally ordered for your workflow: first fix text direction, then center, and finally split for seamless transfer to the app editor.</p>
     </div>
 
@@ -352,13 +359,12 @@
         <h2 class="only-ar">أداة التوسيط [C]</h2>
         <h2 class="only-en">Centering Tool [C]</h2>
         
-        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف (يتم تجاهل الأسطر الفارغة).</p>
-        <p class="description only-en">Adds [C] tag at the beginning of each line to center the text (empty lines are ignored).</p>
+        <p class="description only-ar">يضيف رمز [C] في بداية كل سطر لجعل النص في المنتصف.</p>
+        <p class="description only-en">Adds [C] tag at the beginning of each line to center the text.</p>
         
         <textarea id="center-input" class="auto-stats" data-target="center-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="center-stats">الأحرف: 0 | الكلمات: 0</div>
         
-        <!-- تم حل مشكلة المسافة هنا ليصبح [C] بدون مسافة لتفادي خطأ تطبيق Amino -->
         <button class="only-ar" onclick="processText('center-input', 'center-output-container', 'center-output', '[C]')">إضافة التوسيط</button>
         <button class="only-en" onclick="processText('center-input', 'center-output-container', 'center-output', '[C]')">Add Centering</button>
         
@@ -447,7 +453,7 @@
             <div class="stats-counter" id="custom-stats">الأحرف: 0 | الكلمات: 0</div>
             
             <div class="custom-controls">
-                <input type="text" id="customSymbol" placeholder="الرمز (مثال: - أو [B])" data-ph-ar="الرمز (مثال: - أو [B])" data-ph-en="Symbol (e.g. - or [B])">
+                <input type="text" id="customSymbol" placeholder="الرمز (جرب وضع * أو -)" data-ph-ar="الرمز (جرب وضع * أو -)" data-ph-en="Symbol (Try * or -)">
                 <select id="symbolPosition">
                     <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
                     <option value="before" class="only-en">Before text only ⬅️</option>
@@ -478,13 +484,13 @@
         <h2 class="only-ar">إصلاح اتجاه النص المختلط</h2>
         <h2 class="only-en">Mixed Text Direction Fix</h2>
         
-        <p class="description only-ar">يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية (مثل Amino).</p>
-        <p class="description only-en">Fixes word scrambling and inverted brackets when mixing Arabic with English or symbols in foreign apps like Amino.</p>
+        <p class="description only-ar">يحاكي هذا المربع اتجاه نصوص اللغة الإنجليزية (من اليسار لليمين). يحل مشكلة تلخبط الكلمات وانعكاس الأقواس عند كتابة نصوص عربية تحتوي على كلمات إنجليزية أو رموز في التطبيقات الأجنبية (مثل محرر KarboAi).</p>
+        <p class="description only-en">This box simulates English text direction (LTR). It fixes word scrambling and inverted brackets when mixing Arabic with English or symbols in foreign apps (like KarboAi).</p>
         
         <p class="description only-ar" style="font-size: 0.85em; color: #666; margin-top: -5px;">ضع النص هنا واضغط إصلاح.</p>
         <p class="description only-en" style="font-size: 0.85em; color: #666; margin-top: -5px;">Paste your text here and click Fix.</p>
         
-        <!-- تم تعديل محاذاة النص لليسار فقط لهذا المربع وقبل الإصلاح كما طلبت -->
+        <!-- المحاذاة لليسار تعمل فقط على المربع الإدخالي لبيان المشكلة قبل الإصلاح -->
         <textarea id="simulator-input" class="auto-stats" dir="ltr" style="text-align: left;" data-target="simulator-stats" data-ph-ar="ألصق النص هنا..." data-ph-en="Paste text here..." placeholder="ألصق النص هنا..."></textarea>
         <div class="stats-counter" id="simulator-stats">الأحرف: 0 | الكلمات: 0</div>
         
@@ -558,17 +564,23 @@
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal('privacyModal')">&times;</span>
         <h2 class="only-ar">سياسة الخصوصية</h2><h2 class="only-en">Privacy Policy</h2>
-        <p class="only-ar">موقعنا عبارة عن أداة تعمل بالكامل داخل متصفحك. نحن لا نقوم بحفظ، أو تخزين، أو رفع أي نصوص تقوم بإدخالها إلى خوادمنا. قد نستخدم أطرافاً ثالثة مثل شبكات الإعلانات (مثل Google AdSense) التي قد تستخدم ملفات تعريف الارتباط لعرض إعلانات مخصصة.</p>
-        <p class="only-en">Our site operates entirely within your browser. We do not save, store, or upload any texts you input to our servers. We may use third-party ad networks (like Google AdSense) that may use cookies to show personalized ads.</p>
+        <p class="only-ar">نحن في <strong>CutMouse</strong> نأخذ خصوصيتك على محمل الجد. موقعنا يعمل بالكامل داخل متصفحك المحلي (Client-side)، مما يعني أننا لا نقوم بحفظ، أو تخزين، أو رفع أي نصوص تقوم بإدخالها إلى خوادمنا. الأداة آمنة بنسبة 100% للمحتوى الخاص بك.</p>
+        <p class="only-ar"><strong>الإعلانات وملفات تعريف الارتباط (Cookies):</strong> نحن نستخدم شبكات إعلانية تابعة لجهات خارجية، مثل Google AdSense، لعرض الإعلانات. قد تستخدم Google ملفات تعريف الارتباط (بما في ذلك ملفات DART) لعرض إعلانات مخصصة بناءً على زياراتك السابقة لموقعنا أو مواقع أخرى على الإنترنت. يمكنك إلغاء الاشتراك في استخدام ملفات DART من خلال زيارة سياسة الخصوصية الخاصة بشبكة إعلانات Google.</p>
+        
+        <p class="only-en">At <strong>CutMouse</strong>, we take your privacy seriously. Our site operates entirely within your local browser (Client-side). We do not save, store, or upload any texts you input to our servers. Your content is 100% secure.</p>
+        <p class="only-en"><strong>Ads & Cookies:</strong> We use third-party advertising companies, such as Google AdSense, to serve ads. Google may use cookies (including DART cookies) to serve personalized ads based on your prior visits to our website or other sites. You may opt out of the use of the DART cookie by visiting the Google Ad and content network privacy policy.</p>
     </div>
 </div>
 
 <div id="termsModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal('termsModal')">&times;</span>
-        <h2 class="only-ar">شروط الاستخدام</h2><h2 class="only-en">Terms of Use</h2>
-        <p class="only-ar">باستخدامك لهذه الأداة، فإنك توافق على استخدامها للأغراض المشروعة فقط. يتم تقديم الأداة "كما هي"، ونحن غير مسؤولين عن أي فقدان للبيانات نتيجة الاستخدام.</p>
-        <p class="only-en">By using this tool, you agree to use it for lawful purposes only. The tool is provided "as is", and we are not liable for any data loss resulting from its use.</p>
+        <h2 class="only-ar">شروط الاستخدام وإخلاء المسؤولية</h2><h2 class="only-en">Terms of Use & Disclaimer</h2>
+        <p class="only-ar">باستخدامك لموقع <strong>CutMouse</strong>، فإنك توافق على استخدام الأداة للأغراض المشروعة فقط. يتم تقديم هذه الأداة "كما هي" دون أي ضمانات صريحة أو ضمنية.</p>
+        <p class="only-ar" style="color: #e74c3c; font-weight: bold;">إخلاء مسؤولية هام: موقع CutMouse هو أداة تقنية مستقلة تماماً، ولا يرتبط بأي شكل من الأشكال بتطبيق KarboAi أو الشركة المطورة له، ولا يوجد أي تعاون أو رعاية بيننا. استخدامك لـ "كاربو مود" هو مجرد ميزة لتسهيل تنسيق نصوصك لاستخدامها الشخصي. نحن لا نتحمل أي مسؤولية عن أي فقدان للبيانات أو مشاكل تقنية ناتجة عن استخدام الأداة.</p>
+        
+        <p class="only-en">By using <strong>CutMouse</strong>, you agree to use the tool for lawful purposes only. This tool is provided "as is" without any express or implied warranties.</p>
+        <p class="only-en" style="color: #e74c3c; font-weight: bold;">Important Disclaimer: CutMouse is a completely independent technical tool and is NOT affiliated with, endorsed by, or connected to the KarboAi app or its developers in any way. The "Karbo Mode" is merely a feature provided to help users format their personal texts more easily. We are not liable for any data loss or technical issues arising from the use of this site.</p>
     </div>
 </div>
 
@@ -650,7 +662,7 @@
         updateStats('split-input', 'split-stats');
     });
 
-    // --- الدالة الشاملة والتأثير البصري (تم تعديل الوميض ليتناسب مع وضع كاربو) ---
+    // --- الدالة الشاملة والتأثير البصري ---
     function processText(inputId, outputContainerId, outputId, prefix, suffix = '') {
         const input = document.getElementById(inputId).value;
         const isAr = document.body.classList.contains('ar');
@@ -670,12 +682,13 @@
         
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
+        // إصلاح لون الوميض ليتناسب مع وضع كاربو
         const isKarbo = document.body.classList.contains('karbo-mode');
         outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9'; 
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- الميزة الجديدة: دالة إضافة الرمز المخصص (مع الإغلاق الذكي) ---
+    // --- الميزة الجديدة: دالة إضافة الرمز المخصص ---
     function applyCustomSymbol() {
         const inputId = 'custom-input';
         const outputContainerId = 'custom-output-container';
@@ -724,7 +737,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (المحصنة ضد التليجرام وأكواد Amino) ---
+    // --- دالة إصلاح الاتجاه (المحصنة) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -765,7 +778,7 @@
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- الانتقال للقص (أو التوسيط في مود كاربو) ---
+    // --- الانتقال للقص (أو التوسيط في كاربو مود) ---
     function moveToSplit(sourceOutputId) {
         const textToMove = document.getElementById(sourceOutputId).value;
         const isKarbo = document.body.classList.contains('karbo-mode');
@@ -775,6 +788,10 @@
             centerEditor.value = textToMove;
             updateStats('center-input', 'center-stats');
             document.getElementById('center-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // وميض المربع الهدف عند الانتقال إليه للإشارة بنجاح النقل
+            centerEditor.style.backgroundColor = '#2b397a';
+            setTimeout(() => { centerEditor.style.backgroundColor = ''; }, 700);
         } else {
             const splitEditor = document.getElementById('split-input');
             splitEditor.innerText = textToMove; 
