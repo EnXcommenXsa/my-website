@@ -430,22 +430,26 @@
             </div>
         </div>
     </div>
+<div class="tool-section" id="split-section">
+        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
+        <h2 class="only-en">Article Splitter ✂️</h2>
+        
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
+        
+        <!-- المربع الكلاسيكي بدون الغلاف المزعج -->
+        <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+        <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-    <div class="tool-section" id="split-section">
-        <h2 class="only-ar">أداة تقسيم المقالة</h2>
-        <h2 class="only-en">Article Splitter</h2>
+        <!-- الأزرار الكلاسيكية مع الحفاظ على إصلاح المؤشر -->
+        <button class="split-action-btn only-ar" onmousedown="event.preventDefault(); insertSplitLine()">إدراج فاصل قص ✂️</button>
+        <button class="split-action-btn only-en" onmousedown="event.preventDefault(); insertSplitLine()">Insert Split Line ✂️</button>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the button to insert a marker.</p>
-        
-        <div class="split-editor-wrapper">
-            <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
-            
-            <button class="add-cut-styled-btn" onmousedown="event.preventDefault(); insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">
-                <span class="only-ar">إضافة قص</span>
-                <span class="only-en">Add Cut</span>
-            </button>
-        </div>
+        <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
+        <button class="only-en" onclick="splitText()">Split Text Now</button>
+
+        <div id="split-results"></div>
+    </div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
