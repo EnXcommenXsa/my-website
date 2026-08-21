@@ -63,10 +63,16 @@
         body.karbo-mode h1, body.karbo-mode h2, body.karbo-mode h3 { color: #a1b2ff; }
         body.karbo-mode .description { color: #b0bec5; }
         body.karbo-mode .stats-counter { color: #90a4ae; }
+        
+        /* إصلاح حواف الخانات الغريبة في كاربو مود */
         body.karbo-mode textarea, body.karbo-mode input, body.karbo-mode select { 
             background-color: #0b112c; color: #ffffff; 
+            border: 1px solid var(--border-color); outline: none;
         }
+        /* إصلاح المربع الأبيض في كاربو مود */
+        body.karbo-mode .rich-editor { background-color: transparent !important; color: #ffffff !important; }
         body.karbo-mode .rich-editor:empty:before { color: #546e7a; }
+        
         body.karbo-mode .output-box { background-color: #0d1433; border-color: #2b397a; }
         body.karbo-mode .split-editor-wrapper { background-color: #0b112c; border-color: #2b397a; }
         body.karbo-mode .header { color: #ffffff; }
@@ -106,6 +112,8 @@
         
         /* --- ترتيب الشريط الجانبي (Sidebar Order) --- */
         .sidebar { display: flex; flex-direction: column; }
+        
+        /* الترتيب في الوضع العادي */
         #nav-karbo { order: 1; }
         #nav-center { order: 2; }
         #nav-split { order: 3; }
@@ -113,7 +121,7 @@
         #nav-extra { order: 5; }
         #nav-lang { order: 6; }
         
-        /* الترتيب في وضع كاربو */
+        /* الترتيب في كاربو مود */
         body.karbo-mode #nav-karbo { order: 1; }
         body.karbo-mode #nav-fix { order: 2; }
         body.karbo-mode #nav-center { order: 3; }
@@ -198,14 +206,14 @@
         
         /* إصلاح قائمة الهواتف للسماح بالتمرير الأفقي */
         @media (max-width: 1000px) {
-            .sidebar {
-                top: auto; bottom: 0; right: 0; left: 0;
+            .sidebar, body.en .sidebar {
+                top: auto; bottom: 0; right: 0; left: 0; width: 100%; box-sizing: border-box;
                 transform: none; flex-direction: row; justify-content: flex-start;
                 border-radius: 15px 15px 0 0; padding: 10px 15px; overflow-x: auto;
                 box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
                 -webkit-overflow-scrolling: touch;
             }
-            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; }
+            .sidebar a { padding: 8px 12px; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; margin-left: 5px; margin-right: 5px; }
         }
 
         /* --- الأقسام --- */
@@ -239,20 +247,63 @@
         }
         body.karbo-mode textarea:focus, body.karbo-mode input:focus, body.karbo-mode select:focus, body.karbo-mode .rich-editor:focus {
             box-shadow: 0 0 5px rgba(99, 123, 230, 0.4);
+            border-color: var(--primary-color);
         }
 
-        textarea, .rich-editor {
+        textarea {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
             transition: background-color 0.4s ease;
+            min-height: 120px; resize: vertical;
         }
-        textarea { min-height: 120px; resize: vertical; }
-        .rich-editor { min-height: 150px; background: #fff; overflow-y: auto; white-space: pre-wrap; outline: none; }
+        
+        /* --- تخصيص مربع القص المتقدم --- */
+        .split-editor-wrapper {
+            position: relative;
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding-bottom: 45px;
+            margin-bottom: 5px;
+        }
+        .rich-editor {
+            width: 100%; padding: 12px; 
+            font-family: inherit; font-size: 1em; box-sizing: border-box;
+            min-height: 150px; background: transparent; overflow-y: auto; white-space: pre-wrap; outline: none;
+            border: none;
+        }
         .rich-editor:empty:before { content: attr(data-placeholder); color: #aaa; }
+        
+        .add-cut-styled-btn {
+            position: absolute;
+            bottom: 15px; left: 0; right: 0;
+            width: 85%; margin: 0 auto; height: 2px;
+            background: #e74c3c;
+            display: flex; align-items: center; justify-content: center;
+            border: none; cursor: pointer; padding: 0; z-index: 10;
+        }
+        .add-cut-styled-btn span {
+            background: #e74c3c; color: white; padding: 6px 20px;
+            border-radius: 20px; font-size: 14px; font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: background 0.3s;
+        }
+        .add-cut-styled-btn:hover { background: #c0392b; }
+        .add-cut-styled-btn:hover span { background: #c0392b; }
+
         .stats-counter { font-size: 0.85em; text-align: left; margin-bottom: 15px; font-weight: bold; }
         body.en .stats-counter { text-align: right; }
-        
-        /* --- فاصل القص --- */
+
+        /* --- تخصيص أداة الرموز المتقدمة --- */
+        .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
+        .custom-controls input, .custom-controls select { 
+            padding: 10px; border: 1px solid var(--border-color); 
+            border-radius: 6px; font-size: 0.95em; flex: 1; min-width: 150px; font-family: inherit;
+        }
+        .custom-controls input:focus, .custom-controls select:focus {
+            border-color: var(--primary-color); outline: none;
+        }
+
+        /* --- فاصل القص الداخلي --- */
         .split-line {
             display: flex; align-items: center; justify-content: center; height: 2px;
             background: #e74c3c; margin: 25px 0; position: relative; user-select: none; clear: both;
@@ -320,8 +371,8 @@
         <span class="only-en">Center [C]</span>
     </a>
     <a href="#split-section" id="nav-split">
-        <span class="only-ar">تقسيم وقص ✂️</span>
-        <span class="only-en">Split & Cut ✂️</span>
+        <span class="only-ar">تقسيم وقص</span>
+        <span class="only-en">Split & Cut</span>
     </a>
     <a href="#simulator-section" id="nav-fix">
         <span class="only-ar">إصلاح الاتجاه</span>
@@ -374,25 +425,29 @@
                 <button class="copy-btn only-ar" onclick="copyText('center-output', this)">نسخ النتيجة</button>
                 <button class="copy-btn only-en" onclick="copyText('center-output', this)">Copy Result</button>
                 
-                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص 👇</button>
-                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split 👇</button>
+                <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص</button>
+                <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split</button>
             </div>
         </div>
     </div>
 
     <div class="tool-section" id="split-section">
-        <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
-        <h2 class="only-en">Article Splitter ✂️</h2>
+        <h2 class="only-ar">أداة تقسيم المقالة</h2>
+        <h2 class="only-en">Article Splitter</h2>
         
-        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل وتقسيمها لمربعات.</p>
-        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click to insert a split marker.</p>
+        <p class="description only-ar">ألصق مقالتك الكاملة هنا. ضع المؤشر بين الفقرات واضغط على الزر لإدراج فاصل.</p>
+        <p class="description only-en">Paste your full article here. Place the cursor between paragraphs and click the button to insert a marker.</p>
         
-        <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+        <div class="split-editor-wrapper">
+            <div id="split-input" class="rich-editor auto-stats" data-target="split-stats" contenteditable="true" data-ph-ar="ألصق المقالة الكاملة هنا..." data-ph-en="Paste full article here..." data-placeholder="ألصق المقالة الكاملة هنا..."></div>
+            
+            <button class="add-cut-styled-btn" onmousedown="event.preventDefault(); insertSplitLine()" title="أدرج الفاصل في مكان المؤشر">
+                <span class="only-ar">إضافة قص</span>
+                <span class="only-en">Add Cut</span>
+            </button>
+        </div>
         <div class="stats-counter" id="split-stats">الأحرف: 0 | الكلمات: 0</div>
 
-        <button class="split-action-btn only-ar" onclick="insertSplitLine()">إدراج فاصل قص ✂️</button>
-        <button class="split-action-btn only-en" onclick="insertSplitLine()">Insert Split Line ✂️</button>
-        
         <button class="only-ar" onclick="splitText()">تقسيم النص الآن</button>
         <button class="only-en" onclick="splitText()">Split Text Now</button>
 
@@ -415,8 +470,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('bold-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('bold-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص 👇</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split 👇</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split</button>
                 </div>
             </div>
         </div>
@@ -436,8 +491,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('italic-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('italic-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص 👇</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split 👇</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split</button>
                 </div>
             </div>
         </div>
@@ -455,12 +510,12 @@
             <div class="custom-controls">
                 <input type="text" id="customSymbol" placeholder="الرمز (جرب وضع * أو -)" data-ph-ar="الرمز (جرب وضع * أو -)" data-ph-en="Symbol (Try * or -)">
                 <select id="symbolPosition">
-                    <option value="before" class="only-ar">قبل النص فقط ⬅️</option>
-                    <option value="before" class="only-en">Before text only ⬅️</option>
-                    <option value="after" class="only-ar">بعد النص فقط ➡️</option>
-                    <option value="after" class="only-en">After text only ➡️</option>
-                    <option value="both" class="only-ar">قبل وبعد النص 🔄 (إغلاق ذكي)</option>
-                    <option value="both" class="only-en">Before & After 🔄 (Smart close)</option>
+                    <option value="before" class="only-ar">قبل النص فقط</option>
+                    <option value="before" class="only-en">Before text only</option>
+                    <option value="after" class="only-ar">بعد النص فقط</option>
+                    <option value="after" class="only-en">After text only</option>
+                    <option value="both" class="only-ar">قبل وبعد النص (إغلاق ذكي)</option>
+                    <option value="both" class="only-en">Before & After (Smart close)</option>
                 </select>
             </div>
             
@@ -472,8 +527,8 @@
                 <div class="button-group">
                     <button class="copy-btn only-ar" onclick="copyText('custom-output', this)">نسخ</button>
                     <button class="copy-btn only-en" onclick="copyText('custom-output', this)">Copy</button>
-                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص 👇</button>
-                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split 👇</button>
+                    <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص</button>
+                    <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split</button>
                 </div>
             </div>
         </div>
@@ -682,7 +737,6 @@
         
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // إصلاح لون الوميض ليتناسب مع وضع كاربو
         const isKarbo = document.body.classList.contains('karbo-mode');
         outputEl.style.backgroundColor = isKarbo ? '#2b397a' : '#e8f5e9'; 
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
@@ -789,7 +843,6 @@
             updateStats('center-input', 'center-stats');
             document.getElementById('center-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
             
-            // وميض المربع الهدف عند الانتقال إليه للإشارة بنجاح النقل
             centerEditor.style.backgroundColor = '#2b397a';
             setTimeout(() => { centerEditor.style.backgroundColor = ''; }, 700);
         } else {
