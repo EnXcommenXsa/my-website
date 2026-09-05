@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تعرف على الفروق الجوهرية بين تنسيق النصوص العربية (RTL) والإنجليزية (LTR) وكيفية حل مشاكل اختلاط الكلمات وانعكاس الأقواس.">
+    <title>الفروق بين تنسيق النصوص العربية والإنجليزية - CutMouse</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.8;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #0d6efd;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+        h2 {
+            color: #495057;
+            font-size: 20px;
+            margin-top: 30px;
+            border-right: 4px solid #0d6efd;
+            padding-right: 10px;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        ul {
+            margin-bottom: 20px;
+            padding-right: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #e9ecef;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>الفروق بين تنسيق النصوص العربية والإنجليزية: تحديات وحلول</h1>
+        
+        <p>إذا كنت قد حاولت يوماً كتابة جملة عربية تحتوي على كلمة إنجليزية أو أرقام داخل أحد برامج التصميم أو تطبيقات المونتاج، فمن المؤكد أنك واجهت "كابوس" النصوص ثنائية الاتجاه (BiDi). الكلمات تتبعثر، الأقواس تنعكس، وعلامات الترقيم تقفز إلى الجانب الخاطئ من الجملة. لماذا يحدث هذا؟</p>
+
+        <h2>جذر المشكلة: RTL مقابل LTR</h2>
+        <p>السبب التقني وراء هذه الفوضى هو اختلاف اتجاه القراءة. اللغة الإنجليزية ومعظم اللغات اللاتينية تُكتب من اليسار إلى اليمين (LTR - Left to Right)، بينما تُكتب اللغة العربية من اليمين إلى اليسار (RTL - Right to Left).</p>
+        <p>معظم البرامج والتطبيقات العالمية مبرمجة افتراضياً للتعامل مع نصوص LTR. عندما تقوم بإدخال نص عربي، يحاول البرنامج "تخمين" الاتجاه الصحيح. وإذا أدخلت كلمة إنجليزية في المنتصف، يرتبك محرك عرض النصوص (Text Engine) ولا يعرف أي اتجاه يجب أن يتبع، فتحدث اللخبطة.</p>
+
+        <h2>أبرز المشاكل التي يواجهها صناع المحتوى</h2>
+        <ul>
+            <li><strong>انعكاس الأقواس:</strong> عندما تكتب نصاً مثل: (مرحباً)، قد يظهر في بعض التطبيقات هكذا: مرحباً).</li>
+            <li><strong>تغيير ترتيب الكلمات:</strong> الجملة "استخدم تطبيق Photoshop للتصميم" قد تظهر كالتالي: "للتصميم Photoshop استخدم تطبيق".</li>
+            <li><strong>موضع علامات الترقيم:</strong> النقطة التي تنهي بها الجملة العربية قد تقفز وتستقر في بداية السطر.</li>
+        </ul>
+
+        <h2>كيفية الحل التقني لهذه المشكلة</h2>
+        <p>لحل هذه المعضلة دون الحاجة لتعلم لغات برمجة، يمكن الاعتماد على ما يُسمى بـ "أكواد توجيه اليونيكود" (Unicode Directional Formatting Codes). هذه الأكواد هي عبارة عن أحرف مخفية لا يراها المستخدم، ولكنها تخبر البرنامج بشكل إجباري: "عامل هذا النص ككتلة واحدة من اليمين إلى اليسار".</p>
+        
+        <p>نظراً لأن إضافة هذه الأكواد يدوياً أمر شبه مستحيل، تم ابتكار أدوات مساعدة (مثل ميزة "إصلاح الاتجاه" في أداة CutMouse). هذه الأدوات تقوم بتغليف الجملة العربية المختلطة بأكواد الحماية المخفية بضغطة زر واحدة. بعد ذلك، يمكنك نسخ النص ولصقه في أي تطبيق أجنبي ليظهر بشكل مثالي ومرتب تماماً كما كتبته.</p>
+
+        <h2>الخلاصة</h2>
+        <p>فهم كيفية تعامل الحواسيب مع اتجاهات النصوص يوفر عليك ساعات من الإحباط ومحاولات التعديل اليدوي الفاشلة. استخدام الأدوات المخصصة لإصلاح النصوص المختلطة أصبح خطوة أساسية في سير عمل أي مترجم أو صانع محتوى عربي محترف.</p>
+
+        <a href="blog.html" class="back-btn">← العودة إلى المدونة</a>
+    </div>
+</body>
+</html>
