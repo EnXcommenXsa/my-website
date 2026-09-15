@@ -3,185 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول حالة الأحرف - Case Converter | CutMouse</title>
     <meta name="description" content="أداة مجانية لتحويل حالة الأحرف الإنجليزية: أحرف كبيرة، صغيرة، حالة الجملة، وغيرها.">
-    <style>
-        /* الإعدادات الأساسية والوضع الليلي */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121110; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
-        
-        /* القائمة العلوية */
-        .navbar { background-color: #1a1918; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        .navbar a { color: #fff; text-decoration: none; margin: 0 10px; font-size: 16px; transition: color 0.2s; }
-        .navbar a:hover { color: #d35400; }
-        .logo { font-size: 24px; font-weight: bold; color: #d35400; text-decoration: none;}
+    <title>محول حالة الأحرف - Case Converter | CutMouse</title>
 
-        /* حاوية الأداة */
-        .container { max-width: 900px; margin: 40px auto; padding: 20px; flex-grow: 1; width: 90%; }
-        h1 { text-align: center; margin-bottom: 30px; font-size: 24px; color: #e0e0e0; }
+    <style>
+        /* نفس إعدادات التصميم الأساسية للموقع */
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --box-bg: #ffffff;
+            --border-color: #ccc;
+        }
         
-        /* مربع النص */
-        .editor-container { background-color: #1a1918; border: 1px solid #2c2b2a; border-radius: 8px; padding: 0; overflow: hidden; }
-        textarea { width: 100%; height: 250px; background-color: transparent; color: #fff; border: none; outline: none; padding: 20px; font-size: 16px; resize: vertical; font-family: monospace; direction: ltr; box-sizing: border-box; }
-        textarea::placeholder { color: #666; }
+        body.karbo-mode {
+            --primary-color: #637be6; 
+            --bg-color: #0b112c;      
+            --box-bg: #141c42;        
+            --border-color: #2b397a;  
+            color: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--color, #333);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
         
-        /* شريط الأدوات (العدادات وأزرار التحكم) */
-        .toolbar { display: flex; justify-content: space-between; align-items: center; background-color: #1a1918; padding: 10px 20px; border-top: 1px solid #2c2b2a; border-bottom: 1px solid #2c2b2a; flex-wrap: wrap; gap: 10px; }
+        body.en .only-ar { display: none !important; }
+        body.ar .only-en { display: none !important; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        /* القائمة العلوية الموحدة */
+        .top-navbar {
+            display: flex; justify-content: center; align-items: center;
+            background: var(--box-bg); padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky;
+            top: 0; z-index: 1000; gap: 15px; flex-wrap: wrap;
+        }
+        body.karbo-mode .top-navbar { background: #141c42; border-bottom: 1px solid var(--border-color); }
+
+        .top-navbar a {
+            text-decoration: none; color: #475569; font-weight: 600; font-size: 0.95em;
+            padding: 8px 12px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;
+        }
+        .top-navbar a:hover { color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
+        body.karbo-mode .top-navbar a { color: #b0bec5; }
+        body.karbo-mode .top-navbar a:hover { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
+        
+        .top-navbar .active-link { color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
+        body.karbo-mode .top-navbar .active-link { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
+
+        .top-navbar .karbo-btn { color: #637be6 !important; border: 1px solid #637be6 !important; }
+        body.karbo-mode .top-navbar .karbo-btn { color: #a1b2ff !important; border-color: #a1b2ff !important; background: transparent !important; }
+        .top-navbar .lang-btn { border: 1px solid #ccc; color: #555; }
+        body.karbo-mode .top-navbar .lang-btn { color: #ccc; border-color: #555; }
+
+        @media (max-width: 768px) {
+            .top-navbar { justify-content: flex-start; overflow-x: auto; white-space: nowrap; padding: 12px 15px; gap: 5px; }
+            .top-navbar a { flex-shrink: 0; }
+        }
+
+        /* تنسيقات أداة محول الأحرف */
+        .header { text-align: center; margin-bottom: 30px; margin-top: 20px; }
+        body.karbo-mode .header { color: #fff; }
+        .signature { text-align: center; font-size: 1.2em; margin-bottom: 15px; color: #666; }
+        
+        .tool-section { background: var(--box-bg); padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        textarea {
+            width: 100%; height: 250px; padding: 15px; border: 1px solid var(--border-color);
+            border-radius: 6px; font-family: monospace; font-size: 1.1em; box-sizing: border-box;
+            background-color: var(--bg-color); color: inherit; resize: vertical; outline: none;
+            direction: ltr; /* النص الإنجليزي يجب أن يكون من اليسار */
+        }
+        textarea:focus { border-color: var(--primary-color); box-shadow: 0 0 5px rgba(0, 86, 179, 0.2); }
+        body.karbo-mode textarea { background-color: #0b112c; color: #fff; }
+
+        .toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .action-btns { display: flex; gap: 5px; }
-        .action-btns button { background-color: #2c2b2a; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 16px; display: flex; align-items: center; justify-content: center;}
-        .action-btns button:hover { background-color: #444; }
-        .counters { font-size: 14px; color: #aaa; font-family: sans-serif; direction: ltr;}
+        .action-btns button { background-color: var(--bg-color); color: inherit; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
+        .action-btns button:hover { background-color: var(--border-color); }
+        body.karbo-mode .action-btns button { background-color: #0b112c; color: #fff; }
+        
+        .counters { font-size: 14px; color: #888; font-family: sans-serif; direction: ltr; font-weight: bold;}
+        body.karbo-mode .counters { color: #a1b2ff; }
 
         /* أزرار التحويل */
-        .conversion-btns { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px 20px; background-color: #121110; }
-        .btn-conv { background-color: #1a1918; border: 1px solid #2c2b2a; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: 0.2s; font-family: sans-serif; }
-        .btn-conv:hover { background-color: #2c2b2a; }
-        .badge { padding: 2px 5px; border-radius: 3px; font-weight: bold; font-size: 12px; color: #fff; }
+        .conversion-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .btn-conv { background-color: var(--bg-color); border: 1px solid var(--border-color); color: inherit; padding: 8px 15px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: 0.2s; font-family: sans-serif; font-weight: bold; }
+        .btn-conv:hover { border-color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
+        body.karbo-mode .btn-conv { background-color: #0b112c; color: #fff; border-color: #2b397a; }
+        body.karbo-mode .btn-conv:hover { border-color: #a1b2ff; background-color: #1a2352; }
         
-        /* ألوان الشارات المطابقة للصورة */
-        .b-sc { background-color: #d35400; }
-        .b-lc { background-color: #27ae60; }
-        .b-uc { background-color: #2980b9; }
-        .b-cc { background-color: #8e44ad; }
-        .b-ac { background-color: #f1c40f; color: #000; }
-        .b-tc { background-color: #16a085; }
+        .badge { padding: 3px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; color: #fff; }
+        .b-sc { background-color: #d35400; } .b-lc { background-color: #27ae60; }
+        .b-uc { background-color: #2980b9; } .b-cc { background-color: #8e44ad; }
+        .b-ac { background-color: #f1c40f; color: #000; } .b-tc { background-color: #16a085; }
         .b-ic { background-color: #e84393; }
 
     </style>
 </head>
-<body>
+<body class="ar">
 
-    <!-- القائمة العلوية -->
-    <nav class="navbar">
-        <a href="index.html" class="logo">CutMouse</a>
-        <div class="nav-links">
-            <a href="index.html">أداة التقطيع</a>
-            <a href="case-converter.html" style="color: #d35400;">محول الأحرف</a>
-            <a href="blog.html">المدونة</a>
-        </div>
-    </nav>
+<!-- القائمة العلوية (تم تعديل الروابط لتعود للصفحة الرئيسية) -->
+<nav class="top-navbar">
+    <a href="case-converter.html" class="active-link">
+        <span class="only-ar">محول الأحرف</span><span class="only-en">Case Converter</span>
+    </a>
+    <a href="index.html#center-section">
+        <span class="only-ar">توسيط [C]</span><span class="only-en">Center [C]</span>
+    </a>
+    <a href="index.html#split-section">
+        <span class="only-ar">تقسيم وقص</span><span class="only-en">Split & Cut</span>
+    </a>
+    <a href="index.html#simulator-section">
+        <span class="only-ar">إصلاح الاتجاه</span><span class="only-en">Fix Direction</span>
+    </a>
+    <a href="index.html#secondary-tools">
+        <span class="only-ar">أدوات إضافية</span><span class="only-en">Extra Tools</span>
+    </a>
+    <a onclick="toggleKarboMode(event)" class="karbo-btn" style="cursor: pointer;">
+        <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
+    </a>
+    <a onclick="toggleLanguage(event)" class="lang-btn" style="cursor: pointer;">
+        <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
+    </a>
+</nav>
 
-    <div class="container">
-        <h1>محول حالة الأحرف الإنجليزية (Case Converter)</h1>
+<div class="container">
+    <div class="header">
+        <h1 class="only-ar">محول حالة الأحرف الإنجليزية</h1>
+        <h1 class="only-en">English Case Converter</h1>
+        <div class="signature">Aa ↔ aA</div>
+    </div>
+    
+    <div class="tool-section">
+        <textarea id="inputText" placeholder="Type or paste your English text here..."></textarea>
         
-        <div class="editor-container">
-            <textarea id="inputText" placeholder="Type or paste your content here..."></textarea>
-            
-            <div class="toolbar">
-                <div class="action-btns">
-                    <button onclick="copyText()" title="Copy">📋</button>
-                    <button onclick="clearText()" title="Clear">🗑️</button>
-                    <button onclick="downloadText()" title="Download">⬇️</button>
-                </div>
-                <div class="counters">
-                    Character Count: <span id="charCount">0</span> | 
-                    Word Count: <span id="wordCount">0</span> | 
-                    Line Count: <span id="lineCount">0</span>
-                </div>
+        <div class="toolbar">
+            <div class="action-btns">
+                <button onclick="copyText()" title="Copy Text">📋</button>
+                <button onclick="clearText()" title="Clear Text">🗑️</button>
+                <button onclick="downloadText()" title="Download as .txt">⬇️</button>
             </div>
+            <div class="counters">
+                Character Count: <span id="charCount">0</span> | 
+                Word Count: <span id="wordCount">0</span> | 
+                Line Count: <span id="lineCount">0</span>
+            </div>
+        </div>
 
-            <div class="conversion-btns">
-                <button class="btn-conv" onclick="convertCase('sentence')">
-                    <span class="badge b-sc">Sc</span> Sentence case
-                </button>
-                <button class="btn-conv" onclick="convertCase('lower')">
-                    <span class="badge b-lc">lc</span> lower case
-                </button>
-                <button class="btn-conv" onclick="convertCase('upper')">
-                    <span class="badge b-uc">UC</span> UPPER CASE
-                </button>
-                <button class="btn-conv" onclick="convertCase('capitalized')">
-                    <span class="badge b-cc">Cc</span> Capitalized Case
-                </button>
-                <button class="btn-conv" onclick="convertCase('alternating')">
-                    <span class="badge b-ac">aC</span> aLtErNaTiNg cAsE
-                </button>
-                <button class="btn-conv" onclick="convertCase('title')">
-                    <span class="badge b-tc">Tc</span> Title Case
-                </button>
-                <button class="btn-conv" onclick="convertCase('inverse')">
-                    <span class="badge b-ic">iC</span> InVeRsE CaSe
-                </button>
-            </div>
+        <div class="conversion-btns">
+            <button class="btn-conv" onclick="convertCase('sentence')">
+                <span class="badge b-sc">Sc</span> Sentence case
+            </button>
+            <button class="btn-conv" onclick="convertCase('lower')">
+                <span class="badge b-lc">lc</span> lower case
+            </button>
+            <button class="btn-conv" onclick="convertCase('upper')">
+                <span class="badge b-uc">UC</span> UPPER CASE
+            </button>
+            <button class="btn-conv" onclick="convertCase('capitalized')">
+                <span class="badge b-cc">Cc</span> Capitalized Case
+            </button>
+            <button class="btn-conv" onclick="convertCase('alternating')">
+                <span class="badge b-ac">aC</span> aLtErNaTiNg cAsE
+            </button>
+            <button class="btn-conv" onclick="convertCase('title')">
+                <span class="badge b-tc">Tc</span> Title Case
+            </button>
+            <button class="btn-conv" onclick="convertCase('inverse')">
+                <span class="badge b-ic">iC</span> InVeRsE CaSe
+            </button>
         </div>
     </div>
+</div>
 
-    <script>
-        const textArea = document.getElementById('inputText');
-        const charCount = document.getElementById('charCount');
-        const wordCount = document.getElementById('wordCount');
-        const lineCount = document.getElementById('lineCount');
+<script>
+    // نظام اللغات وكاربو مود
+    function toggleKarboMode(event) {
+        if(event) event.preventDefault();
+        document.body.classList.toggle('karbo-mode');
+    }
 
-        // تحديث العدادات
-        textArea.addEventListener('input', updateCounters);
+    function toggleLanguage(event) {
+        if(event) event.preventDefault();
+        const body = document.body;
+        const isAr = body.classList.contains('ar');
+        body.classList.remove(isAr ? 'ar' : 'en');
+        body.classList.add(isAr ? 'en' : 'ar');
+        document.documentElement.lang = isAr ? 'en' : 'ar';
+        document.documentElement.dir = isAr ? 'ltr' : 'rtl';
+    }
 
-        function updateCounters() {
-            const text = textArea.value;
-            charCount.textContent = text.length;
-            wordCount.textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-            lineCount.textContent = text === '' ? 0 : text.split('\n').length;
+    // منطق محول الأحرف
+    const textArea = document.getElementById('inputText');
+    const charCount = document.getElementById('charCount');
+    const wordCount = document.getElementById('wordCount');
+    const lineCount = document.getElementById('lineCount');
+
+    textArea.addEventListener('input', updateCounters);
+
+    function updateCounters() {
+        const text = textArea.value;
+        charCount.textContent = text.length;
+        wordCount.textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+        lineCount.textContent = text === '' ? 0 : text.split('\n').length;
+    }
+
+    function clearText() {
+        textArea.value = '';
+        updateCounters();
+    }
+
+    function copyText() {
+        if(textArea.value.trim() === '') return;
+        navigator.clipboard.writeText(textArea.value).then(() => {
+            const isAr = document.body.classList.contains('ar');
+            alert(isAr ? 'تم نسخ النص بنجاح!' : 'Text copied successfully!');
+        });
+    }
+
+    function downloadText() {
+        if(textArea.value.trim() === '') return;
+        const blob = new Blob([textArea.value], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'cutmouse-case-converter.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function convertCase(type) {
+        let text = textArea.value;
+        if (!text) return;
+
+        switch(type) {
+            case 'lower': text = text.toLowerCase(); break;
+            case 'upper': text = text.toUpperCase(); break;
+            case 'capitalized': text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); break;
+            case 'sentence': text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase()); break;
+            case 'alternating': text = text.toLowerCase().split('').map((c, i) => i % 2 !== 0 ? c.toUpperCase() : c).join(''); break;
+            case 'inverse': text = text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join(''); break;
+            case 'title':
+                const smallWords = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'of', 'on', 'or', 'the', 'to', 'with'];
+                text = text.toLowerCase().replace(/\w\S*/g, function(word, index) {
+                    if (index !== 0 && smallWords.includes(word.toLowerCase())) return word.toLowerCase();
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                });
+                break;
         }
+        textArea.value = text;
+        updateCounters();
+    }
+</script>
 
-        // أزرار التحكم (نسخ، مسح، تحميل)
-        function clearText() {
-            textArea.value = '';
-            updateCounters();
-        }
-
-        function copyText() {
-            if(textArea.value.trim() === '') return;
-            navigator.clipboard.writeText(textArea.value).then(() => {
-                alert('تم نسخ النص بنجاح!');
-            });
-        }
-
-        function downloadText() {
-            if(textArea.value.trim() === '') return;
-            const blob = new Blob([textArea.value], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'cutmouse-text.txt';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // وظائف التحويل
-        function convertCase(type) {
-            let text = textArea.value;
-            if (!text) return;
-
-            switch(type) {
-                case 'lower':
-                    text = text.toLowerCase();
-                    break;
-                case 'upper':
-                    text = text.toUpperCase();
-                    break;
-                case 'capitalized':
-                    text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-                    break;
-                case 'sentence':
-                    text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
-                    break;
-                case 'alternating':
-                    text = text.toLowerCase().split('').map((c, i) => i % 2 !== 0 ? c.toUpperCase() : c).join('');
-                    break;
-                case 'inverse':
-                    text = text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join('');
-                    break;
-                case 'title':
-                    const smallWords = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'of', 'on', 'or', 'the', 'to', 'with'];
-                    text = text.toLowerCase().replace(/\w\S*/g, function(word, index) {
-                        if (index !== 0 && smallWords.includes(word.toLowerCase())) {
-                            return word.toLowerCase();
-                        }
-                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                    });
-                    break;
-            }
-            textArea.value = text;
-            updateCounters();
-        }
-    </script>
 </body>
 </html>
