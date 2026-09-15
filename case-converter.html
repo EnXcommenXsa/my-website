@@ -7,7 +7,6 @@
     <title>محول حالة الأحرف - Case Converter | CutMouse</title>
 
     <style>
-        /* المتغيرات الأساسية (الوضع النهاري) */
         :root {
             --primary-color: #0056b3;
             --bg-color: #f4f7f6;
@@ -17,7 +16,6 @@
             --muted-color: #666666;
         }
         
-        /* الوضع الليلي الجديد (Dark Mode) */
         body.dark-mode {
             --bg-color: #121212;
             --box-bg: #1e1e1e;
@@ -26,7 +24,6 @@
             --muted-color: #aaaaaa;
         }
 
-        /* وضع كاربو (Karbo Mode) */
         body.karbo-mode {
             --primary-color: #637be6; 
             --bg-color: #0b112c;      
@@ -52,9 +49,8 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 20px; }
         
-        /* القائمة العلوية (بدون أوامر الترتيب المزعجة) */
         .top-navbar {
-            display: flex; align-items: center;
+            display: flex; align-items: center; justify-content: center;
             background: var(--box-bg); padding: 15px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky;
             top: 0; z-index: 1000; gap: 15px; flex-wrap: wrap;
@@ -63,12 +59,9 @@
         }
 
         .brand-logo {
-            margin-inline-end: auto;
-            font-size: 1.2em !important;
-            font-weight: 800 !important;
-            color: var(--primary-color) !important;
-            letter-spacing: 0.5px;
-            text-decoration: none;
+            position: absolute; right: 20px; font-size: 1.2em !important;
+            font-weight: 800 !important; color: var(--primary-color) !important;
+            letter-spacing: 0.5px; text-decoration: none;
         }
 
         .top-navbar a:not(.brand-logo) {
@@ -76,15 +69,9 @@
             padding: 8px 12px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;
         }
         
-        .top-navbar a:not(.brand-logo):hover { 
-            color: var(--primary-color); 
-            background-color: rgba(0, 86, 179, 0.05); 
-        }
-        
+        .top-navbar a:not(.brand-logo):hover { color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
         body.dark-mode .top-navbar a:not(.brand-logo):hover, 
-        body.karbo-mode .top-navbar a:not(.brand-logo):hover { 
-            color: #ffffff; background-color: rgba(255, 255, 255, 0.1); 
-        }
+        body.karbo-mode .top-navbar a:not(.brand-logo):hover { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
         
         .top-navbar .active-link { color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
         body.dark-mode .top-navbar .active-link, 
@@ -96,17 +83,16 @@
         .top-navbar .lang-btn { border: 1px solid var(--border-color); }
         .top-navbar .theme-btn { font-size: 1.2em !important; padding: 5px 10px !important; }
 
-        @media (max-width: 900px) {
-            .top-navbar { overflow-x: auto; white-space: nowrap; padding: 12px 15px; gap: 8px; }
+        @media (max-width: 1050px) {
+            .top-navbar { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; padding: 12px 15px; gap: 8px; }
+            .brand-logo { position: static; margin-left: 10px; }
             .top-navbar a { flex-shrink: 0; }
         }
 
-        /* رأس الصفحة */
         .header { text-align: center; margin-bottom: 30px; margin-top: 20px; }
         .header h1 { color: var(--text-color); }
         .header p { color: var(--muted-color); }
         
-        /* المحرر */
         .editor-wrapper {
             background-color: var(--box-bg); border: 1px solid var(--border-color);
             border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;
@@ -119,7 +105,6 @@
             font-size: 18px; resize: vertical; outline: none; direction: ltr; box-sizing: border-box;
         }
 
-        /* شريط الأدوات */
         .editor-toolbar {
             display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;
             background-color: rgba(0,0,0,0.03); border-top: 1px solid var(--border-color); direction: ltr;
@@ -137,7 +122,6 @@
         
         .counters { font-size: 14px; color: var(--muted-color); font-family: sans-serif; }
 
-        /* أزرار التحويل */
         .case-buttons-row { display: flex; flex-wrap: wrap; gap: 12px; direction: ltr; justify-content: center; }
         
         .case-btn {
@@ -148,19 +132,26 @@
         .case-btn:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); filter: brightness(0.95); }
         body.dark-mode .case-btn:hover, body.karbo-mode .case-btn:hover { filter: brightness(1.2); }
         
-        /* الشارات الملونة */
         .badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 14px; color: #fff; }
         .b-sc { background-color: #d35400; } .b-lc { background-color: #27ae60; }
         .b-uc { background-color: #2980b9; } .b-cc { background-color: #8e44ad; }
         .b-ac { background-color: #f1c40f; color: #000; } .b-tc { background-color: #16a085; }
         .b-ic { background-color: #e84393; }
+
+        /* إشعار النسخ الأنيق (Toast) */
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center;
+            border-radius: 8px; padding: 16px; position: fixed; z-index: 3000; left: 50%; bottom: 30px;
+            transform: translateX(-50%); font-size: 16px; opacity: 0; transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
     </style>
 </head>
 <body class="ar">
 
-<nav class="top-navbar">
-    <!-- لوجو الموقع -->
-    <a href="index.html" class="brand-logo">🖱️ CutMouse</a>
+<nav class="top-navbar" dir="rtl">
+    <a href="index.html" class="brand-logo" dir="ltr">CutMouse 🖱️</a>
     
     <a href="index.html">
         <span class="only-ar">الرئيسية</span><span class="only-en">Home</span>
@@ -178,17 +169,10 @@
         <span class="only-ar">إصلاح الاتجاه</span><span class="only-en">Fix Direction</span>
     </a>
     
-    <!-- زر الوضع الليلي والنهاري -->
-    <a onclick="toggleDarkMode(event)" class="theme-btn" style="cursor: pointer;" title="تغيير المظهر">
-        🌓
-    </a>
-
-    <!-- زر اللغة -->
+    <a onclick="toggleDarkMode(event)" class="theme-btn" style="cursor: pointer;" title="تغيير المظهر">🌓</a>
     <a onclick="toggleLanguage(event)" class="lang-btn" style="cursor: pointer;">
         <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
     </a>
-
-    <!-- زر كاربو مود (بعد زر اللغة) -->
     <a onclick="toggleKarboMode(event)" class="karbo-btn" style="cursor: pointer;">
         <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
     </a>
@@ -207,7 +191,7 @@
         
         <div class="editor-toolbar">
             <div class="action-icons">
-                <button class="icon-btn" onclick="copyText()" title="Copy">
+                <button class="icon-btn" onclick="copyTextAdvanced()" title="Copy">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 </button>
                 <button class="icon-btn" onclick="downloadText()" title="Download">
@@ -250,19 +234,19 @@
     </div>
 </div>
 
+<div id="toast"></div>
+
 <script>
-    // وظيفة الوضع الليلي (Dark Mode)
     function toggleDarkMode(event) {
         if(event) event.preventDefault();
         document.body.classList.toggle('dark-mode');
-        document.body.classList.remove('karbo-mode'); // إطفاء كاربو مود عند تشغيل الوضع الليلي لمنع التداخل
+        document.body.classList.remove('karbo-mode');
     }
 
-    // وظيفة كاربو مود
     function toggleKarboMode(event) {
         if(event) event.preventDefault();
         document.body.classList.toggle('karbo-mode');
-        document.body.classList.remove('dark-mode'); // إطفاء الوضع الليلي عند تشغيل كاربو مود
+        document.body.classList.remove('dark-mode');
     }
 
     function toggleLanguage(event) {
@@ -295,12 +279,39 @@
         textArea.focus();
     }
 
-    function copyText() {
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    function copyTextAdvanced() {
         if(textArea.value.trim() === '') return;
-        navigator.clipboard.writeText(textArea.value).then(() => {
-            const isAr = document.body.classList.contains('ar');
-            alert(isAr ? 'تم نسخ النص بنجاح!' : 'Text copied successfully!');
-        });
+        const isAr = document.body.classList.contains('ar');
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textArea.value).then(() => {
+                showToast(isAr ? '✓ تم النسخ بنجاح!' : '✓ Copied successfully!');
+            }).catch(() => {
+                fallbackCopyText(isAr);
+            });
+        } else {
+            fallbackCopyText(isAr);
+        }
+    }
+
+    function fallbackCopyText(isAr) {
+        textArea.focus();
+        textArea.select();
+        textArea.setSelectionRange(0, 99999); 
+        try {
+            document.execCommand('copy');
+            showToast(isAr ? '✓ تم النسخ بنجاح!' : '✓ Copied successfully!');
+        } catch (err) {
+            alert(isAr ? 'يرجى النسخ يدوياً' : 'Please copy manually');
+        }
+        window.getSelection().removeAllRanges();
     }
 
     function downloadText() {
