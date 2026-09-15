@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول حالة الأحرف - Case Converter | CutMouse</title>
+    <meta name="description" content="أداة مجانية لتحويل حالة الأحرف الإنجليزية: أحرف كبيرة، صغيرة، حالة الجملة، وغيرها.">
+    <style>
+        /* الإعدادات الأساسية والوضع الليلي */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121110; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* القائمة العلوية */
+        .navbar { background-color: #1a1918; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        .navbar a { color: #fff; text-decoration: none; margin: 0 10px; font-size: 16px; transition: color 0.2s; }
+        .navbar a:hover { color: #d35400; }
+        .logo { font-size: 24px; font-weight: bold; color: #d35400; text-decoration: none;}
+
+        /* حاوية الأداة */
+        .container { max-width: 900px; margin: 40px auto; padding: 20px; flex-grow: 1; width: 90%; }
+        h1 { text-align: center; margin-bottom: 30px; font-size: 24px; color: #e0e0e0; }
+        
+        /* مربع النص */
+        .editor-container { background-color: #1a1918; border: 1px solid #2c2b2a; border-radius: 8px; padding: 0; overflow: hidden; }
+        textarea { width: 100%; height: 250px; background-color: transparent; color: #fff; border: none; outline: none; padding: 20px; font-size: 16px; resize: vertical; font-family: monospace; direction: ltr; box-sizing: border-box; }
+        textarea::placeholder { color: #666; }
+        
+        /* شريط الأدوات (العدادات وأزرار التحكم) */
+        .toolbar { display: flex; justify-content: space-between; align-items: center; background-color: #1a1918; padding: 10px 20px; border-top: 1px solid #2c2b2a; border-bottom: 1px solid #2c2b2a; flex-wrap: wrap; gap: 10px; }
+        .action-btns { display: flex; gap: 5px; }
+        .action-btns button { background-color: #2c2b2a; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 16px; display: flex; align-items: center; justify-content: center;}
+        .action-btns button:hover { background-color: #444; }
+        .counters { font-size: 14px; color: #aaa; font-family: sans-serif; direction: ltr;}
+
+        /* أزرار التحويل */
+        .conversion-btns { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px 20px; background-color: #121110; }
+        .btn-conv { background-color: #1a1918; border: 1px solid #2c2b2a; color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: 0.2s; font-family: sans-serif; }
+        .btn-conv:hover { background-color: #2c2b2a; }
+        .badge { padding: 2px 5px; border-radius: 3px; font-weight: bold; font-size: 12px; color: #fff; }
+        
+        /* ألوان الشارات المطابقة للصورة */
+        .b-sc { background-color: #d35400; }
+        .b-lc { background-color: #27ae60; }
+        .b-uc { background-color: #2980b9; }
+        .b-cc { background-color: #8e44ad; }
+        .b-ac { background-color: #f1c40f; color: #000; }
+        .b-tc { background-color: #16a085; }
+        .b-ic { background-color: #e84393; }
+
+    </style>
+</head>
+<body>
+
+    <!-- القائمة العلوية -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">CutMouse</a>
+        <div class="nav-links">
+            <a href="index.html">أداة التقطيع</a>
+            <a href="case-converter.html" style="color: #d35400;">محول الأحرف</a>
+            <a href="blog.html">المدونة</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>محول حالة الأحرف الإنجليزية (Case Converter)</h1>
+        
+        <div class="editor-container">
+            <textarea id="inputText" placeholder="Type or paste your content here..."></textarea>
+            
+            <div class="toolbar">
+                <div class="action-btns">
+                    <button onclick="copyText()" title="Copy">📋</button>
+                    <button onclick="clearText()" title="Clear">🗑️</button>
+                    <button onclick="downloadText()" title="Download">⬇️</button>
+                </div>
+                <div class="counters">
+                    Character Count: <span id="charCount">0</span> | 
+                    Word Count: <span id="wordCount">0</span> | 
+                    Line Count: <span id="lineCount">0</span>
+                </div>
+            </div>
+
+            <div class="conversion-btns">
+                <button class="btn-conv" onclick="convertCase('sentence')">
+                    <span class="badge b-sc">Sc</span> Sentence case
+                </button>
+                <button class="btn-conv" onclick="convertCase('lower')">
+                    <span class="badge b-lc">lc</span> lower case
+                </button>
+                <button class="btn-conv" onclick="convertCase('upper')">
+                    <span class="badge b-uc">UC</span> UPPER CASE
+                </button>
+                <button class="btn-conv" onclick="convertCase('capitalized')">
+                    <span class="badge b-cc">Cc</span> Capitalized Case
+                </button>
+                <button class="btn-conv" onclick="convertCase('alternating')">
+                    <span class="badge b-ac">aC</span> aLtErNaTiNg cAsE
+                </button>
+                <button class="btn-conv" onclick="convertCase('title')">
+                    <span class="badge b-tc">Tc</span> Title Case
+                </button>
+                <button class="btn-conv" onclick="convertCase('inverse')">
+                    <span class="badge b-ic">iC</span> InVeRsE CaSe
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const textArea = document.getElementById('inputText');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+        const lineCount = document.getElementById('lineCount');
+
+        // تحديث العدادات
+        textArea.addEventListener('input', updateCounters);
+
+        function updateCounters() {
+            const text = textArea.value;
+            charCount.textContent = text.length;
+            wordCount.textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            lineCount.textContent = text === '' ? 0 : text.split('\n').length;
+        }
+
+        // أزرار التحكم (نسخ، مسح، تحميل)
+        function clearText() {
+            textArea.value = '';
+            updateCounters();
+        }
+
+        function copyText() {
+            if(textArea.value.trim() === '') return;
+            navigator.clipboard.writeText(textArea.value).then(() => {
+                alert('تم نسخ النص بنجاح!');
+            });
+        }
+
+        function downloadText() {
+            if(textArea.value.trim() === '') return;
+            const blob = new Blob([textArea.value], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cutmouse-text.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // وظائف التحويل
+        function convertCase(type) {
+            let text = textArea.value;
+            if (!text) return;
+
+            switch(type) {
+                case 'lower':
+                    text = text.toLowerCase();
+                    break;
+                case 'upper':
+                    text = text.toUpperCase();
+                    break;
+                case 'capitalized':
+                    text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                    break;
+                case 'sentence':
+                    text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+                    break;
+                case 'alternating':
+                    text = text.toLowerCase().split('').map((c, i) => i % 2 !== 0 ? c.toUpperCase() : c).join('');
+                    break;
+                case 'inverse':
+                    text = text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join('');
+                    break;
+                case 'title':
+                    const smallWords = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'of', 'on', 'or', 'the', 'to', 'with'];
+                    text = text.toLowerCase().replace(/\w\S*/g, function(word, index) {
+                        if (index !== 0 && smallWords.includes(word.toLowerCase())) {
+                            return word.toLowerCase();
+                        }
+                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                    });
+                    break;
+            }
+            textArea.value = text;
+            updateCounters();
+        }
+    </script>
+</body>
+</html>
