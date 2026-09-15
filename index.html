@@ -93,7 +93,7 @@
         /* --- القائمة العلوية الجديدة الموحدة والمثبتة --- */
         .top-navbar {
             display: flex; 
-            justify-content: center; /* توسيط الأزرار بشكل مثالي */
+            justify-content: center; 
             align-items: center;
             background: var(--box-bg); padding: 15px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky;
@@ -102,7 +102,6 @@
             transition: background-color 0.3s;
         }
         
-        /* الشعار - تم تثبيته في اليمين بشكل مطلق لكي لا يزيح الأزرار عن المنتصف */
         .brand-logo {
             position: absolute;
             right: 20px;
@@ -133,7 +132,7 @@
         .top-navbar .lang-btn { border: 1px solid var(--border-color); }
         .top-navbar .theme-btn { font-size: 1.2em !important; padding: 5px 10px !important; }
 
-        /* ترتيب الهواتف - السماح بالسحب */
+        /* ترتيب الهواتف */
         @media (max-width: 1050px) {
             .top-navbar { 
                 justify-content: flex-start; 
@@ -143,10 +142,7 @@
                 padding: 12px 15px; 
                 gap: 8px; 
             }
-            .brand-logo {
-                position: static;
-                margin-left: 10px;
-            }
+            .brand-logo { position: static; margin-left: 10px; }
             .top-navbar a { flex-shrink: 0; }
         }
 
@@ -155,14 +151,12 @@
         #karbo-welcome { order: 2; display: none; }
         body.karbo-mode #karbo-welcome { display: block; }
         
-        /* الترتيب في الوضع العادي */
         #center-section { order: 3; }
         #split-section { order: 4; }
         #simulator-section { order: 5; }
         #secondary-tools { order: 6; }
         .seo-section { order: 7; }
         
-        /* الترتيب في وضع كاربو فقط */
         body.karbo-mode #simulator-section { order: 3; }
         body.karbo-mode #center-section { order: 4; }
         body.karbo-mode #split-section { order: 5; }
@@ -170,6 +164,7 @@
 
         /* --- الأقسام --- */
         .header { text-align: center; margin-bottom: 30px; margin-top: 20px; }
+        /* استعادة الرمز المفقود هنا */
         .signature { text-align: center; font-size: 1.2em; margin-bottom: 15px; color: var(--muted-color); }
         
         .karbo-welcome-box { 
@@ -195,7 +190,7 @@
         h3 { margin-top: 0; color: var(--text-color); font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
         .description { font-size: 0.95em; margin-bottom: 15px; color: var(--muted-color); }
         
-        /* الحقول النصية (Textareas) */
+        /* الحقول النصية */
         textarea:focus, input:focus, select:focus, .rich-editor:focus {
             outline: none; border-color: var(--primary-color); box-shadow: 0 0 5px rgba(0, 86, 179, 0.2);
         }
@@ -278,20 +273,43 @@
         .close-modal { color: var(--muted-color); float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
         body.en .close-modal { float: right; }
         .close-modal:hover { color: var(--text-color); }
+
+        /* إشعار النسخ الأنيق الجديد (Toast) */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 3000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
     </style>
     
     <!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3753895837240727"
-     crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3753895837240727" crossorigin="anonymous"></script>
 
 </head>
 <body class="ar">
 
-<!-- الشريط العلوي (تم إضافة dir="rtl" لمنع تغير الأماكن عند تغيير اللغة) -->
+<!-- الشريط العلوي -->
 <nav class="top-navbar" dir="rtl">
     
-    <!-- الشعار في أقصى اليمين دائمًا (dir="ltr" لمنع انعكاس الرموز) -->
-    <a href="index.html" class="brand-logo" dir="ltr">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</a>
+    <a href="index.html" class="brand-logo" dir="ltr">CutMouse 🖱️</a>
     
     <a href="index.html" class="active-link">
         <span class="only-ar">الرئيسية</span><span class="only-en">Home</span>
@@ -312,17 +330,14 @@
         <span class="only-ar">أدوات إضافية</span><span class="only-en">Extra Tools</span>
     </a>
     
-    <!-- زر الوضع الليلي -->
     <a onclick="toggleDarkMode(event)" class="theme-btn" style="cursor: pointer;" title="تغيير المظهر">
         🌓
     </a>
 
-    <!-- زر اللغة -->
     <a onclick="toggleLanguage(event)" class="lang-btn" style="cursor: pointer;">
         <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
     </a>
 
-    <!-- زر كاربو مود (دائماً في الأخير بعد زر اللغة) -->
     <a onclick="toggleKarboMode(event)" class="karbo-btn" style="cursor: pointer;">
         <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
     </a>
@@ -332,6 +347,9 @@
     <div class="header">
         <h1 class="only-ar">أداة تنسيق وتقسيم النصوص الذكية</h1>
         <h1 class="only-en">Smart Text Formatting & Splitting Tool</h1>
+        
+        <!-- الرمز الذي تم حذفه بالخطأ عاد هنا -->
+        <div class="signature">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</div>
         
         <p class="only-ar">قم بتجهيز نصوصك وتنسيقها بسرعة وسهولة لتبدو مثالية.</p>
         <p class="only-en">Prepare and format your texts quickly and easily to look perfect.</p>
@@ -344,6 +362,7 @@
         <p class="only-en" style="margin-top: 0; font-size: 0.95em;">Karbo mode activated. Tools are optimally ordered for your workflow: first fix text direction, then center, and finally split for seamless transfer to the app editor.</p>
     </div>
 
+    <!-- الأداة الأولى -->
     <div class="tool-section" id="center-section">
         <h2 class="only-ar">أداة التوسيط [C]</h2>
         <h2 class="only-en">Centering Tool [C]</h2>
@@ -360,8 +379,8 @@
         <div class="output-box" id="center-output-container" style="display: none;">
             <textarea id="center-output" readonly></textarea>
             <div class="button-group">
-                <button class="copy-btn only-ar" onclick="copyText('center-output', this)">نسخ النتيجة</button>
-                <button class="copy-btn only-en" onclick="copyText('center-output', this)">Copy Result</button>
+                <button class="copy-btn only-ar" onclick="copyTextAdvanced('center-output', this)">نسخ النتيجة</button>
+                <button class="copy-btn only-en" onclick="copyTextAdvanced('center-output', this)">Copy Result</button>
                 
                 <button class="transfer-btn only-ar" onclick="moveToSplit('center-output')">الانتقال لقص النص</button>
                 <button class="transfer-btn only-en" onclick="moveToSplit('center-output')">Move to Split</button>
@@ -369,6 +388,7 @@
         </div>
     </div>
 
+    <!-- الأداة الثانية -->
     <div class="tool-section" id="split-section">
         <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
         <h2 class="only-en">Article Splitter ✂️</h2>
@@ -388,6 +408,7 @@
         <div id="split-results"></div>
     </div>
 
+    <!-- الأدوات الجانبية -->
     <div class="secondary-tools-grid" id="secondary-tools">
         <div class="secondary-tool" id="bold-section">
             <h3 class="only-ar">تغميق النص **</h3>
@@ -402,8 +423,8 @@
             <div class="output-box" id="bold-output-container" style="display: none;">
                 <textarea id="bold-output" readonly></textarea>
                 <div class="button-group">
-                    <button class="copy-btn only-ar" onclick="copyText('bold-output', this)">نسخ</button>
-                    <button class="copy-btn only-en" onclick="copyText('bold-output', this)">Copy</button>
+                    <button class="copy-btn only-ar" onclick="copyTextAdvanced('bold-output', this)">نسخ</button>
+                    <button class="copy-btn only-en" onclick="copyTextAdvanced('bold-output', this)">Copy</button>
                     <button class="transfer-btn only-ar" onclick="moveToSplit('bold-output')">قص 👇</button>
                     <button class="transfer-btn only-en" onclick="moveToSplit('bold-output')">Split 👇</button>
                 </div>
@@ -423,8 +444,8 @@
             <div class="output-box" id="italic-output-container" style="display: none;">
                 <textarea id="italic-output" readonly></textarea>
                 <div class="button-group">
-                    <button class="copy-btn only-ar" onclick="copyText('italic-output', this)">نسخ</button>
-                    <button class="copy-btn only-en" onclick="copyText('italic-output', this)">Copy</button>
+                    <button class="copy-btn only-ar" onclick="copyTextAdvanced('italic-output', this)">نسخ</button>
+                    <button class="copy-btn only-en" onclick="copyTextAdvanced('italic-output', this)">Copy</button>
                     <button class="transfer-btn only-ar" onclick="moveToSplit('italic-output')">قص 👇</button>
                     <button class="transfer-btn only-en" onclick="moveToSplit('italic-output')">Split</button>
                 </div>
@@ -459,8 +480,8 @@
             <div class="output-box" id="custom-output-container" style="display: none;">
                 <textarea id="custom-output" readonly></textarea>
                 <div class="button-group">
-                    <button class="copy-btn only-ar" onclick="copyText('custom-output', this)">نسخ</button>
-                    <button class="copy-btn only-en" onclick="copyText('custom-output', this)">Copy</button>
+                    <button class="copy-btn only-ar" onclick="copyTextAdvanced('custom-output', this)">نسخ</button>
+                    <button class="copy-btn only-en" onclick="copyTextAdvanced('custom-output', this)">Copy</button>
                     <button class="transfer-btn only-ar" onclick="moveToSplit('custom-output')">قص 👇</button>
                     <button class="transfer-btn only-en" onclick="moveToSplit('custom-output')">Split 👇</button>
                 </div>
@@ -497,8 +518,8 @@
             
             <textarea id="simulator-output" readonly dir="rtl"></textarea>
             <div class="button-group">
-                <button class="copy-btn only-ar" onclick="copyText('simulator-output', this)">نسخ النتيجة</button>
-                <button class="copy-btn only-en" onclick="copyText('simulator-output', this)">Copy Result</button>
+                <button class="copy-btn only-ar" onclick="copyTextAdvanced('simulator-output', this)">نسخ النتيجة</button>
+                <button class="copy-btn only-en" onclick="copyTextAdvanced('simulator-output', this)">Copy Result</button>
                 <button class="transfer-btn only-ar" onclick="moveToSplit('simulator-output')">
                     <span class="default-txt">الانتقال لقص النص 👇</span>
                     <span class="karbo-txt">الانتقال لتوسيط النص 👇</span>
@@ -511,6 +532,7 @@
         </div>
     </div>
 
+    <!-- قسم السيو -->
     <div class="seo-section">
         <h3 class="only-ar">ما هي أداة CutMouse وكيف تضاعف سرعة إنتاجيتك؟</h3>
         <h3 class="only-en">What is CutMouse & How It Boosts Productivity?</h3>
@@ -566,22 +588,22 @@
     </div>
 </div>
 
+<!-- رسالة الإشعار التلقائية الأنيقة -->
+<div id="toast"></div>
+
 <script>
-    // --- الوضع الليلي (Dark Mode) ---
     function toggleDarkMode(event) {
         if(event) event.preventDefault();
         document.body.classList.toggle('dark-mode');
-        document.body.classList.remove('karbo-mode'); // إطفاء كاربو مود إذا كان يعمل
+        document.body.classList.remove('karbo-mode');
     }
 
-    // --- وضع كاربو ---
     function toggleKarboMode(event) {
         if(event) event.preventDefault();
         document.body.classList.toggle('karbo-mode');
-        document.body.classList.remove('dark-mode'); // إطفاء الوضع الليلي إذا كان يعمل
+        document.body.classList.remove('dark-mode');
     }
 
-    // --- نظام اللغات ---
     function toggleLanguage(event) {
         if(event) event.preventDefault();
         const body = document.body;
@@ -609,14 +631,12 @@
         });
     }
 
-    // --- النوافذ المنبثقة ---
     function openModal(id) { document.getElementById(id).style.display = 'block'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onclick = function(event) {
         if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; }
     }
 
-    // --- العدادات ---
     function updateStats(elementId, statsId) {
         const el = document.getElementById(elementId);
         const text = (el.tagName === 'DIV') ? el.innerText : el.value;
@@ -642,7 +662,6 @@
         updateStats('split-input', 'split-stats');
     });
 
-    // --- الدالة الشاملة والتأثير البصري ---
     function processText(inputId, outputContainerId, outputId, prefix, suffix = '') {
         const input = document.getElementById(inputId).value;
         const isAr = document.body.classList.contains('ar');
@@ -651,7 +670,6 @@
         const lines = input.split('\n');
         const processedText = lines.map(line => {
             if (line.trim() === '') return ''; 
-            
             let insertSpace = (line.startsWith('\u202B') || line.startsWith('\u200F')) && prefix.endsWith(']') ? ' ' : '';
             return prefix + insertSpace + line + suffix;
         }).join('\n');
@@ -669,7 +687,6 @@
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- الميزة الجديدة: دالة إضافة الرمز المخصص ---
     function applyCustomSymbol() {
         const inputId = 'custom-input';
         const outputContainerId = 'custom-output-container';
@@ -695,13 +712,8 @@
         const processedText = lines.map(line => {
             let newLine = line.trim();
             if (newLine === '') return ''; 
-            
-            if (position === 'before' || position === 'both') {
-                newLine = symbol + newLine;
-            }
-            if (position === 'after' || position === 'both') {
-                newLine = newLine + closingSymbol;
-            }
+            if (position === 'before' || position === 'both') { newLine = symbol + newLine; }
+            if (position === 'after' || position === 'both') { newLine = newLine + closingSymbol; }
             return newLine;
         }).join('\n');
         
@@ -710,7 +722,6 @@
         
         const container = document.getElementById(outputContainerId);
         container.style.display = 'block';
-        
         container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         const isKarbo = document.body.classList.contains('karbo-mode');
@@ -718,7 +729,6 @@
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- دالة إصلاح الاتجاه (المحصنة) ---
     function fixDirection() {
         const inputEl = document.getElementById('simulator-input');
         const outputContainer = document.getElementById('simulator-output-container');
@@ -734,9 +744,7 @@
         const lines = text.split('\n');
         const fixedLines = lines.map(line => {
             if (line.trim() === '') return '';
-            
             let cleanLine = line.replace(/[\u202B\u202C\u200F\u200E]/g, '');
-            
             let prefix = '';
             let content = cleanLine;
             const tagMatch = cleanLine.match(/^(\[[a-zA-Z]+\]\s*)+/);
@@ -745,13 +753,11 @@
                 prefix = tagMatch[0];
                 content = cleanLine.substring(prefix.length);
             }
-            
             return prefix + '\u202B' + content + '\u202C';
         });
         
         outputEl.value = fixedLines.join('\n');
         outputContainer.style.display = 'block';
-        
         outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         const isKarbo = document.body.classList.contains('karbo-mode');
@@ -759,7 +765,6 @@
         setTimeout(() => { outputEl.style.backgroundColor = ''; }, 700);
     }
 
-    // --- الانتقال للقص (أو التوسيط في كاربو مود) ---
     function moveToSplit(sourceOutputId) {
         const textToMove = document.getElementById(sourceOutputId).value;
         const isKarbo = document.body.classList.contains('karbo-mode');
@@ -780,7 +785,6 @@
         }
     }
 
-    // --- فاصل القص ---
     function insertSplitLine() {
         const editor = document.getElementById('split-input');
         editor.focus();
@@ -835,11 +839,9 @@
         range.setEndAfter(br2);
         selection.removeAllRanges();
         selection.addRange(range);
-        
         updateStats('split-input', 'split-stats');
     }
 
-    // --- تقسيم النص وإصلاح مشكلة الأسطر ---
     function splitText() {
         const editor = document.getElementById('split-input');
         const resultsContainer = document.getElementById('split-results');
@@ -879,31 +881,31 @@
                 const copyBtn = document.createElement('button');
                 copyBtn.className = 'copy-btn';
                 copyBtn.innerText = isAr ? `نسخ الفقرة ${index + 1}` : `Copy Part ${index + 1}`;
-                copyBtn.onclick = function() { copyText(textArea.id, this); };
+                copyBtn.onclick = function() { copyTextAdvanced(textArea.id, this); };
 
                 box.appendChild(textArea);
                 box.appendChild(copyBtn);
                 resultsContainer.appendChild(box);
             }
         });
-        
         resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // --- النسخ ---
-    function copyText(elementId, btnElement) {
+    // إشعار النسخ الأنيق (Toast)
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    function copyTextAdvanced(elementId, btnElement) {
         const textArea = document.getElementById(elementId);
         const textToCopy = textArea.value;
         const isAr = document.body.classList.contains('ar');
 
         const onSuccess = () => {
-            const originalText = btnElement.innerText;
-            btnElement.innerText = isAr ? '✓ تم النسخ!' : '✓ Copied!';
-            btnElement.style.backgroundColor = '#1e7e34';
-            setTimeout(() => {
-                btnElement.innerText = originalText;
-                btnElement.style.backgroundColor = '#28a745';
-            }, 2000);
+            showToast(isAr ? '✓ تم النسخ بنجاح!' : '✓ Copied successfully!');
         };
 
         if (navigator.clipboard && window.isSecureContext) {
