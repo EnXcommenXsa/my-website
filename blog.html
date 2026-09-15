@@ -5,96 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المدونة والمقالات - CutMouse</title>
     <style>
+        :root {
+            --primary-color: #0d6efd;
+            --bg-color: #f4f7f6;
+            --box-bg: #ffffff;
+            --border-color: #e9ecef;
+            --text-color: #333;
+            --muted-color: #6c757d;
+        }
+        body.karbo-mode {
+            --primary-color: #637be6; 
+            --bg-color: #0b112c;      
+            --box-bg: #141c42;        
+            --border-color: #2b397a;  
+            --text-color: #ffffff;
+            --muted-color: #b0bec5;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.8;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        h1 {
-            color: #0d6efd;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 16px;
-            margin-bottom: 25px;
-            color: #666;
-        }
-        .articles-list {
-            list-style: none;
+            margin: 0;
             padding: 0;
         }
+
+        body.en .only-ar { display: none !important; }
+        body.ar .only-en { display: none !important; }
+
+        /* القائمة العلوية المطابقة للموقع */
+        .top-navbar {
+            display: flex; align-items: center;
+            background: var(--box-bg); padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky;
+            top: 0; z-index: 1000; gap: 15px; flex-wrap: wrap;
+        }
+        body.karbo-mode .top-navbar { border-bottom: 1px solid var(--border-color); }
+
+        .brand-logo {
+            margin-inline-end: auto; font-size: 1.2em !important;
+            font-weight: 800 !important; color: var(--primary-color) !important;
+            letter-spacing: 0.5px; text-decoration: none;
+        }
+        body.karbo-mode .brand-logo { color: #a1b2ff !important; }
+
+        .top-navbar a:not(.brand-logo) {
+            text-decoration: none; color: #475569; font-weight: 600; font-size: 0.95em;
+            padding: 8px 12px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;
+        }
+        .top-navbar a:not(.brand-logo):hover { color: var(--primary-color); background-color: rgba(13, 110, 253, 0.05); }
+        
+        body.karbo-mode .top-navbar a:not(.brand-logo) { color: #b0bec5; }
+        body.karbo-mode .top-navbar a:not(.brand-logo):hover { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
+        
+        .top-navbar .active-link { color: var(--primary-color) !important; background-color: rgba(13, 110, 253, 0.05); }
+        body.karbo-mode .top-navbar .active-link { color: #ffffff !important; background-color: rgba(255, 255, 255, 0.1); }
+
+        .top-navbar .karbo-btn { color: #637be6 !important; border: 1px solid #637be6 !important; margin-inline-start: 10px; }
+        body.karbo-mode .top-navbar .karbo-btn { color: #a1b2ff !important; border-color: #a1b2ff !important; background: transparent !important; }
+        .top-navbar .lang-btn { border: 1px solid #ccc; color: #555 !important; }
+        body.karbo-mode .top-navbar .lang-btn { color: #ccc !important; border-color: #555; }
+
+        @media (max-width: 900px) {
+            .top-navbar { overflow-x: auto; white-space: nowrap; padding: 12px 15px; gap: 8px; }
+            .top-navbar a { flex-shrink: 0; }
+        }
+
+        /* تنسيقات المدونة */
+        .container { max-width: 800px; margin: 40px auto; background: var(--box-bg); padding: 40px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h1 { color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; }
+        p.subtitle { font-size: 16px; margin-bottom: 25px; color: var(--muted-color); }
+        
+        .articles-list { list-style: none; padding: 0; }
         .articles-list li {
-            margin-bottom: 15px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 15px; background: var(--bg-color); border: 1px solid var(--border-color);
+            border-radius: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .articles-list li:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .articles-list a {
-            display: block;
-            padding: 20px;
-            text-decoration: none;
-            color: #0d6efd;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .articles-list a span {
-            display: block;
-            font-size: 14px;
-            color: #6c757d;
-            margin-top: 5px;
-            font-weight: normal;
-        }
-        .back-btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 10px 20px;
-            background-color: #0d6efd;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .back-btn:hover {
-            background-color: #0b5ed7;
-        }
+        .articles-list li:hover { transform: translateX(-5px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        body.en .articles-list li:hover { transform: translateX(5px); }
+        
+        .articles-list a { display: block; padding: 20px; text-decoration: none; color: var(--primary-color); font-weight: bold; font-size: 18px; }
+        .articles-list a span { display: block; font-size: 14px; color: var(--muted-color); margin-top: 5px; font-weight: normal; }
+        
+        .back-btn { display: inline-block; margin-top: 30px; padding: 10px 20px; background-color: var(--primary-color); color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .back-btn:hover { filter: brightness(0.9); }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>مدونة CutMouse</h1>
-        <p>دليلك الشامل لتعلم تنسيق النصوص، الترجمة، واستخدام الذكاء الاصطناعي في صناعة المحتوى.</p>
-        
-        <ul class="articles-list">
-            <li><a href="article-1.html">كيفية تنسيق نصوص المانجا باحترافية للمبتدئين<span>دليل شامل لترتيب النصوص واستخدام أكواد BBCode.</span></a></li>
-            <li><a href="article-2.html">أهمية تقسيم النصوص الطويلة قبل نشرها على تويتر (X)<span>كيف تتجنب أخطاء النشر وتكتب ثريداً ناجحاً.</span></a></li>
-            <li><a href="article-3.html">كيف يسهل الذكاء الاصطناعي ترجمة القصص المصورة؟<span>نظرة على تطور أدوات الترجمة وتنسيق النصوص.</span></a></li>
-            <li><a href="article-4.html">الفروق بين تنسيق النصوص العربية والإنجليزية<span>حلول لمشكلة انعكاس الأقواس وتداخل اللغات في التطبيقات.</span></a></li>
-            <li><a href="article-5.html">أفضل الممارسات لإنشاء كتل نصية لمدونات ووردبريس<span>كيفية تجهيز مقالك لتجربة قراءة أفضل.</span></a></li>
-            <li><a href="article-6.html">تسريع المونتاج: تجهيز نصوص الترجمة لفيديوهات تيك توك<span>استراتيجيات تقطيع الجمل الطويلة لبرامج المونتاج.</span></a></li>
-            <li><a href="article-7.html">كيفية التعامل مع النصوص ثنائية الاتجاه (BiDi) في محررات النصوص<span>فهم اتجاهات LTR و RTL وتأثيرها على العرض.</span></a></li>
-            <li><a href="article-8.html">أدوات الويب مقابل تطبيقات سطح المكتب في صناعة المحتوى<span>لماذا تفضل الأدوات السحابية السريعة؟</span></a></li>
-            <li><a href="article-9.html">تحسين تجربة المستخدم (UX) من خلال النصوص المنظمة<span>كيف يؤثر التنسيق على بقاء الزائر في صفحتك.</span></a></li>
-            <li><a href="article-10.html">مستقبل أتمتة المحتوى: ماذا نتوقع في السنوات القادمة؟<span>دور أدوات التنسيق السريعة في توفير وقت المبدعين.</span></a></li>
-        </ul>
-        
-        <a href="index.html" class="back-btn">← العودة إلى الصفحة الرئيسية</a>
-    </div>
+<body class="ar">
+
+<nav class="top-navbar">
+    <a href="index.html" class="brand-logo">🖱️ CutMouse</a>
+    <a href="index.html">
+        <span class="only-ar">الرئيسية</span><span class="only-en">Home</span>
+    </a>
+    <a href="case-converter.html">
+        <span class="only-ar">محول الأحرف</span><span class="only-en">Case Converter</span>
+    </a>
+    <a href="blog.html" class="active-link">
+        <span class="only-ar">المدونة</span><span class="only-en">Blog</span>
+    </a>
+    <a onclick="toggleKarboMode(event)" class="karbo-btn" style="cursor: pointer;">
+        <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
+    </a>
+    <a onclick="toggleLanguage(event)" class="lang-btn" style="cursor: pointer;">
+        <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
+    </a>
+</nav>
+
+<div class="container">
+    <h1 class="only-ar">مدونة CutMouse</h1>
+    <h1 class="only-en">CutMouse Blog</h1>
+    
+    <p class="subtitle only-ar">دليلك الشامل لتعلم تنسيق النصوص، الترجمة، واستخدام الذكاء الاصطناعي في صناعة المحتوى.</p>
+    <p class="subtitle only-en">Your comprehensive guide to learning text formatting, translation, and using AI in content creation.</p>
+    
+    <ul class="articles-list">
+        <li><a href="article-1.html">كيفية تنسيق نصوص المانجا باحترافية للمبتدئين<span>دليل شامل لترتيب النصوص واستخدام أكواد BBCode.</span></a></li>
+        <li><a href="article-2.html">أهمية تقسيم النصوص الطويلة قبل نشرها على تويتر (X)<span>كيف تتجنب أخطاء النشر وتكتب ثريداً ناجحاً.</span></a></li>
+        <li><a href="article-3.html">كيف يسهل الذكاء الاصطناعي ترجمة القصص المصورة؟<span>نظرة على تطور أدوات الترجمة وتنسيق النصوص.</span></a></li>
+        <li><a href="article-4.html">الفروق بين تنسيق النصوص العربية والإنجليزية<span>حلول لمشكلة انعكاس الأقواس وتداخل اللغات في التطبيقات.</span></a></li>
+        <li><a href="article-5.html">أفضل الممارسات لإنشاء كتل نصية لمدونات ووردبريس<span>كيفية تجهيز مقالك لتجربة قراءة أفضل.</span></a></li>
+        <li><a href="article-6.html">تسريع المونتاج: تجهيز نصوص الترجمة لفيديوهات تيك توك<span>استراتيجيات تقطيع الجمل الطويلة لبرامج المونتاج.</span></a></li>
+        <li><a href="article-7.html">كيفية التعامل مع النصوص ثنائية الاتجاه (BiDi) في محررات النصوص<span>فهم اتجاهات LTR و RTL وتأثيرها على العرض.</span></a></li>
+        <li><a href="article-8.html">أدوات الويب مقابل تطبيقات سطح المكتب في صناعة المحتوى<span>لماذا تفضل الأدوات السحابية السريعة؟</span></a></li>
+        <li><a href="article-9.html">تحسين تجربة المستخدم (UX) من خلال النصوص المنظمة<span>كيف يؤثر التنسيق على بقاء الزائر في صفحتك.</span></a></li>
+        <li><a href="article-10.html">مستقبل أتمتة المحتوى: ماذا نتوقع في السنوات القادمة؟<span>دور أدوات التنسيق السريعة في توفير وقت المبدعين.</span></a></li>
+    </ul>
+    
+    <a href="index.html" class="back-btn">
+        <span class="only-ar">← العودة إلى الصفحة الرئيسية</span>
+        <span class="only-en">← Back to Home Page</span>
+    </a>
+</div>
+
+<script>
+    function toggleKarboMode(event) {
+        if(event) event.preventDefault();
+        document.body.classList.toggle('karbo-mode');
+    }
+    function toggleLanguage(event) {
+        if(event) event.preventDefault();
+        const body = document.body;
+        const isAr = body.classList.contains('ar');
+        body.classList.remove(isAr ? 'ar' : 'en');
+        body.classList.add(isAr ? 'en' : 'ar');
+        document.documentElement.lang = isAr ? 'en' : 'ar';
+        document.documentElement.dir = isAr ? 'ltr' : 'rtl';
+    }
+</script>
 </body>
 </html>
