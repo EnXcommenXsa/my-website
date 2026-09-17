@@ -105,11 +105,12 @@
         .brand-logo {
             position: absolute;
             right: 20px;
-            font-size: 1.2em !important;
+            font-size: 1em !important;
             font-weight: 800 !important;
             color: var(--primary-color) !important;
             letter-spacing: 0.5px;
             text-decoration: none;
+            white-space: nowrap;
         }
         body.karbo-mode .brand-logo { color: #a1b2ff !important; }
 
@@ -126,11 +127,40 @@
         body.dark-mode .top-navbar .active-link, 
         body.karbo-mode .top-navbar .active-link { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
 
-        .top-navbar .karbo-btn { color: #637be6 !important; border: 1px solid #637be6 !important; }
-        body.karbo-mode .top-navbar .karbo-btn { color: #a1b2ff !important; border-color: #a1b2ff !important; background: transparent !important; }
-        
         .top-navbar .lang-btn { border: 1px solid var(--border-color); }
-        .top-navbar .theme-btn { font-size: 1.2em !important; padding: 5px 10px !important; }
+
+        /* --- القائمة الفرعية (المزيد: الوضع الليلي + كاربو مود) --- */
+        .nav-dropdown { position: relative; }
+        .dropdown-toggle {
+            background: transparent; border: 1px solid var(--border-color); border-radius: 6px;
+            font-size: 1.1em; padding: 6px 12px; cursor: pointer; color: var(--text-color);
+            font-family: inherit; transition: all 0.2s ease;
+        }
+        .dropdown-toggle:hover { background-color: rgba(0, 86, 179, 0.05); }
+        body.dark-mode .dropdown-toggle:hover, body.karbo-mode .dropdown-toggle:hover { background-color: rgba(255,255,255,0.1); }
+        
+        /* يشير الزر بلون مميز عندما يكون كاربو مود مفعّلاً */
+        body.karbo-mode .dropdown-toggle { border-color: #a1b2ff; color: #a1b2ff; }
+
+        .dropdown-menu {
+            display: none; position: absolute; top: calc(100% + 8px); left: 0;
+            background: var(--box-bg); border: 1px solid var(--border-color); border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12); min-width: 190px; z-index: 1100;
+            overflow: hidden; padding: 6px;
+        }
+        body.en .dropdown-menu { left: auto; right: 0; }
+        .nav-dropdown.open .dropdown-menu { display: block; }
+
+        .dropdown-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+            border-radius: 6px; font-size: 0.9em; color: var(--text-color);
+            text-decoration: none; cursor: pointer; white-space: nowrap;
+        }
+        .dropdown-item:hover { background-color: rgba(0, 86, 179, 0.08); }
+        body.dark-mode .dropdown-item:hover, body.karbo-mode .dropdown-item:hover { background-color: rgba(255,255,255,0.08); }
+
+        .dropdown-item.karbo-item { color: #637be6; }
+        body.karbo-mode .dropdown-item.karbo-item { color: #a1b2ff; font-weight: bold; }
 
         /* ترتيب الهواتف */
         @media (max-width: 1050px) {
@@ -309,7 +339,7 @@
 <!-- الشريط العلوي -->
 <nav class="top-navbar" dir="rtl">
     
-    <a href="index.html" class="brand-logo" dir="ltr">CutMouse 🖱️</a>
+    <a href="index.html" class="brand-logo" aria-label="CutMouse">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</a>
     
     <a href="index.html" class="active-link">
         <span class="only-ar">الرئيسية</span><span class="only-en">Home</span>
@@ -330,17 +360,25 @@
         <span class="only-ar">أدوات إضافية</span><span class="only-en">Extra Tools</span>
     </a>
     
-    <a onclick="toggleDarkMode(event)" class="theme-btn" style="cursor: pointer;" title="تغيير المظهر">
-        🌓
-    </a>
-
     <a onclick="toggleLanguage(event)" class="lang-btn" style="cursor: pointer;">
         <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
     </a>
 
-    <a onclick="toggleKarboMode(event)" class="karbo-btn" style="cursor: pointer;">
-        <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
-    </a>
+    <div class="nav-dropdown" id="nav-more-dropdown">
+        <button type="button" class="dropdown-toggle" onclick="toggleDropdown(event)" title="المزيد من الخيارات" aria-haspopup="true" aria-expanded="false">
+            ⚙️
+        </button>
+        <div class="dropdown-menu" role="menu">
+            <a onclick="toggleDarkMode(event)" class="dropdown-item" role="menuitem">
+                <span>🌓</span>
+                <span class="only-ar">الوضع الليلي</span><span class="only-en">Dark Mode</span>
+            </a>
+            <a onclick="toggleKarboMode(event)" class="dropdown-item karbo-item" role="menuitem">
+                <span>🖱️</span>
+                <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
+            </a>
+        </div>
+    </div>
 </nav>
 
 <div class="container">
@@ -596,13 +634,35 @@
         if(event) event.preventDefault();
         document.body.classList.toggle('dark-mode');
         document.body.classList.remove('karbo-mode');
+        closeDropdown();
     }
 
     function toggleKarboMode(event) {
         if(event) event.preventDefault();
         document.body.classList.toggle('karbo-mode');
         document.body.classList.remove('dark-mode');
+        closeDropdown();
     }
+
+    function toggleDropdown(event) {
+        if(event) event.stopPropagation();
+        const dropdown = document.getElementById('nav-more-dropdown');
+        const isOpen = dropdown.classList.toggle('open');
+        dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', isOpen);
+    }
+
+    function closeDropdown() {
+        const dropdown = document.getElementById('nav-more-dropdown');
+        if(dropdown) {
+            dropdown.classList.remove('open');
+            dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('nav-more-dropdown');
+        if(dropdown && !dropdown.contains(e.target)) { closeDropdown(); }
+    });
 
     function toggleLanguage(event) {
         if(event) event.preventDefault();
