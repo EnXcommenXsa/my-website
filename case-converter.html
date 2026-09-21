@@ -16,6 +16,7 @@
             --muted-color: #666666;
         }
         
+        /* الوضع الليلي الافتراضي */
         body.dark-mode {
             --primary-color: #3b82f6;
             --bg-color: #121212;
@@ -50,6 +51,7 @@
 
         .container { max-width: 850px; margin: 0 auto; padding: 20px; }
         
+        /* الشريط العلوي الموحد */
         .top-navbar {
             display: flex; align-items: center; justify-content: center;
             background: var(--box-bg); padding: 15px 20px;
@@ -139,6 +141,7 @@
         .b-ac { background-color: #f1c40f; color: #000; } .b-tc { background-color: #16a085; }
         .b-ic { background-color: #e84393; }
 
+        /* إشعار النسخ الأنيق */
         #toast {
             visibility: hidden; min-width: 240px; background-color: #222; color: #fff; text-align: center;
             border-radius: 8px; padding: 14px 20px; position: fixed; z-index: 3000; left: 50%; bottom: 30px;
@@ -237,6 +240,7 @@
 <div id="toast"></div>
 
 <script>
+    // نظام استرجاع الإعدادات عند تحميل الصفحة
     (function initSettings() {
         const savedTheme = localStorage.getItem('cutmouse_theme') || 'dark';
         const savedLang = localStorage.getItem('cutmouse_lang') || 'ar';
@@ -341,7 +345,7 @@
         URL.revokeObjectURL(url);
     }
 
-    // إصلاح دالة Sentence case للأسطر المتعددة
+    // دالة محول الأحرف المعدلة
     function convertCase(type) {
         let text = textArea.value;
         if (!text) return;
@@ -357,6 +361,7 @@
                 text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); 
                 break;
             case 'sentence': 
+                // إصلاح الخلل ليعمل عبر الأسطر والجمل المتعددة
                 text = text.toLowerCase().replace(/(^\s*|[.!?]\s*|\n\s*)([a-z])/gi, (m, p1, p2) => p1 + p2.toUpperCase());
                 break;
             case 'alternating': 
