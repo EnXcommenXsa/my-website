@@ -37,23 +37,26 @@
     </script>
 
     <style>
+        /* نظام الألوان المريح للعين حسب معايير UI/UX */
         :root {
-            --primary-color: #0056b3;
-            --bg-color: #f4f7f6;
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
             --box-bg: #ffffff;
-            --border-color: #d1d5db;
-            --text-color: #1f2937;
-            --muted-color: #6b7280;
+            --border-color: #e2e8f0;
+            --text-color: #0f172a;
+            --muted-color: #64748b;
         }
 
-        /* الوضع الليلي الافتراضي */
+        /* الوضع الليلي المريح */
         body.dark-mode {
-            --primary-color: #3b82f6;
-            --bg-color: #121212;
-            --box-bg: #1e1e1e;
-            --border-color: #333333;
-            --text-color: #e0e0e0;
-            --muted-color: #aaaaaa;
+            --primary-color: #6366f1;
+            --primary-hover: #818cf8;
+            --bg-color: #0f172a;
+            --box-bg: #1e293b;
+            --border-color: #334155;
+            --text-color: #f1f5f9;
+            --muted-color: #94a3b8;
         }
 
         html { scroll-behavior: smooth; }
@@ -72,14 +75,14 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; }
         
-        /* الشريط العلوي الموحد بدون ألوان صارخة */
+        /* الشريط العلوي */
         .top-navbar {
             display: flex; 
             justify-content: center; 
             align-items: center;
             background: var(--box-bg); 
             padding: 12px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
             position: sticky;
             top: 0; 
             z-index: 1000; 
@@ -100,12 +103,11 @@
             white-space: nowrap;
         }
 
-        /* أزرار التبويبات بدون خلفيات زرقاء صارخة */
         .top-navbar button.nav-tab-btn {
             text-decoration: none; 
             color: var(--text-color); 
             font-weight: 600; 
-            font-size: 0.95em;
+            font-size: 0.92em;
             padding: 8px 14px; 
             border-radius: 6px; 
             transition: all 0.2s ease; 
@@ -117,13 +119,13 @@
         
         .top-navbar button.nav-tab-btn:hover { 
             color: var(--primary-color); 
-            background-color: rgba(0, 86, 179, 0.06); 
+            background-color: rgba(99, 102, 241, 0.08); 
         }
         
         .top-navbar button.nav-tab-btn.active-link { 
             color: var(--primary-color) !important; 
-            background-color: rgba(0, 86, 179, 0.12) !important;
-            border-color: rgba(0, 86, 179, 0.2) !important;
+            background-color: rgba(99, 102, 241, 0.12) !important;
+            border-color: rgba(99, 102, 241, 0.2) !important;
         }
         
         body.dark-mode .top-navbar button.nav-tab-btn.active-link { 
@@ -132,7 +134,6 @@
             border-color: rgba(255, 255, 255, 0.2) !important;
         }
 
-        /* أزرار التحكم (الوضع الليلي واللغة) بدون تعبئة زرقاء */
         .top-navbar .control-btn { 
             background: transparent !important;
             border: 1px solid var(--border-color) !important; 
@@ -166,30 +167,30 @@
 
         .tool-section {
             background: var(--box-bg); padding: 25px; border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 20px;
             border: 1px solid var(--border-color);
         }
         
         .secondary-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .secondary-tool { background: var(--box-bg); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .secondary-tool { background: var(--box-bg); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         #custom-symbol-section { grid-column: 1 / -1; }
         @media (max-width: 600px) { .secondary-tools-grid { grid-template-columns: 1fr; } }
         
-        h2 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 8px; display: inline-block; }
+        h2 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; display: inline-block; font-size: 1.35em; }
         h3 { margin-top: 0; color: var(--text-color); font-size: 1.1em; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
         .description { font-size: 0.95em; margin-bottom: 15px; color: var(--muted-color); }
         
         textarea:focus, input:focus, select:focus, .rich-editor:focus {
-            outline: none; border-color: var(--primary-color); box-shadow: 0 0 5px rgba(0, 86, 179, 0.2);
+            outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
         }
 
         textarea, .rich-editor, input[type="text"], select {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px;
             font-family: inherit; font-size: 1em; box-sizing: border-box; margin-bottom: 5px;
-            background-color: transparent; color: var(--text-color); transition: background-color 0.4s ease;
+            background-color: transparent; color: var(--text-color); transition: background-color 0.2s ease;
         }
         
-        body.dark-mode textarea, body.dark-mode .rich-editor, body.dark-mode input[type="text"], body.dark-mode select { background-color: #121212; color: #fff; }
+        body.dark-mode textarea, body.dark-mode .rich-editor, body.dark-mode input[type="text"], body.dark-mode select { background-color: #0f172a; color: #fff; }
 
         textarea { min-height: 140px; resize: vertical; }
         .rich-editor { min-height: 160px; overflow-y: auto; white-space: pre-wrap; outline: none; }
@@ -201,34 +202,36 @@
         .custom-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
         .custom-controls input, .custom-controls select { flex: 1; min-width: 150px; }
 
+        /* فاصل القص الداخلي المقاوم للتكرار */
         .split-line {
-            display: flex; align-items: center; justify-content: center; height: 2px;
-            background: #e74c3c; margin: 25px 0; position: relative; user-select: none; clear: both;
+            display: block; width: 100%; height: 2px;
+            background: #ef4444; margin: 20px 0; position: relative; user-select: none; clear: both;
         }
         .split-label-container {
-            background: #e74c3c; color: white; padding: 4px 12px; border-radius: 20px;
-            font-size: 13px; position: absolute; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: #ef4444; color: white; padding: 3px 10px; border-radius: 20px;
+            font-size: 12px; position: absolute; left: 50%; transform: translateX(-50%) translateY(-50%);
+            font-weight: bold; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .delete-btn {
             cursor: pointer; background: rgba(255,255,255,0.25); border-radius: 50%;
-            width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: background 0.2s;
+            width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: background 0.2s;
         }
-        .delete-btn:hover { background: rgba(255,255,255,0.6); color: #c0392b; }
+        .delete-btn:hover { background: rgba(255,255,255,0.6); color: #991b1b; }
 
         button.btn-primary-action {
             background-color: var(--primary-color); color: white; border: none; padding: 10px 18px;
-            font-size: 0.95em; border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease;
-            margin-bottom: 10px; margin-left: 5px;
+            font-size: 0.95em; border-radius: 6px; cursor: pointer; transition: background-color 0.2s ease;
+            margin-bottom: 10px; margin-left: 5px; font-weight: 600;
         }
         body.en button.btn-primary-action { margin-left: 0; margin-right: 5px; }
-        button.btn-primary-action:hover { filter: brightness(0.9); }
+        button.btn-primary-action:hover { background-color: var(--primary-hover); }
         
-        button.split-action-btn { background-color: #e74c3c; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; }
-        button.split-action-btn:hover { background-color: #c0392b; }
-        button.copy-btn { background-color: #28a745; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
-        button.copy-btn:hover { background-color: #218838; }
-        button.transfer-btn { background-color: #6c757d; color: #fff; border: none; font-size: 0.85em; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
-        button.transfer-btn:hover { background-color: #5a6268; }
+        button.split-action-btn { background-color: #ef4444; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button.split-action-btn:hover { background-color: #dc2626; }
+        button.copy-btn { background-color: #10b981; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button.copy-btn:hover { background-color: #059669; }
+        button.transfer-btn { background-color: #64748b; color: #fff; border: none; font-size: 0.85em; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+        button.transfer-btn:hover { background-color: #475569; }
         
         .output-box {
             position: relative; margin-top: 15px; background: rgba(0,0,0,0.02);
@@ -238,27 +241,26 @@
         
         .button-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
-        /* تنسيق كروت الصفحة الرئيسية */
+        /* كروت الصفحة الرئيسية */
         .home-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
             margin-top: 20px;
         }
         .home-card {
             background: var(--box-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 8px;
+            padding: 18px;
+            transition: transform 0.2s, border-color 0.2s;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         .home-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
             border-color: var(--primary-color);
         }
         .home-card h3 {
@@ -268,27 +270,27 @@
             padding-bottom: 0;
         }
 
-        /* محول الأحرف - تنسيقات المحرر والأزرار */
+        /* محول الأحرف */
         .editor-wrapper {
             background-color: var(--box-bg); border: 1px solid var(--border-color);
-            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 20px;
         }
         
         textarea.case-editor {
-            width: 100%; height: 260px; padding: 20px; border: none; background: transparent;
+            width: 100%; height: 250px; padding: 18px; border: none; background: transparent;
             color: var(--text-color); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            font-size: 18px; resize: vertical; outline: none; direction: ltr; box-sizing: border-box;
+            font-size: 17px; resize: vertical; outline: none; direction: ltr; box-sizing: border-box;
         }
 
         .editor-toolbar {
             display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;
-            background-color: rgba(0,0,0,0.03); border-top: 1px solid var(--border-color); direction: ltr;
+            background-color: rgba(0,0,0,0.02); border-top: 1px solid var(--border-color); direction: ltr;
         }
 
         .action-icons { display: flex; gap: 8px; }
         .icon-btn {
             background-color: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); 
-            border-radius: 4px; width: 38px; height: 38px;
+            border-radius: 4px; width: 36px; height: 36px;
             display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;
         }
         .icon-btn:hover { filter: brightness(0.9); }
@@ -297,18 +299,17 @@
         
         .case-btn {
             background-color: var(--box-bg); color: var(--text-color); border: 1px solid var(--border-color);
-            padding: 10px 16px; border-radius: 6px; display: flex; align-items: center; gap: 8px; cursor: pointer;
-            font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: 500; transition: 0.2s;
+            padding: 9px 15px; border-radius: 6px; display: flex; align-items: center; gap: 8px; cursor: pointer;
+            font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 500; transition: 0.2s;
         }
-        .case-btn:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .case-btn:hover { border-color: var(--primary-color); }
         
-        .badge { padding: 3px 6px; border-radius: 4px; font-weight: bold; font-size: 13px; color: #fff; }
+        .badge { padding: 3px 6px; border-radius: 4px; font-weight: bold; font-size: 12px; color: #fff; }
         .b-sc { background-color: #d35400; } .b-lc { background-color: #27ae60; }
         .b-uc { background-color: #2980b9; } .b-cc { background-color: #8e44ad; }
         .b-ac { background-color: #f1c40f; color: #000; } .b-tc { background-color: #16a085; }
         .b-ic { background-color: #e84393; }
 
-        /* قسم السيو وإرشادات أدسنس */
         .seo-section { background: transparent; padding: 25px 0; font-size: 0.9em; color: var(--muted-color); border-top: 1px solid var(--border-color); margin-top: 30px; }
         .seo-section h3 { color: var(--text-color); border: none; font-size: 1.15em; margin-top: 20px; }
         .seo-section ul { padding-right: 20px; }
@@ -316,21 +317,22 @@
         .seo-section li { margin-bottom: 8px; }
         
         .footer-links { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px dashed var(--border-color); }
-        .footer-links a { color: var(--muted-color); text-decoration: none; margin: 0 10px; font-size: 0.9em; cursor: pointer; }
-        .footer-links a:hover { text-decoration: underline; color: var(--primary-color); }
+        .footer-links button { background: none; border: none; color: var(--muted-color); font-size: 0.9em; cursor: pointer; margin: 0 8px; font-family: inherit; }
+        .footer-links button:hover { text-decoration: underline; color: var(--primary-color); }
 
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: var(--box-bg); color: var(--text-color); margin: 10% auto; padding: 20px; border: 1px solid var(--border-color); width: 80%; max-width: 600px; border-radius: 10px; line-height: 1.8; }
-        .close-modal { color: var(--muted-color); float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
+        /* النوافذ المنبثقة الوسطية (Modals) */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
+        .modal-content { background-color: var(--box-bg); color: var(--text-color); margin: 8% auto; padding: 25px; border: 1px solid var(--border-color); width: 85%; max-width: 600px; border-radius: 10px; line-height: 1.8; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .close-modal { color: var(--muted-color); float: left; font-size: 24px; font-weight: bold; cursor: pointer; }
         body.en .close-modal { float: right; }
         .close-modal:hover { color: var(--text-color); }
 
         #toast {
-            visibility: hidden; min-width: 240px; background-color: #222; color: #fff;
-            text-align: center; border-radius: 8px; padding: 14px 20px; position: fixed;
-            z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 15px;
+            visibility: hidden; min-width: 240px; background-color: #1e293b; color: #fff;
+            text-align: center; border-radius: 8px; padding: 12px 18px; position: fixed;
+            z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px;
             opacity: 0; transition: opacity 0.3s, bottom 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            border: 1px solid #444;
+            border: 1px solid #334155;
         }
         #toast.show { visibility: visible; opacity: 1; bottom: 45px; }
     </style>
@@ -380,7 +382,7 @@
         <p class="only-en">Your all-in-one suite to chunk long text, convert English case, and automate BBCode formatting.</p>
     </div>
 
-    <!-- 0. التبويب الأول: الصفحة الرئيسية الشاملة -->
+    <!-- 0. التبويب الأول: الصفحة الرئيسية -->
     <div class="tab-content active-tab" id="home-section">
         <div class="tool-section">
             <h2 class="only-ar">أهلاً بك في منصة CutMouse</h2>
@@ -440,7 +442,7 @@
         </div>
     </div>
 
-    <!-- 1. التبويب الثاني: أداة محول الأحرف المدمجة -->
+    <!-- 1. التبويب الثاني: محول الأحرف -->
     <div class="tool-section tab-content" id="case-section">
         <h2 class="only-ar">محول حالة الأحرف الإنجليزية</h2>
         <h2 class="only-en">English Case Converter</h2>
@@ -521,7 +523,7 @@
         </div>
     </div>
 
-    <!-- 3. التبويب الرابع: أداة التقسيم -->
+    <!-- 3. التبويب الرابع: أداة التقسيم المحدثة -->
     <div class="tool-section tab-content" id="split-section">
         <h2 class="only-ar">أداة تقسيم المقالة ✂️</h2>
         <h2 class="only-en">Article Splitter ✂️</h2>
@@ -649,7 +651,7 @@
         </div>
     </div>
 
-    <!-- قسم إرشادات المساعدة والمعلومات (مهم لبرنامج AdSense) -->
+    <!-- قسم إرشادات أدسنس -->
     <div class="seo-section">
         <h3 class="only-ar">ما هي أداة CutMouse وكيف تضاعف سرعة إنتاجيتك؟</h3>
         <h3 class="only-en">What is CutMouse & How It Boosts Productivity?</h3>
@@ -672,29 +674,93 @@
             <li><strong>Direction Fix:</strong> Resolves brackets and text scrambling in mixed LTR/RTL lines.</li>
         </ul>
 
+        <!-- الفوتر المحول إلى نوافذ منبثقة وسطية بدون صفحات منفصلة -->
         <div class="footer-links">
-            <a href="about.html">
+            <button type="button" onclick="openModal('aboutModal')">
                 <span class="only-ar">من نحن</span><span class="only-en">About Us</span>
-            </a> | 
-            <a href="privacy.html">
+            </button> | 
+            <button type="button" onclick="openModal('privacyModal')">
                 <span class="only-ar">سياسة الخصوصية</span><span class="only-en">Privacy Policy</span>
-            </a> | 
-            <a onclick="openModal('termsModal')">
+            </button> | 
+            <button type="button" onclick="openModal('termsModal')">
                 <span class="only-ar">شروط الاستخدام</span><span class="only-en">Terms of Use</span>
-            </a> | 
-            <a href="contact.html">
+            </button> | 
+            <button type="button" onclick="openModal('contactModal')">
                 <span class="only-ar">اتصل بنا</span><span class="only-en">Contact Us</span>
-            </a>
+            </button>
         </div>
     </div>
 </div>
 
+<!-- 1. نافذة من نحن المنبثقة -->
+<div id="aboutModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('aboutModal')">&times;</span>
+        <h2 class="only-ar">من نحن</h2>
+        <h2 class="only-en">About Us</h2>
+        <div class="only-ar">
+            <p>مرحباً بك في موقع <strong>CutMouse</strong>.</p>
+            <p>نحن منصة متخصصة تقدم أدوات ذكية ومبتكرة لمساعدة المترجمين، صناع المحتوى، والكتّاب على تنسيق وتقسيم النصوص بكل سهولة واحترافية.</p>
+            <p>هدفنا هو توفير الوقت والجهد من خلال أدوات تقوم بترتيب النصوص الطويلة وتجهيزها للنشر على مختلف منصات التواصل الاجتماعي والمدونات بدقة عالية.</p>
+        </div>
+        <div class="only-en">
+            <p>Welcome to <strong>CutMouse</strong>.</p>
+            <p>We provide instant web tools to assist writers, content creators, and translators in formatting, chunking, and converting text easily.</p>
+            <p>Designed to be fast, free, and accessible across all browsers without complexity.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 2. نافذة سياسة الخصوصية المنبثقة -->
+<div id="privacyModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('privacyModal')">&times;</span>
+        <h2 class="only-ar">سياسة الخصوصية</h2>
+        <h2 class="only-en">Privacy Policy</h2>
+        <div class="only-ar">
+            <p>في موقع <strong>CutMouse</strong>، خصوصية زوارنا لها أهمية بالغة بالنسبة لنا.</p>
+            <p>نحن نستخدم إعلانات Google AdSense كمورد خارجي، والتي قد تستخدم ملفات تعريف الارتباط (Cookies) لعرض الإعلانات المناسبة بناءً على زيارات المستخدمين.</p>
+            <p>جميع النصوص التي تقوم بتمريرها أو معالجتها داخل أدوات الموقع تتم محلياً على جهازك ولا نطلع عليها أو نخزنها في أي خوادم خارجية.</p>
+        </div>
+        <div class="only-en">
+            <p>At <strong>CutMouse</strong>, visitor privacy is a priority.</p>
+            <p>We use Google AdSense which may utilize cookies to serve contextual ads based on user visits.</p>
+            <p>All text processing happens locally in your browser and is never stored or transmitted to external servers.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 3. نافذة شروط الاستخدام المنبثقة -->
 <div id="termsModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal('termsModal')">&times;</span>
-        <h2 class="only-ar">شروط الاستخدام وإخلاء المسؤولية</h2><h2 class="only-en">Terms of Use & Disclaimer</h2>
-        <p class="only-ar">باستخدامك لموقع <strong>CutMouse</strong>، فإنك توافق على استخدام الأداة للأغراض المشروعة فقط. الخدمة مقدمة مجاناً لدعم الإنتاجية وتسهيل معالجة النصوص.</p>
-        <p class="only-en">By using <strong>CutMouse</strong>, you agree to use the tool for lawful purposes only. Provided as a free web service to enhance text editing productivity.</p>
+        <h2 class="only-ar">شروط الاستخدام وإخلاء المسؤولية</h2>
+        <h2 class="only-en">Terms of Use & Disclaimer</h2>
+        <div class="only-ar">
+            <p>باستخدامك لموقع <strong>CutMouse</strong>، فإنك توافق على استخدام الأداة للأغراض المشروعة فقط.</p>
+            <p>يتم تقديم هذه الخدمة مجاناً دون أي ضمانات صريحة أو ضمنية، ولا نتحمل أي مسؤولية عن أي فقدان للبيانات نتيجة الاستخدام غير الصحيح.</p>
+        </div>
+        <div class="only-en">
+            <p>By using <strong>CutMouse</strong>, you agree to use the tools for lawful purposes only.</p>
+            <p>Services are provided "as is" without implied warranties or liability for data misuse.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 4. نافذة اتصل بنا المنبثقة -->
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('contactModal')">&times;</span>
+        <h2 class="only-ar">اتصل بنا</h2>
+        <h2 class="only-en">Contact Us</h2>
+        <div class="only-ar">
+            <p>إذا كان لديك أي استفسار، اقتراح لتطوير الأدوات، أو واجهت مشكلة تقنية، يمكنك مراسلتنا عبر البريد الإلكتروني:</p>
+            <p style="text-align: center; font-weight: bold; font-size: 1.1em; color: var(--primary-color);">commanxala@gmail.com</p>
+        </div>
+        <div class="only-en">
+            <p>If you have any questions, tool suggestions, or technical issues, please contact us via email:</p>
+            <p style="text-align: center; font-weight: bold; font-size: 1.1em; color: var(--primary-color);">commanxala@gmail.com</p>
+        </div>
     </div>
 </div>
 
@@ -761,10 +827,18 @@
         });
     }
 
-    function openModal(id) { document.getElementById(id).style.display = 'block'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openModal(id) { 
+        const modal = document.getElementById(id);
+        if(modal) modal.style.display = 'block'; 
+    }
+    function closeModal(id) { 
+        const modal = document.getElementById(id);
+        if(modal) modal.style.display = 'none'; 
+    }
     window.onclick = function(event) {
-        if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; }
+        if (event.target.classList.contains('modal')) { 
+            event.target.style.display = 'none'; 
+        }
     }
 
     // --- 3. عداد الكلمات والأحرف ---
@@ -788,7 +862,7 @@
         el.addEventListener('input', function() { updateStats(this.id, this.getAttribute('data-target')); });
     });
 
-    // --- 4. منطق محول الأحرف (Case Converter Logic) ---
+    // --- 4. محول الأحرف ---
     const caseInput = document.getElementById('case-inputText');
     if(caseInput) {
         caseInput.addEventListener('input', function() {
@@ -854,7 +928,7 @@
         caseInput.dispatchEvent(new Event('input'));
     }
 
-    // --- 5. منطق باقي الأدوات ---
+    // --- 5. باقي الأدوات مع حماية أداة القص من التكرار ---
     function processText(inputId, outputContainerId, outputId, prefix, suffix = '') {
         const input = document.getElementById(inputId).value;
         const isAr = document.body.classList.contains('ar');
@@ -931,12 +1005,26 @@
         switchTab('split-section', splitTabBtn);
     }
 
+    // إدراج فاصل قص ذكي لمنع التكرار المزدوج أو إدراجه فوق فاصل آخر
     function insertSplitLine() {
         const editor = document.getElementById('split-input');
         editor.focus();
         const selection = window.getSelection();
         if (!selection.rangeCount) return;
         let range = selection.getRangeAt(0);
+
+        if (!editor.contains(range.commonAncestorContainer)) {
+            range.selectNodeContents(editor);
+            range.collapse(false); 
+        }
+
+        let containerNode = range.startContainer;
+        if (containerNode.nodeType === Node.TEXT_NODE) {
+            containerNode = containerNode.parentNode;
+        }
+        if (containerNode.classList && (containerNode.classList.contains('split-line') || containerNode.classList.contains('split-label-container'))) {
+            return; // تجاهل إذا كان المؤشر داخل فاصل أصلاً
+        }
 
         const splitDiv = document.createElement('div');
         splitDiv.className = 'split-line';
@@ -952,14 +1040,21 @@
         const deleteBtn = document.createElement('span');
         deleteBtn.className = 'delete-btn';
         deleteBtn.innerText = '✕';
-        deleteBtn.onclick = function() { splitDiv.remove(); };
+        deleteBtn.onclick = function() { 
+            splitDiv.remove(); 
+            updateStats('split-input', 'split-stats');
+        };
 
         labelContainer.appendChild(labelText);
         labelContainer.appendChild(deleteBtn);
         splitDiv.appendChild(labelContainer);
 
-        range.deleteContents();
         range.insertNode(splitDiv);
+        range.setStartAfter(splitDiv);
+        range.setEndAfter(splitDiv);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
         updateStats('split-input', 'split-stats');
     }
 
