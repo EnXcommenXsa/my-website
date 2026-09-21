@@ -17,6 +17,7 @@
         }
         
         body.dark-mode {
+            --primary-color: #3b82f6;
             --bg-color: #121212;
             --box-bg: #1e1e1e;
             --border-color: #333333;
@@ -47,76 +48,49 @@
         body.en .only-ar { display: none !important; }
         body.ar .only-en { display: none !important; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 850px; margin: 0 auto; padding: 20px; }
         
         .top-navbar {
             display: flex; align-items: center; justify-content: center;
             background: var(--box-bg); padding: 15px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky;
-            top: 0; z-index: 1000; gap: 15px; flex-wrap: wrap;
+            top: 0; z-index: 1000; gap: 10px; flex-wrap: wrap;
             border-bottom: 1px solid var(--border-color);
             transition: background-color 0.3s;
         }
 
         .brand-logo {
-            position: absolute; right: 20px; font-size: 1em !important;
+            position: absolute; right: 20px; font-size: 1.1em !important;
             font-weight: 800 !important; color: var(--primary-color) !important;
             letter-spacing: 0.5px; text-decoration: none; white-space: nowrap;
         }
 
-        .top-navbar a:not(.brand-logo) {
+        .top-navbar a:not(.brand-logo), .top-navbar button {
             text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 0.95em;
             padding: 8px 12px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;
+            background: transparent; border: none; font-family: inherit;
         }
         
-        .top-navbar a:not(.brand-logo):hover { color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
-        body.dark-mode .top-navbar a:not(.brand-logo):hover, 
-        body.karbo-mode .top-navbar a:not(.brand-logo):hover { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
+        .top-navbar a:not(.brand-logo):hover, .top-navbar button:hover { 
+            color: var(--primary-color); background-color: rgba(0, 86, 179, 0.08); 
+        }
         
-        .top-navbar .active-link { color: var(--primary-color); background-color: rgba(0, 86, 179, 0.05); }
+        .top-navbar .active-link { color: var(--primary-color) !important; background-color: rgba(0, 86, 179, 0.12) !important; }
         body.dark-mode .top-navbar .active-link, 
-        body.karbo-mode .top-navbar .active-link { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
+        body.karbo-mode .top-navbar .active-link { color: #ffffff !important; background-color: rgba(255, 255, 255, 0.15) !important; }
 
-        .top-navbar .lang-btn { border: 1px solid var(--border-color); }
-
-        /* --- القائمة الفرعية (المزيد: الوضع الليلي + كاربو مود) --- */
-        .nav-dropdown { position: relative; }
-        .dropdown-toggle {
-            background: transparent; border: 1px solid var(--border-color); border-radius: 6px;
-            font-size: 1.1em; padding: 6px 12px; cursor: pointer; color: var(--text-color);
-            font-family: inherit; transition: all 0.2s ease;
-        }
-        .dropdown-toggle:hover { background-color: rgba(0, 86, 179, 0.05); }
-        body.dark-mode .dropdown-toggle:hover, body.karbo-mode .dropdown-toggle:hover { background-color: rgba(255,255,255,0.1); }
-        body.karbo-mode .dropdown-toggle { border-color: #a1b2ff; color: #a1b2ff; }
-
-        .dropdown-menu {
-            display: none; position: absolute; top: calc(100% + 8px); left: 0;
-            background: var(--box-bg); border: 1px solid var(--border-color); border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.12); min-width: 190px; z-index: 1100;
-            overflow: hidden; padding: 6px;
-        }
-        body.en .dropdown-menu { left: auto; right: 0; }
-        .nav-dropdown.open .dropdown-menu { display: block; }
-
-        .dropdown-item {
-            display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-            border-radius: 6px; font-size: 0.9em; color: var(--text-color);
-            text-decoration: none; cursor: pointer; white-space: nowrap;
-        }
-        .dropdown-item:hover { background-color: rgba(0, 86, 179, 0.08); }
-        body.dark-mode .dropdown-item:hover, body.karbo-mode .dropdown-item:hover { background-color: rgba(255,255,255,0.08); }
-
-        .dropdown-item.karbo-item { color: #637be6; }
-        body.karbo-mode .dropdown-item.karbo-item { color: #a1b2ff; font-weight: bold; }
+        .top-navbar .karbo-btn { color: #637be6 !important; border: 1px solid #637be6 !important; }
+        body.karbo-mode .top-navbar .karbo-btn { color: #a1b2ff !important; border-color: #a1b2ff !important; background: transparent !important; }
+        
+        .top-navbar .lang-btn, .top-navbar .theme-btn { border: 1px solid var(--border-color); }
 
         @media (max-width: 1050px) {
             .top-navbar { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; padding: 12px 15px; gap: 8px; }
             .brand-logo { position: static; margin-left: 10px; }
-            .top-navbar a { flex-shrink: 0; }
+            .top-navbar a, .top-navbar button { flex-shrink: 0; }
         }
 
-        .header { text-align: center; margin-bottom: 30px; margin-top: 20px; }
+        .header { text-align: center; margin-bottom: 25px; margin-top: 15px; }
         .header h1 { color: var(--text-color); }
         .header p { color: var(--muted-color); }
         
@@ -166,18 +140,18 @@
         .b-ic { background-color: #e84393; }
 
         #toast {
-            visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center;
-            border-radius: 8px; padding: 16px; position: fixed; z-index: 3000; left: 50%; bottom: 30px;
-            transform: translateX(-50%); font-size: 16px; opacity: 0; transition: opacity 0.3s, bottom 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            visibility: hidden; min-width: 240px; background-color: #222; color: #fff; text-align: center;
+            border-radius: 8px; padding: 14px 20px; position: fixed; z-index: 3000; left: 50%; bottom: 30px;
+            transform: translateX(-50%); font-size: 15px; opacity: 0; transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 1px solid #444;
         }
-        #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+        #toast.show { visibility: visible; opacity: 1; bottom: 45px; }
     </style>
 </head>
-<body class="ar">
+<body class="ar dark-mode">
 
 <nav class="top-navbar" dir="rtl">
-    <a href="index.html" class="brand-logo" aria-label="CutMouse">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</a>
+    <a href="index.html" class="brand-logo" dir="ltr">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</a>
     
     <a href="index.html">
         <span class="only-ar">الرئيسية</span><span class="only-en">Home</span>
@@ -185,35 +159,23 @@
     <a href="case-converter.html" class="active-link">
         <span class="only-ar">محول الأحرف</span><span class="only-en">Case Converter</span>
     </a>
-    <a href="index.html#center-section">
+    <a href="index.html">
         <span class="only-ar">توسيط [C]</span><span class="only-en">Center [C]</span>
     </a>
-    <a href="index.html#split-section">
+    <a href="index.html">
         <span class="only-ar">تقسيم وقص</span><span class="only-en">Split & Cut</span>
     </a>
-    <a href="index.html#simulator-section">
+    <a href="index.html">
         <span class="only-ar">إصلاح الاتجاه</span><span class="only-en">Fix Direction</span>
     </a>
     
-    <a onclick="toggleLanguage(event)" class="lang-btn" style="cursor: pointer;">
+    <button type="button" onclick="toggleDarkMode(event)" class="theme-btn" title="تغيير المظهر">🌓</button>
+    <button type="button" onclick="toggleLanguage(event)" class="lang-btn">
         <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
-    </a>
-
-    <div class="nav-dropdown" id="nav-more-dropdown">
-        <button type="button" class="dropdown-toggle" onclick="toggleDropdown(event)" title="المزيد من الخيارات" aria-haspopup="true" aria-expanded="false">
-            ⚙️
-        </button>
-        <div class="dropdown-menu" role="menu">
-            <a onclick="toggleDarkMode(event)" class="dropdown-item" role="menuitem">
-                <span>🌓</span>
-                <span class="only-ar">الوضع الليلي</span><span class="only-en">Dark Mode</span>
-            </a>
-            <a onclick="toggleKarboMode(event)" class="dropdown-item karbo-item" role="menuitem">
-                <span>🖱️</span>
-                <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
-            </a>
-        </div>
-    </div>
+    </button>
+    <button type="button" onclick="toggleKarboMode(event)" class="karbo-btn">
+        <span class="only-ar">كاربو مود</span><span class="only-en">Karbo Mode</span>
+    </button>
 </nav>
 
 <div class="container">
@@ -275,48 +237,54 @@
 <div id="toast"></div>
 
 <script>
+    (function initSettings() {
+        const savedTheme = localStorage.getItem('cutmouse_theme') || 'dark';
+        const savedLang = localStorage.getItem('cutmouse_lang') || 'ar';
+        const savedKarbo = localStorage.getItem('cutmouse_karbo') === 'true';
+
+        if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
+
+        if (savedKarbo) document.body.classList.add('karbo-mode');
+        else document.body.classList.remove('karbo-mode');
+
+        if (savedLang === 'en') {
+            document.body.classList.remove('ar');
+            document.body.classList.add('en');
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+        }
+    })();
+
     function toggleDarkMode(event) {
         if(event) event.preventDefault();
-        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.toggle('dark-mode');
         document.body.classList.remove('karbo-mode');
-        closeDropdown();
+        
+        localStorage.setItem('cutmouse_theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('cutmouse_karbo', 'false');
     }
 
     function toggleKarboMode(event) {
         if(event) event.preventDefault();
-        document.body.classList.toggle('karbo-mode');
-        document.body.classList.remove('dark-mode');
-        closeDropdown();
+        const isKarbo = document.body.classList.toggle('karbo-mode');
+        
+        localStorage.setItem('cutmouse_karbo', isKarbo ? 'true' : 'false');
     }
-
-    function toggleDropdown(event) {
-        if(event) event.stopPropagation();
-        const dropdown = document.getElementById('nav-more-dropdown');
-        const isOpen = dropdown.classList.toggle('open');
-        dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', isOpen);
-    }
-
-    function closeDropdown() {
-        const dropdown = document.getElementById('nav-more-dropdown');
-        if(dropdown) {
-            dropdown.classList.remove('open');
-            dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
-        }
-    }
-
-    document.addEventListener('click', function(e) {
-        const dropdown = document.getElementById('nav-more-dropdown');
-        if(dropdown && !dropdown.contains(e.target)) { closeDropdown(); }
-    });
 
     function toggleLanguage(event) {
         if(event) event.preventDefault();
         const body = document.body;
         const isAr = body.classList.contains('ar');
+        const newLang = isAr ? 'en' : 'ar';
+
         body.classList.remove(isAr ? 'ar' : 'en');
-        body.classList.add(isAr ? 'en' : 'ar');
-        document.documentElement.lang = isAr ? 'en' : 'ar';
+        body.classList.add(newLang);
+        
+        document.documentElement.lang = newLang;
         document.documentElement.dir = isAr ? 'ltr' : 'rtl';
+
+        localStorage.setItem('cutmouse_lang', newLang);
     }
 
     const textArea = document.getElementById('inputText');
@@ -353,25 +321,13 @@
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(textArea.value).then(() => {
                 showToast(isAr ? '✓ تم النسخ بنجاح!' : '✓ Copied successfully!');
-            }).catch(() => {
-                fallbackCopyText(isAr);
             });
         } else {
-            fallbackCopyText(isAr);
-        }
-    }
-
-    function fallbackCopyText(isAr) {
-        textArea.focus();
-        textArea.select();
-        textArea.setSelectionRange(0, 99999); 
-        try {
+            textArea.focus();
+            textArea.select();
             document.execCommand('copy');
             showToast(isAr ? '✓ تم النسخ بنجاح!' : '✓ Copied successfully!');
-        } catch (err) {
-            alert(isAr ? 'يرجى النسخ يدوياً' : 'Please copy manually');
         }
-        window.getSelection().removeAllRanges();
     }
 
     function downloadText() {
@@ -385,16 +341,30 @@
         URL.revokeObjectURL(url);
     }
 
+    // إصلاح دالة Sentence case للأسطر المتعددة
     function convertCase(type) {
         let text = textArea.value;
         if (!text) return;
+
         switch(type) {
-            case 'lower': text = text.toLowerCase(); break;
-            case 'upper': text = text.toUpperCase(); break;
-            case 'capitalized': text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); break;
-            case 'sentence': text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase()); break;
-            case 'alternating': text = text.toLowerCase().split('').map((c, i) => i % 2 !== 0 ? c.toUpperCase() : c).join(''); break;
-            case 'inverse': text = text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join(''); break;
+            case 'lower': 
+                text = text.toLowerCase(); 
+                break;
+            case 'upper': 
+                text = text.toUpperCase(); 
+                break;
+            case 'capitalized': 
+                text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); 
+                break;
+            case 'sentence': 
+                text = text.toLowerCase().replace(/(^\s*|[.!?]\s*|\n\s*)([a-z])/gi, (m, p1, p2) => p1 + p2.toUpperCase());
+                break;
+            case 'alternating': 
+                text = text.toLowerCase().split('').map((c, i) => i % 2 !== 0 ? c.toUpperCase() : c).join(''); 
+                break;
+            case 'inverse': 
+                text = text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join(''); 
+                break;
             case 'title':
                 const smallWords = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'of', 'on', 'or', 'the', 'to', 'with'];
                 text = text.toLowerCase().replace(/\w\S*/g, function(word, index) {
