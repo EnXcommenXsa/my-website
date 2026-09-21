@@ -5,70 +5,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اتصل بنا - CutMouse</title>
     <style>
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --box-bg: #ffffff;
+            --border-color: #d1d5db;
+            --text-color: #1f2937;
+            --muted-color: #6b7280;
+        }
+
+        body.dark-mode {
+            --primary-color: #3b82f6;
+            --bg-color: #121212;
+            --box-bg: #1e1e1e;
+            --border-color: #333333;
+            --text-color: #e0e0e0;
+            --muted-color: #aaaaaa;
+        }
+
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.8;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
         }
+
+        body.en .only-ar { display: none !important; }
+        body.ar .only-en { display: none !important; }
+
+        .top-navbar {
+            display: flex; justify-content: center; align-items: center;
+            background: var(--box-bg); padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky;
+            top: 0; z-index: 1000; gap: 8px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color); transition: background-color 0.3s;
+        }
+        
+        .brand-logo {
+            position: absolute; right: 20px; font-size: 1.1em !important;
+            font-weight: 800 !important; color: var(--primary-color) !important;
+            letter-spacing: 0.5px; text-decoration: none; white-space: nowrap;
+        }
+
+        .top-navbar a:not(.brand-logo), .top-navbar button {
+            text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 0.95em;
+            padding: 8px 14px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;
+            background: transparent; border: none; font-family: inherit;
+        }
+        
+        .top-navbar a:not(.brand-logo):hover, .top-navbar button:hover { 
+            color: var(--primary-color); background-color: rgba(0, 86, 179, 0.06); 
+        }
+
+        .top-navbar .control-btn { 
+            background: transparent !important; border: 1px solid var(--border-color) !important; 
+            color: var(--text-color) !important; padding: 7px 12px !important; border-radius: 6px !important;
+            font-weight: 600 !important; font-size: 0.9em !important; cursor: pointer; transition: all 0.2s ease;
+        }
+        .top-navbar .control-btn:hover { background-color: rgba(0, 0, 0, 0.05) !important; }
+        body.dark-mode .top-navbar .control-btn:hover { background-color: rgba(255, 255, 255, 0.08) !important; }
+
+        @media (max-width: 1050px) {
+            .top-navbar { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; padding: 12px 15px; gap: 6px; }
+            .brand-logo { position: static; margin-left: 10px; }
+            .top-navbar a, .top-navbar button { flex-shrink: 0; }
+        }
+
         .container {
-            max-width: 800px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
+            max-width: 850px; margin: 40px auto; background: var(--box-bg);
+            padding: 40px; border-radius: 10px; border: 1px solid var(--border-color);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        h1 {
-            color: #0d6efd;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
+        h1 { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 20px; }
+        p { font-size: 16px; margin-bottom: 15px; }
+
         .contact-info {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0;
+            background-color: rgba(0, 86, 179, 0.08);
+            border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 8px; text-align: center;
+            font-size: 18px; font-weight: bold; margin: 25px 0; direction: ltr;
         }
+        body.dark-mode .contact-info { background-color: rgba(255, 255, 255, 0.05); }
+
         .back-btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 10px 20px;
-            background-color: #0d6efd;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            display: inline-block; margin-top: 25px; padding: 10px 20px;
+            background-color: var(--primary-color); color: white; text-decoration: none;
+            border-radius: 6px; font-weight: bold; transition: filter 0.2s;
         }
-        .back-btn:hover {
-            background-color: #0b5ed7;
-        }
+        .back-btn:hover { filter: brightness(0.9); }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>اتصل بنا</h1>
+<body class="ar dark-mode">
+
+<nav class="top-navbar" dir="rtl">
+    <a href="index.html" class="brand-logo" dir="ltr">˚⟡˖ ࣪ᓚᘏᕐᐷ ˚⟡˖ ࣪</a>
+    <a href="index.html"><span class="only-ar">الرئيسية</span><span class="only-en">Home</span></a>
+    
+    <button type="button" onclick="toggleDarkMode(event)" class="control-btn theme-btn" title="تغيير المظهر">🌓</button>
+    <button type="button" onclick="toggleLanguage(event)" class="control-btn lang-btn">
+        <span class="only-ar">🌐 English</span><span class="only-en">🌐 عربي</span>
+    </button>
+</nav>
+
+<div class="container">
+    <h1 class="only-ar">اتصل بنا</h1>
+    <h1 class="only-en">Contact Us</h1>
+
+    <div class="only-ar">
         <p>نحن دائماً نسعد بالتواصل معك! إذا كان لديك أي استفسار، اقتراح لتطوير الأداة، أو واجهت أي مشكلة تقنية أثناء استخدام الموقع، فلا تتردد في مراسلتنا.</p>
-        
         <p>يمكنك التواصل معنا مباشرة عبر البريد الإلكتروني التالي:</p>
         
         <div class="contact-info">
-            <!-- استبدل الإيميل أدناه بإيميلك الحقيقي -->
             commanxala@gmail.com
         </div>
 
         <p>سنقوم بالرد على رسالتك في أقرب وقت ممكن (عادة خلال 24 - 48 ساعة).</p>
-        
         <a href="index.html" class="back-btn">← العودة إلى الصفحة الرئيسية</a>
     </div>
+
+    <div class="only-en">
+        <p>We are always happy to hear from you! If you have any inquiries, suggestions to improve the tools, or encounter technical issues, please feel free to reach out.</p>
+        <p>You can contact us directly via email:</p>
+
+        <div class="contact-info">
+            commanxala@gmail.com
+        </div>
+
+        <p>We aim to respond to all inquiries within 24 to 48 hours.</p>
+        <a href="index.html" class="back-btn">← Back to Home Page</a>
+    </div>
+</div>
+
+<script>
+    (function initSettings() {
+        const savedTheme = localStorage.getItem('cutmouse_theme') || 'dark';
+        const savedLang = localStorage.getItem('cutmouse_lang') || 'ar';
+
+        if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
+
+        if (savedLang === 'en') {
+            document.body.classList.remove('ar');
+            document.body.classList.add('en');
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+        }
+    })();
+
+    function toggleDarkMode(event) {
+        if(event) event.preventDefault();
+        const isDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('cutmouse_theme', isDark ? 'dark' : 'light');
+    }
+
+    function toggleLanguage(event) {
+        if(event) event.preventDefault();
+        const body = document.body;
+        const isAr = body.classList.contains('ar');
+        const newLang = isAr ? 'en' : 'ar';
+
+        body.classList.remove(isAr ? 'ar' : 'en');
+        body.classList.add(newLang);
+        document.documentElement.lang = newLang;
+        document.documentElement.dir = isAr ? 'ltr' : 'rtl';
+
+        localStorage.setItem('cutmouse_lang', newLang);
+    }
+</script>
 </body>
 </html>
